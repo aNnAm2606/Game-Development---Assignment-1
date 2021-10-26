@@ -70,7 +70,7 @@ bool Scene::Update(float dt)
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
-	app->render->DrawTexture(background, 0, 0, NULL);
+	app->render->DrawTexture(background, 0, 0, NULL, 0.3f);
 	app->render->DrawTexture(background1, 0, 0, NULL, 0.2f);
 	app->render->DrawTexture(background2, 0, 0, NULL, 0.3f);
 	app->render->DrawTexture(background3, 0, 0, NULL, 0.2f);
@@ -78,7 +78,7 @@ bool Scene::Update(float dt)
 	app->render->DrawTexture(background5, 0, 0, NULL, 0.5f);
 	app->render->DrawTexture(background6, 0, 0, NULL, 0.4f);
 	app->render->DrawTexture(background7, 0, 0, NULL, 0.5f);
-	app->render->DrawTexture(background8, 0, 0, NULL, 0.7f);
+	app->render->DrawTexture(background8, 0, 0, NULL, 0.55f);
 	app->render->DrawTexture(background9, 0, 0, NULL, 0.6f);
 	app->map->Draw();
 
