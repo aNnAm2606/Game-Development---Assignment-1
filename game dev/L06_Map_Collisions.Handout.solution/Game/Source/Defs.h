@@ -36,7 +36,6 @@
 #define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
 
-#define _DEBUG
 
 typedef unsigned int uint;
 typedef unsigned char uchar;
