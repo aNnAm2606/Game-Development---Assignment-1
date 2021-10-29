@@ -32,8 +32,20 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool debug;
+
 private:
 	SDL_Texture* img;
+	SDL_Texture* sky;
+	SDL_Texture* forestBushes;
+	SDL_Texture* treesBack;
+	SDL_Texture* treesMid;
+	SDL_Texture* treesMidClose;
+	SDL_Texture* particles;
+	SDL_Texture* treesClose;
+	SDL_Texture* particles1;
+	SDL_Texture* bushes;
+	SDL_Texture* mist;
 };
 
 #endif // __SCENE_H__

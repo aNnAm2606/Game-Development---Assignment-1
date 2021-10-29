@@ -110,7 +110,6 @@ SDL_Texture* const Textures::LoadSurface(SDL_Surface* surface)
 	{
 		textures.add(texture);
 	}
-
 	return texture;
 }
 

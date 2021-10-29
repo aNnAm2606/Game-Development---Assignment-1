@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
+#include "Scene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -58,8 +59,8 @@ void Map::Draw()
 	// L06: TODO 4: Make sure we draw all the layers and not just the first one
 	while (mapLayerItem != NULL) {
 
-		if (mapLayerItem->data->properties.GetProperty("Draw") == 1) {
-
+		if (mapLayerItem->data->properties.GetProperty("Draw") == 1) 
+		{
 			for (int x = 0; x < mapLayerItem->data->width; x++)
 			{
 				for (int y = 0; y < mapLayerItem->data->height; y++)
@@ -89,6 +90,52 @@ void Map::Draw()
 
 		mapLayerItem = mapLayerItem->next;
 	}
+}
+
+void Map::DrawColliders()
+{
+	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
+	ListItem<MapLayer*>* mapLayerItem;
+	mapLayerItem = mapData.layers.start;
+
+	// L06: TODO 4: Make sure we draw all the layers and not just the first one
+	if (app->scene->debug == true)
+	{
+		while (mapLayerItem != NULL) {
+
+			if (mapLayerItem->data->properties.GetProperty("Navigation") == 1)
+			{
+				for (int x = 0; x < mapLayerItem->data->width; x++)
+				{
+					for (int y = 0; y < mapLayerItem->data->height; y++)
+					{
+						// L04: DONE 9: Complete the draw function
+						int gid = mapLayerItem->data->Get(x, y);
+
+						if (gid > 0) {
+
+							//L06: TODO 4: Obtain the tile set using GetTilesetFromTileId
+							//now we always use the firt tileset in the list
+							//TileSet* tileset = mapData.tilesets.start->data;
+							TileSet* tileset = GetTilesetFromTileId(gid);
+
+							SDL_Rect r = tileset->GetTileRect(gid);
+							iPoint pos = MapToWorld(x, y);
+
+							app->render->DrawTexture(tileset->texture,
+								pos.x,
+								pos.y,
+								&r);
+						}
+
+					}
+				}
+			}
+			mapLayerItem = mapLayerItem->next;
+		}
+		LOG("colliders on");
+	}
+	
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
