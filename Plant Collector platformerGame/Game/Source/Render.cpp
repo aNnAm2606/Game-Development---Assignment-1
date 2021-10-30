@@ -30,6 +30,8 @@ bool Render::Awake(pugi::xml_node& config)
 	bool vsync = config.child("vsync").attribute("value").as_bool();
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
+	speed = config.child("camera").attribute("speed").as_int();
+
 	if (vsync == false)
 	{
 		LOG("vsync is tured off");
@@ -52,7 +54,7 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
 		camera.x = 0;
-		camera.y = 0;
+		camera.y = -1518;
 	}
 
 	return ret;
@@ -76,19 +78,30 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	int speed = 1;
+	if (camera.y <= 0 || camera.h >= -720)
+	{
+		if(camera.y >= 0) camera.y = 0;
+		if (camera.y <= -2319) camera.y = -2319;
+	
+		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+			camera.y += speed;
 
-	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y += speed;
+		if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+			camera.y -= speed;
+	}
 
-	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y -= speed;
+	if (camera.x <= 0 || camera.x >= -1280)
+	{
+		if (camera.x >= 0) camera.x = 0;
+		if (camera.x <= -4476) camera.x = -4476;
 
-	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += speed;
+		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			camera.x += speed;
 
-	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= speed;
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			camera.x -= speed;
+	}
+	
 
 	return true;
 }
