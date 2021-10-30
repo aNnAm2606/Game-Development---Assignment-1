@@ -9,7 +9,7 @@
 
   <renderer>
     <vsync value="false"/>
-    <camera x="0" y="0" />
+    <camera x="0" y="0" speed="3"/>
   </renderer>
 
   <audio>
@@ -17,8 +17,8 @@
   </audio>
 
   <window>
-    <resolution width="1280" height="720" scale="1"/>
-    <fullscreen value="false"/>
+    <resolution width="1280" height="720" scale="2"/>
+    <fullscreen value="true"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>
