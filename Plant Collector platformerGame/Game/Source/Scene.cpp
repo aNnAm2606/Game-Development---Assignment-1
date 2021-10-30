@@ -34,10 +34,10 @@ bool Scene::Start()
 	// L03: DONE: Load map
 	//img = app->tex->Load("Assets/textures/test.png");
 	//app->map->Load("hello.tmx");
-	app->map->Load("tiles.tmx");
+	app->map->Load("test.tmx");
 	
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 	// Load the volume audio from last game
 	//app->LoadGameRequest();
