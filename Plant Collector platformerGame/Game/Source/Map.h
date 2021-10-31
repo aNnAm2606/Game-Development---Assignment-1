@@ -125,6 +125,9 @@ public:
     // Called each loop iteration
     void Draw();
 
+	// Create colliders for the property Navigation == 1
+	void Colliders();
+
 	// Calles each loop iteration
 	void DrawColliders();
 
@@ -168,6 +171,7 @@ private:
 
     SString folder;
     bool mapLoaded;
+	List<PhysBody*> colliders;
 };
 
 #endif // __MAP_H__
