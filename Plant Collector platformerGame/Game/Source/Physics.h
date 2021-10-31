@@ -49,21 +49,22 @@ public:
 	bool CleanUp();
 
 	// Create basic physics objects
-	PhysBody* CreateCircle(int x, int y, int radius);
-	PhysBody* CreateRectangle(int x, int y, int width, int height);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateChain(int x, int y, int* points, int size);
+	PhysBody* CreateCircle(int x, int y, int radius, int dynamic);
+	PhysBody* CreateRectangle(int x, int y, int width, int height, int dynamic);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int dynamic);
+	PhysBody* CreateCircleSensor(int x, int y, int radius, int dynamic);
+	PhysBody* CreateChain(int x, int y, int* points, int size, int dynamic);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+
+	// Box2D World
+	b2World* world;
 
 private:
 
 	// Debug mode
 	bool debug;
-
-	// Box2D World
-	b2World* world;
 
 	// Main ground
 	b2Body* ground;

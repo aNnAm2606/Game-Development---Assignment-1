@@ -6,6 +6,7 @@
 #include "math.h"
 #include "Log.h"
 #include "Window.h"
+#include "Map.h"
 
 // Tell the compiler to reference the compiled Box2D libraries
 //#ifdef _DEBUG
@@ -78,15 +79,18 @@ bool Physics::PostUpdate()
 {
 	bool ret = true;
 
-	// Bonus code: this will iterate all objects in the world and draw the circles
-	// You need to provide your own macro to translate meters to pixels
-	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	//if debug mode on show collider of player and other bodies
+	if (app->map->debugColliders == true)
 	{
-		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+		// Bonus code: this will iterate all objects in the world and draw the circles
+	// You need to provide your own macro to translate meters to pixels
+		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 		{
-			switch(f->GetType())
+			for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 			{
-				// Draw circles ------------------------------------------------
+				switch (f->GetType())
+				{
+					// Draw circles ------------------------------------------------
 				case b2Shape::e_circle:
 				{
 					b2CircleShape* shape = (b2CircleShape*)f->GetShape();
@@ -102,10 +106,10 @@ bool Physics::PostUpdate()
 					int32 count = polygonShape->GetVertexCount();
 					b2Vec2 prev, v;
 
-					for(int32 i = 0; i < count; ++i)
+					for (int32 i = 0; i < count; ++i)
 					{
 						v = b->GetWorldPoint(polygonShape->GetVertex(i));
-						if(i > 0)
+						if (i > 0)
 							app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
 
 						prev = v;
@@ -122,10 +126,10 @@ bool Physics::PostUpdate()
 					b2ChainShape* shape = (b2ChainShape*)f->GetShape();
 					b2Vec2 prev, v;
 
-					for(int32 i = 0; i < shape->m_count; ++i)
+					for (int32 i = 0; i < shape->m_count; ++i)
 					{
 						v = b->GetWorldPoint(shape->m_vertices[i]);
-						if(i > 0)
+						if (i > 0)
 							app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
 						prev = v;
 					}
@@ -148,9 +152,11 @@ bool Physics::PostUpdate()
 				break;
 				// TODO 1: If mouse button 1 is pressed ...
 			// App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN
+				}
 			}
 		}
 	}
+
 	// Keep playing
 	return ret;
 }
@@ -165,11 +171,26 @@ bool Physics::CleanUp()
 	return true;
 }
 
-PhysBody* Physics::CreateCircle(int x, int y, int radius)
+PhysBody* Physics::CreateCircle(int x, int y, int radius, int dynamic = 0)
 {
 	// Create BODY at position x,y
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+
+	switch (dynamic)
+	{
+	case 0:
+		body.type = b2_dynamicBody;
+		break;
+
+	case 1:
+		body.type = b2_staticBody;
+		break;
+
+	case 2:
+		body.type = b2_kinematicBody;
+		break;
+	}
+
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	// Add BODY to the world
@@ -197,11 +218,24 @@ PhysBody* Physics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* Physics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, int dynamic = 0)
 {
 	// Create BODY at position x,y
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	switch (dynamic)
+	{
+	case 0:
+		body.type = b2_dynamicBody;
+		break;
+
+	case 1:
+		body.type = b2_staticBody;
+		break;
+
+	case 2:
+		body.type = b2_kinematicBody;
+		break;
+	}
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	// Add BODY to the world
@@ -230,11 +264,24 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height)
 	return pbody;
 }
 
-PhysBody* Physics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody* Physics::CreateRectangleSensor(int x, int y, int width, int height, int dynamic = 0)
 {
 	// Create BODY at position x,y
 	b2BodyDef body;
-	body.type = b2_staticBody;
+	switch (dynamic)
+	{
+	case 0:
+		body.type = b2_dynamicBody;
+		break;
+
+	case 1:
+		body.type = b2_staticBody;
+		break;
+
+	case 2:
+		body.type = b2_kinematicBody;
+		break;
+	}
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	// Add BODY to the world
@@ -264,11 +311,74 @@ PhysBody* Physics::CreateRectangleSensor(int x, int y, int width, int height)
 	return pbody;
 }
 
-PhysBody* Physics::CreateChain(int x, int y, int* points, int size)
+PhysBody* Physics::CreateCircleSensor(int x, int y, int radius, int dynamic = 0)
 {
 	// Create BODY at position x,y
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	switch (dynamic)
+	{
+	case 0:
+		body.type = b2_dynamicBody;
+		break;
+
+	case 1:
+		body.type = b2_staticBody;
+		break;
+
+	case 2:
+		body.type = b2_kinematicBody;
+		break;
+	}
+
+	// Create SHAPE (small "box" rectangle is ok; otherwise create whatever you need)
+	b2CircleShape circle;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	// Add BODY to the world
+	b2Body* b = world->CreateBody(&body);
+
+	// Create SHAPE
+	circle.m_radius = PIXEL_TO_METERS(radius);
+
+	// Create FIXTURE
+	b2FixtureDef fixture;
+	fixture.shape = &circle;
+	fixture.density = 1.0f;
+	// Create FIXTURE
+
+	fixture.isSensor = true; // Set this fixture as SENSOR type
+
+	// Add fixture to the BODY
+	b->CreateFixture(&fixture);
+
+	// Create our custom PhysBody class
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+
+	// Return our PhysBody class
+	return pbody;
+}
+
+PhysBody* Physics::CreateChain(int x, int y, int* points, int size, int dynamic = 0)
+{
+	// Create BODY at position x,y
+	b2BodyDef body;
+	switch (dynamic)
+	{
+	case 0:
+		body.type = b2_dynamicBody;
+		break;
+
+	case 1:
+		body.type = b2_staticBody;
+		break;
+
+	case 2:
+		body.type = b2_kinematicBody;
+		break;
+	}
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	// Add BODY to the world
@@ -277,7 +387,7 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size)
 	// Create SHAPE
 	b2ChainShape shape;
 	b2Vec2* p = new b2Vec2[size / 2];
-	for(uint i = 0; i < size / 2; ++i)
+	for (uint i = 0; i < size / 2; ++i)
 	{
 		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
 		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
