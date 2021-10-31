@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Physics.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -27,6 +28,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	map = new Map();
 	physics = new Physics(this);
+	player = new Player();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -35,8 +37,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(player);
 	AddModule(scene);
 	AddModule(map);
+	
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -116,6 +120,11 @@ bool App::Start()
 		item = item->next;
 	}
 
+	deltaTime = 0.0f;
+	lastTime = 0;
+
+	msFrame = 1.0f / FPS;
+
 	return ret;
 }
 
@@ -136,6 +145,17 @@ bool App::Update()
 
 	if(ret == true)
 		ret = PostUpdate();
+
+	// FPS Control
+	currentTime = SDL_GetTicks();
+
+	deltaTime = (currentTime - lastTime) / 1000.0f;
+
+	if (deltaTime < msFrame) {
+		SDL_Delay(msFrame - deltaTime);
+	}
+
+	lastTime = SDL_GetTicks();
 
 	FinishUpdate();
 	return ret;
