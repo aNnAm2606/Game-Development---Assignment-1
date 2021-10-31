@@ -2,9 +2,13 @@
 #include "Window.h"
 #include "Render.h"
 #include "Input.h"
+#include "Physics.h"
+#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
+
+#include "Player.h"
 
 #define VSYNC true
 
@@ -54,7 +58,13 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
 		camera.x = 0;
-		camera.y = -1518;
+		camera.y = -1587;
+
+		// player camera movement
+		cameraBounds.w = 320;
+		cameraBounds.h = 160;
+		cameraBounds.x = -159;
+		cameraBounds.y = -1947;
 	}
 
 	return ret;
@@ -78,22 +88,20 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (camera.y <= 0 || camera.h >= -720)
+	if (app->map->debugColliders == false)
 	{
-		if(camera.y >= 0) camera.y = 0;
-		if (camera.y <= -2319) camera.y = -2319;
-	
+
+		camera.x = -(app->player->playerBody->body->GetPosition().x * 100) + 640;
+		/*camera.y = -(app->player->playerBody->body->GetPosition().y * 100) + 500;*/
+		//if()
+	}
+	else
+	{
 		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 			camera.y += speed;
 
 		if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 			camera.y -= speed;
-	}
-
-	if (camera.x <= 0 || camera.x >= -1280)
-	{
-		if (camera.x >= 0) camera.x = 0;
-		if (camera.x <= -4476) camera.x = -4476;
 
 		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			camera.x += speed;
@@ -101,7 +109,18 @@ bool Render::Update(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 			camera.x -= speed;
 	}
-	
+
+	if (camera.y <= 0 || camera.h >= -720)
+	{
+		if(camera.y >= 0) camera.y = 0;
+		if (camera.y <= -2319) camera.y = -2319;
+	}
+
+	if (camera.x <= 0 || camera.x >= -1280)
+	{
+		if (camera.x >= 0) camera.x = 0;
+		if (camera.x <= -4476) camera.x = -4476;
+	}
 
 	return true;
 }
