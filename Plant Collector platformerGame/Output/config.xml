@@ -18,11 +18,17 @@
 
   <window>
     <resolution width="1280" height="720" scale="2"/>
-    <fullscreen value="true"/>
+    <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+
+  <player>
+    <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
+    <startPosition x="100" y ="800"/>
+    <speed value="1"/>
+  </player>
 
   <!-- L03: Added maps folder as config option -->
   <map>
