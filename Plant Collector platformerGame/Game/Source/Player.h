@@ -52,6 +52,9 @@ public:
 	PhysBody* playerBody;
 	b2Body* b;
 
+	//add a shape
+	b2CircleShape playerCircle;
+
 	// The speed in which we move the player (pixels per frame)
 	int speed;
 	

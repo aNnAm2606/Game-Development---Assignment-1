@@ -21,25 +21,33 @@ Player::Player() : Module()
 
 	// Player's animation:
 	// idle animation - just one sprite
-	idleAnimR.PushBack({ 0, 0, 32, 32 });
-	idleAnimR.loop = false;
+	idleAnimR.PushBack({ 0, 64, 32, 32 });
+	idleAnimR.PushBack({ 32, 64, 32, 32 });
+	idleAnimR.PushBack({ 64, 64, 32, 32 });
+	idleAnimR.PushBack({ 96, 64, 32, 32 });
+	idleAnimR.loop = true;
+	idleAnimR.speed = 0.05f;
 
-	idleAnimL.PushBack({ 0, 160, 32, 32 });
-	idleAnimL.loop = false;
+	idleAnimL.PushBack({ 0, 224, 32, 32 });
+	idleAnimL.PushBack({ 32, 224, 32, 32 });
+	idleAnimL.PushBack({ 64, 224, 32, 32 });
+	idleAnimL.PushBack({ 96, 224, 32, 32 });
+	idleAnimL.loop = true;
+	idleAnimL.speed = 0.05f;
 
 	rightAnim.PushBack({  0, 0, 32, 32 });
 	rightAnim.PushBack({ 32, 0, 32, 32 });
 	rightAnim.PushBack({ 64, 0, 32, 32 });
 	rightAnim.PushBack({ 96, 0, 32, 32 });
 	rightAnim.loop = true;
-	rightAnim.speed = 0.05f;
+	rightAnim.speed = 0.1f;
 
 	leftAnim.PushBack({  0, 160, 32, 32 });
 	leftAnim.PushBack({ 32, 160, 32, 32 });
 	leftAnim.PushBack({ 64, 160, 32, 32 });
 	leftAnim.PushBack({ 96, 160, 32, 32 });
 	leftAnim.loop = true;
-	leftAnim.speed = 0.05f;
+	leftAnim.speed = 0.1f;
 }
 
 Player::~Player()
@@ -95,14 +103,14 @@ bool Player::Start()
 	pbody.fixedRotation = true;
 	//create the body in  the world
 	b = app->physics->world->CreateBody(&pbody);
-	//add a shape
-	b2PolygonShape playerSquare;
+	////add a shape
+	//b2PolygonShape playerSquare;
 	// 32x32 is the character's dimension in px
-	playerSquare.SetAsBox(PIXEL_TO_METERS(16) * 0.5f, PIXEL_TO_METERS(28) * 0.5f); 
+	playerCircle.m_radius = PIXEL_TO_METERS(16);
 	//add fixture
 	b2FixtureDef playerfixture;
-	playerfixture.shape = &playerSquare;
-	playerfixture.density = 2.5f;
+	playerfixture.shape = &playerCircle;
+	playerfixture.density = 1.5f;
 	playerfixture.friction = 100.0f;
 	//add fixture to body
 	b->CreateFixture(&playerfixture);
@@ -110,8 +118,7 @@ bool Player::Start()
 	playerBody = new PhysBody();
 	playerBody->body =b;
 	b->SetUserData(playerBody);
-	playerBody->width = 32 * 0.5f;
-	playerBody->height = 32 * 0.5f;
+	playerBody->width = playerBody->height = playerCircle.m_radius;
 	playerBody->listener = this;
 	//---------------------------------------------------------------------------//
 
@@ -221,7 +228,7 @@ bool Player::PostUpdate()
 	bool ret = true;
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	playerBody->GetPosition(startPos.x, startPos.y);
-	app->render->DrawTexture(texture, startPos.x, startPos.y, &rect);
+	app->render->DrawTexture(texture, startPos.x-16, startPos.y-16, &rect);
 	return ret;
 }
 
