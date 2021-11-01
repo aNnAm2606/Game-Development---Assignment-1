@@ -123,15 +123,9 @@ void Map::Colliders()
 
 							SDL_Rect r = tileset->GetTileRect(gid);
 							iPoint pos = MapToWorld(x, y);
-
-							app->render->DrawTexture(tileset->texture,
-								pos.x,
-								pos.y,
-								&r);
-
 							PhysBody* col = new PhysBody();
 							col->listener = this;
-							col = app->physics->CreateRectangle(pos.x+16, pos.y+16, 31, 31, 1);
+							col = app->physics->CreateRectangle(pos.x+16, pos.y+16, r.w, r.h, 1);
 							colliders.add(col);
 						}
 
