@@ -106,7 +106,7 @@ bool Player::Start()
 	////add a shape
 	//b2PolygonShape playerSquare;
 	// 32x32 is the character's dimension in px
-	playerCircle.m_radius = PIXEL_TO_METERS(16);
+	playerCircle.m_radius = PIXEL_TO_METERS(14);
 	//add fixture
 	b2FixtureDef playerfixture;
 	playerfixture.shape = &playerCircle;
