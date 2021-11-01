@@ -387,7 +387,7 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, int dynamic 
 	// Create SHAPE
 	b2ChainShape shape;
 	b2Vec2* p = new b2Vec2[size / 2];
-	for (uint i = 0; i < size / 2; ++i)
+	for(uint i = 0; i < size / 2; ++i)
 	{
 		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
 		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
