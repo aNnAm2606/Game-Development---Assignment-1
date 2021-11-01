@@ -227,8 +227,8 @@ bool Player::PostUpdate()
 {
 	bool ret = true;
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	playerBody->GetPosition(startPos.x, startPos.y);
-	app->render->DrawTexture(texture, startPos.x-16, startPos.y-16, &rect);
+	playerBody->GetPosition(position.x, position.y);
+	app->render->DrawTexture(texture, position.x-16, position.y-16, &rect);
 	return ret;
 }
 

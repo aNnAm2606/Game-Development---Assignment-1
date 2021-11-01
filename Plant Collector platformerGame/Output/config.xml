@@ -26,7 +26,7 @@
 
   <player>
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
-    <startPosition x="100" y ="800"/>
+    <startPosition x="100" y ="950"/>
     <speed value="1"/>
   </player>
 
