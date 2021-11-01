@@ -100,22 +100,22 @@ bool Scene::Update(float dt)
 	}
 
 	// Draw background
-	//app->render->DrawTexture(sky, 0, 0, NULL, -0.001f);
-	//app->render->DrawTexture(forestBushes, 0, 0, NULL, 0.1f);
-	//app->render->DrawTexture(treesBack, 0, 0, NULL, 0.2f);
-	//app->render->DrawTexture(treesMid, 0, 0, NULL, 0.3f);
-	//app->render->DrawTexture(treesMidClose, 0, 0, NULL, 0.4f);
-	//app->render->DrawTexture(particles, 0, 0, NULL, 0.45f);
-	//app->render->DrawTexture(treesClose, 0, 0, NULL, 0.5f);
-	//app->render->DrawTexture(particles1, 0, 0, NULL, 0.55f);
-	//app->render->DrawTexture(bushes, 0, 0, NULL, 0.6f);
-	//app->render->DrawTexture(mist, 0, 0, NULL, 0.62f);
+	app->render->DrawTexture(sky, 0, 0, NULL, -0.001f);
+	app->render->DrawTexture(forestBushes, 0, 0, NULL, 0.1f);
+	app->render->DrawTexture(treesBack, 0, 0, NULL, 0.2f);
+	app->render->DrawTexture(treesMid, 0, 0, NULL, 0.3f);
+	app->render->DrawTexture(treesMidClose, 0, 0, NULL, 0.4f);
+	app->render->DrawTexture(particles, 0, 0, NULL, 0.45f);
+	app->render->DrawTexture(treesClose, 0, 0, NULL, 0.5f);
+	app->render->DrawTexture(particles1, 0, 0, NULL, 0.55f);
+	app->render->DrawTexture(bushes, 0, 0, NULL, 0.6f);
+	app->render->DrawTexture(mist, 0, 0, NULL, 0.62f);
 
 	// Draw map
-	/*app->map->Draw();*/
+	app->map->Draw();
 	app->map->DrawColliders();
-	
-
+	//app->render->DrawRectangle(app->player->playerSquare, );
+	app->render->DrawRectangle(app->render->cameraBounds, 255, 0, 0, true);
 	// L03: DONE 7: Set the window title with map/tileset info
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 				   app->map->mapData.width, app->map->mapData.height,
@@ -131,7 +131,7 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
-	app->render->DrawRectangle(app->render->cameraBounds, 255, 0, 0);
+
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
