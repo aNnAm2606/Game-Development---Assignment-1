@@ -36,7 +36,7 @@
 #define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
 
-#define FPS 4
+#define FPS 60
 
 typedef unsigned int uint;
 typedef unsigned char uchar;

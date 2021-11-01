@@ -146,17 +146,6 @@ bool App::Update()
 	if(ret == true)
 		ret = PostUpdate();
 
-	// FPS Control
-	currentTime = SDL_GetTicks();
-
-	deltaTime = (currentTime - lastTime) / 1000.0f;
-
-	if (deltaTime < msFrame) {
-		SDL_Delay(msFrame - deltaTime);
-	}
-
-	lastTime = SDL_GetTicks();
-
 	FinishUpdate();
 	return ret;
 }

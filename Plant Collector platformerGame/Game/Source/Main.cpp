@@ -31,9 +31,12 @@ int main(int argc, char* args[])
 
 	MainState state = CREATE;
 	int result = EXIT_FAILURE;
+	int startTick;
+	int rate = 1000 / 60;
 
 	while(state != EXIT)
 	{
+		startTick = SDL_GetTicks();
 		switch(state)
 		{
 			// Allocate the engine --------------------------------------------
@@ -104,6 +107,16 @@ int main(int argc, char* args[])
 			state = EXIT;
 			break;
 		}
+
+		// FPS Control
+		if (rate > SDL_GetTicks() - startTick)
+		{
+			SDL_Delay((1000 / 60) - (SDL_GetTicks() - startTick));
+		}
+		float fps = (SDL_GetTicks() - startTick);
+		if (app != nullptr) app->deltaTime = 1000 / fps;
+
+		printf("\nFPS:%f", 1000 / fps);
 	}
 
 	LOG("... Bye! :)\n");
