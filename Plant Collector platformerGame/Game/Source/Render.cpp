@@ -92,7 +92,7 @@ bool Render::Update(float dt)
 	{
 
 		camera.x = -(app->player->playerBody->body->GetPosition().x * 100) + 640;
-		/*camera.y = -(app->player->playerBody->body->GetPosition().y * 100) + 500;*/
+		camera.y = -(app->player->playerBody->body->GetPosition().y * 100) + 500;
 		//if()
 	}
 	else
