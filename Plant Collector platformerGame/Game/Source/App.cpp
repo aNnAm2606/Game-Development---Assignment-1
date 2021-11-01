@@ -307,7 +307,7 @@ bool App::LoadFromFile()
 	bool ret = true;
 
 	pugi::xml_document gameStateFile;
-	pugi::xml_parse_result result = gameStateFile.load_file("savegame.xml");
+	pugi::xml_parse_result result = gameStateFile.load_file(SAVE_STATE_FILENAME);
 
 	if (result == NULL)
 	{
@@ -338,7 +338,7 @@ bool App::SaveToFile() const
 	bool ret = true;
 
 	pugi::xml_document gameStateFile;
-	pugi::xml_parse_result result = gameStateFile.load_file("savegame.xml");
+	pugi::xml_parse_result result = gameStateFile.load_file(SAVE_STATE_FILENAME);
 
 	//send to each module the XML element SaveState()
 	//check for errors
@@ -362,7 +362,7 @@ bool App::SaveToFile() const
 	}
 
 	//function to asve xml to file (override)
-	gameStateFile.save_file("savegame.xml");
+	gameStateFile.save_file(SAVE_STATE_FILENAME);
 
 	saveGameRequest = false;
 
