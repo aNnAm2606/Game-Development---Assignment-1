@@ -33,6 +33,10 @@ bool Audio::Awake(pugi::xml_node& config)
 	volume = config.child("volume").attribute("value").as_int();
 	volumeFx = config.child("volume").attribute("valueFx").as_int();
 
+	// Get the soundrack audio from file path for easy change
+	soundtrack.Create(config.child("soundtrack").child_value());
+	fxFiles.Create(config.child("fx").child_value());
+
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());

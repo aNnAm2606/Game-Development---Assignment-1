@@ -39,7 +39,7 @@ bool Scene::Start()
 	app->map->Load("test.tmx");
 	
 	// Load music
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	app->audio->PlayMusic(app->audio->soundtrack.GetString());
 
 	// Player and Physics enable
 	//app->physics->active = true;
@@ -71,8 +71,14 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
     // L02: DONE 3: Request Load / Save when pressing L/S
-	if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
 		app->LoadGameRequest();
+
+		//not official, just for debuging purposes
+		app->map->debugColliders = true;
+	}
+		
 
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
@@ -84,12 +90,12 @@ bool Scene::Update(float dt)
 	//if the volume is not at max we can set it higher
 	if (app->audio->volume < 128)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT)
 			app->audio->volume++;
 	}
 	if (app->audio->volume > 0)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT)
 			app->audio->volume--;
 	}
 

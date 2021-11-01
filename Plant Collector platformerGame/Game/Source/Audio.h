@@ -42,6 +42,8 @@ public:
 	// volume control
 	uint volume;
 	uint volumeFx;
+	SString soundtrack;
+	SString fxFiles;
 
 private:
 
