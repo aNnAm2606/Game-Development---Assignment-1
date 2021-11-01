@@ -74,7 +74,6 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		app->LoadGameRequest();
-
 		//not official, just for debuging purposes
 		app->map->debugColliders = true;
 	}
