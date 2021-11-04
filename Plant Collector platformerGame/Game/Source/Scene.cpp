@@ -34,16 +34,10 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// L03: DONE: Load map
-	//img = app->tex->Load("Assets/textures/test.png");
-	//app->map->Load("hello.tmx");
 	app->map->Load("test.tmx");
 	
 	// Load music
 	app->audio->PlayMusic(app->audio->soundtrack.GetString());
-
-	// Player and Physics enable
-	//app->physics->active = true;
-	app->player->active = true;
 
 	// Load the backgrounds
 	sky = app->tex->Load("Assets/textures/10_Sky.png");
@@ -57,6 +51,7 @@ bool Scene::Start()
 	bushes = app->tex->Load("Assets/textures/02_Bushes.png");
 	mist = app->tex->Load("Assets/textures/01_Mist.png");
 
+	app->player->Enable();
 	app->map->Colliders();
 	return true;
 }
@@ -77,8 +72,7 @@ bool Scene::Update(float dt)
 		//not official, just for debuging purposes
 		app->map->debugColliders = true;
 	}
-		
-
+	
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
 

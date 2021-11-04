@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Physics.h"
 #include "Map.h"
+#include "Scene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -58,8 +59,7 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
 		camera.x = 0;
-		camera.y = -1587;
-
+		camera.y = 0;
 		// player camera movement
 		cameraBounds.w = 320;
 		cameraBounds.h = 160;
@@ -88,20 +88,11 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	// If player is not enabled camera set to origin
-	if (app->player->isEnabled == false)
-	{
-		camera.x = 0;
-		camera.y = 0;
-	}
-
-	// Player is enabled
+	// Player is enabled 
 	if (app->map->debugColliders == false && app->player->isEnabled == true)
 	{
-
 		camera.x = -(app->player->playerBody->body->GetPosition().x * 100) + 640;
 		camera.y = -(app->player->playerBody->body->GetPosition().y * 100) + 500;
-		//if()
 	}
 	else
 	{
