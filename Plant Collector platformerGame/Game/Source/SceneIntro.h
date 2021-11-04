@@ -30,7 +30,11 @@ public:
 	bool CleanUp();
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
-	SDL_Texture* bgTexture;
+	SDL_Texture* bg1;
+	SDL_Texture* bg2;
+	SDL_Texture* bg3;
+	SDL_Texture* bg4;
+	SDL_Texture* bg5;
 };
 
 #endif	// __SCENEINTRO_H__
