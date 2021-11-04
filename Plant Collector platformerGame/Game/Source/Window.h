@@ -40,10 +40,11 @@ public:
 	// Window size
 	uint width;
 	uint height;
+	uint scale;
 
 private:
 	SString title;
-	uint scale;
+	
 };
 
 #endif // __WINDOW_H__
