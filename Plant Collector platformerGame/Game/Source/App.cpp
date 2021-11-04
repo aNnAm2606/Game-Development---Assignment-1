@@ -30,7 +30,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fade = new FadeToBlack(true);
 	sceneIntro = new SceneIntro(true);
 	scene = new Scene(false);
-	map = new Map(false);
+	map = new Map(true);
 	player = new Player(false);
 	physics = new Physics(true);
 

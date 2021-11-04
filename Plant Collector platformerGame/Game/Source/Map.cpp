@@ -22,8 +22,6 @@ Map::~Map()
 // L06: TODO 7: Ask for the value of a custom property
 int Properties::GetProperty(const char* value, int defaultValue) const
 {
-	//...
-
 	ListItem<Property*>* item = list.start;
 
 	while (item)
