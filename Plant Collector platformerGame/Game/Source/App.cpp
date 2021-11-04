@@ -4,10 +4,12 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "SceneIntro.h"
 #include "Scene.h"
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -25,10 +27,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(true);
 	tex = new Textures(true);
 	audio = new Audio(true);
+	fade = new FadeToBlack(true);
+	sceneIntro = new SceneIntro(true);
 	scene = new Scene(false);
 	map = new Map(false);
-	physics = new Physics(true);
 	player = new Player(false);
+	physics = new Physics(true);
+
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -37,10 +42,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(player);
-	AddModule(scene);
+	AddModule(fade);
 	AddModule(map);
-	
+	AddModule(player);
+	AddModule(sceneIntro);
+	AddModule(scene);
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -99,8 +105,7 @@ bool App::Awake()
 			// Send nullptr if the node does not exist in config.xml
 			pugi::xml_node node;
 			node = config.child(item->data->name.GetString());
-			if (item->data->IsEnabled())
-				ret = item->data->Awake(config.child(item->data->name.GetString()));
+			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
 		}
 	}

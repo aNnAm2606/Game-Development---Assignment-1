@@ -15,10 +15,12 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class SceneIntro;
 class Scene;
 class Map;
 class Physics;
 class Player;
+class FadeToBlack;
 
 class App
 {
@@ -88,10 +90,13 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	SceneIntro* sceneIntro;
 	Scene* scene;
 	Map* map;
 	Physics* physics;
 	Player* player;
+	FadeToBlack* fade;
+
 	float deltaTime;
 
 private:
