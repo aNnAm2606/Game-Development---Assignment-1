@@ -95,59 +95,46 @@ void Map::Draw()
 // Draw the map colliders (all requried layers)
 void Map::Colliders()
 {
-	//if (mapLoaded == false) return;
-	//if (debugColliders == true)
-	//{
-		// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
-		ListItem<MapLayer*>* mapLayerItem;
-		mapLayerItem = mapData.layers.start;
+	ListItem<MapLayer*>* mapLayerItem;
+	mapLayerItem = mapData.layers.start;
 
-		// L06: TODO 4: Make sure we draw all the layers and not just the first one
-		while (mapLayerItem != NULL) 
+	while (mapLayerItem != NULL)
+	{
+		if (mapLayerItem->data->properties.GetProperty("Navigation") == 1)
 		{
-			if (mapLayerItem->data->properties.GetProperty("Navigation") == 1)
+			for (int x = 0; x < mapLayerItem->data->width; x++)
 			{
-				for (int x = 0; x < mapLayerItem->data->width; x++)
+				for (int y = 0; y < mapLayerItem->data->height; y++)
 				{
-					for (int y = 0; y < mapLayerItem->data->height; y++)
+					int gid = mapLayerItem->data->Get(x, y);
+
+					if (gid > 0) 
 					{
-						// L04: DONE 9: Complete the draw function
-						int gid = mapLayerItem->data->Get(x, y);
+						TileSet* tileset = GetTilesetFromTileId(gid);
 
-						if (gid > 0) {
-
-							//L06: TODO 4: Obtain the tile set using GetTilesetFromTileId
-							//now we always use the firt tileset in the list
-							//TileSet* tileset = mapData.tilesets.start->data;
-							TileSet* tileset = GetTilesetFromTileId(gid);
-
-							SDL_Rect r = tileset->GetTileRect(gid);
-							iPoint pos = MapToWorld(x, y);
-							PhysBody* col = new PhysBody();
-							col->listener = this;
-							col = app->physics->CreateRectangle(pos.x+16, pos.y+16, r.w, r.h, 1);
-							colliders.add(col);
-						}
-
+						SDL_Rect r = tileset->GetTileRect(gid);
+						iPoint pos = MapToWorld(x, y);
+						PhysBody* col = new PhysBody();
+						col->listener = this;
+						col = app->physics->CreateRectangle(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						colliders.add(col);
 					}
+
 				}
 			}
-
-			mapLayerItem = mapLayerItem->next;
 		}
-	//}
+
+		mapLayerItem = mapLayerItem->next;
+	}
 }
 
 void Map::DrawColliders()
 {
-	//if (mapLoaded == false) return;
 	if (debugColliders == true)
 	{
-		// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
 		ListItem<MapLayer*>* mapLayerItem;
 		mapLayerItem = mapData.layers.start;
 
-		// L06: TODO 4: Make sure we draw all the layers and not just the first one
 		while (mapLayerItem != NULL)
 		{
 			if (mapLayerItem->data->properties.GetProperty("Navigation") == 1)
@@ -156,14 +143,10 @@ void Map::DrawColliders()
 				{
 					for (int y = 0; y < mapLayerItem->data->height; y++)
 					{
-						// L04: DONE 9: Complete the draw function
 						int gid = mapLayerItem->data->Get(x, y);
 
 						if (gid > 0) {
 
-							//L06: TODO 4: Obtain the tile set using GetTilesetFromTileId
-							//now we always use the firt tileset in the list
-							//TileSet* tileset = mapData.tilesets.start->data;
 							TileSet* tileset = GetTilesetFromTileId(gid);
 
 							SDL_Rect r = tileset->GetTileRect(gid);
