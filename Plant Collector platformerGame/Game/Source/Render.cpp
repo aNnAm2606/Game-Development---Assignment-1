@@ -127,9 +127,14 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
+	bool ret = true;
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
-	return true;
+
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		ret = false;
+
+	return ret;
 }
 
 // Called before quitting
