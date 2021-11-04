@@ -15,7 +15,7 @@
 //	#pragma comment( lib, "Box2D/libx86/Release/Box2D.lib" )
 //#endif
 
-Physics::Physics(App* app, bool start_enabled) : Module()
+Physics::Physics(bool startEnabled) : Module(startEnabled)
 {
 	// Initialise all the internal class variables, at least to NULL pointer
 	world = NULL;

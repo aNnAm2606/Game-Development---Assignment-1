@@ -12,7 +12,7 @@
 
 #define VSYNC true
 
-Render::Render() : Module()
+Render::Render(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("renderer");
 	background.r = 0;
@@ -88,7 +88,15 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->map->debugColliders == false)
+	// If player is not enabled camera set to origin
+	if (app->player->isEnabled == false)
+	{
+		camera.x = 0;
+		camera.y = 0;
+	}
+
+	// Player is enabled
+	if (app->map->debugColliders == false && app->player->isEnabled == true)
 	{
 
 		camera.x = -(app->player->playerBody->body->GetPosition().x * 100) + 640;

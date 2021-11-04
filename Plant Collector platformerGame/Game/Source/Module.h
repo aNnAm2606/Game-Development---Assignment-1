@@ -12,7 +12,7 @@ class Module
 {
 public:
 
-	Module() : active(false)
+	Module(bool startEnabled) : active(false), isEnabled(startEnabled)
 	{}
 
 	void Init()
@@ -72,10 +72,32 @@ public:
 	{
 	}
 
+	virtual void Enable()
+	{
+		if (!isEnabled)
+		{
+			isEnabled = true;
+			Start();
+		}
+	}
+	virtual void Disable()
+	{
+		if (isEnabled)
+		{
+			isEnabled = false;
+			CleanUp();
+		}
+	}
+	bool IsEnabled() const
+	{
+		return isEnabled;
+	}
+
 public:
 
 	SString name;
 	bool active;
+	bool isEnabled = true;
 
 };
 

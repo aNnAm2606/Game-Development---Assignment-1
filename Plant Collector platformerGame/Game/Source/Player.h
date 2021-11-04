@@ -13,7 +13,7 @@ class Player : public Module
 {
 public:
 	// Constructor
-	Player();
+	Player(bool startEnabled);
 
 	// Destructor
 	~Player();
