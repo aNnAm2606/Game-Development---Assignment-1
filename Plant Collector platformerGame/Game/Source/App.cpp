@@ -28,8 +28,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	fade = new FadeToBlack(true);
-	sceneIntro = new SceneIntro(true);
-	scene = new Scene(false);
+	sceneIntro = new SceneIntro(false);
+	scene = new Scene(true);
 	map = new Map(true);
 	player = new Player(false);
 	physics = new Physics(true);
