@@ -114,7 +114,6 @@ void Map::Colliders()
 						iPoint pos = MapToWorld(x, y);
 						PhysBody* col = new PhysBody();
 						col->listener = this;
-						col->WALL;
 						col = app->physics->CreateRectangle(pos.x + 16, pos.y + 16, r.w, r.h, 1);
 						colliders.add(col);
 					}
@@ -138,7 +137,6 @@ void Map::Colliders()
 						iPoint pos = MapToWorld(x, y);
 						PhysBody* col = new PhysBody();
 						col->listener = this;
-						col->LADDER;
 						col = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
 						colliders.add(col);
 						
