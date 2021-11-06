@@ -96,6 +96,8 @@ public:
 	Physics* physics;
 	Player* player;
 	FadeToBlack* fade;
+	SString title;
+	SString organization;
 
 	float deltaTime;
 
@@ -103,8 +105,6 @@ private:
 
 	int argc;
 	char** args;
-	SString title;
-	SString organization;
 
 	List<Module *> modules;
 
