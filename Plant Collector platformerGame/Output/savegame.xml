@@ -8,10 +8,10 @@
 	</audio>
 	<scene />
 	<renderer>
-		<camera x="0" y="-4" />
+		<camera x="-1495" y="-606" />
 	</renderer>
 	<player>
 		<startPosition x="0" y="0" />
-		<position x="0" y="0" />
+		<position x="1067" y="553" />
 	</player>
 </save_state>
