@@ -37,7 +37,7 @@ bool Scene::Start()
 	app->map->Load("test.tmx");
 	
 	// Load music
-	app->audio->PlayMusic(app->audio->soundtrack.GetString());
+	/*app->audio->PlayMusic(app->audio->soundtrack.GetString());*/
 
 	// Load the backgrounds
 	sky = app->tex->Load("Assets/textures/10_Sky.png");
@@ -66,14 +66,12 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
     // L02: DONE 3: Request Load / Save when pressing L/S
-	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
 		app->LoadGameRequest();
-		//not official, just for debuging purposes
-		app->map->debugColliders = true;
 	}
 	
-	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if(app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();
 
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -115,13 +113,6 @@ bool Scene::Update(float dt)
 	app->map->DrawColliders();
 	//app->render->DrawRectangle(app->player->playerSquare, );
 	app->render->DrawRectangle(app->render->cameraBounds, 255, 0, 0, true);
-	// L03: DONE 7: Set the window title with map/tileset info
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-				   app->map->mapData.width, app->map->mapData.height,
-				   app->map->mapData.tileWidth, app->map->mapData.tileHeight,
-				   app->map->mapData.tilesets.count());
-
-	app->win->SetTitle(title.GetString());
 
 	return true;
 }
