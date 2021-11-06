@@ -4,7 +4,7 @@
 #include "Box2D/Box2D/Box2D.h"
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -11.0f
+#define GRAVITY_Y -9.81f
 
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -14,6 +14,15 @@
 
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
+
+enum collisionType {
+	NONE = -1,
+	PLAYER,
+	WALL,
+	COINS,
+	LADDER,
+	DOOR
+};
 
 // Small class to return to other modules to track position and rotation of physics bodies
 class PhysBody
@@ -31,6 +40,7 @@ public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
+	collisionType colType;
 };
 
 // Module --------------------------------------
