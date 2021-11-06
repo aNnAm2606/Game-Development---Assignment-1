@@ -112,10 +112,11 @@ void Map::Colliders()
 
 						SDL_Rect r = tileset->GetTileRect(gid);
 						iPoint pos = MapToWorld(x, y);
-						PhysBody* col = new PhysBody();
-						col->listener = this;
-						col = app->physics->CreateRectangle(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						colliders.add(col);
+						colWall = new PhysBody();
+						colWall->listener = this;
+						colWall->colType = WALL;
+						colWall = app->physics->CreateRectangle(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						colliders.add(colWall);
 					}
 
 				}
@@ -135,10 +136,11 @@ void Map::Colliders()
 
 						SDL_Rect r = tileset->GetTileRect(gid);
 						iPoint pos = MapToWorld(x, y);
-						PhysBody* col = new PhysBody();
-						col->listener = this;
-						col = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						colliders.add(col);
+						colLadder = new PhysBody();
+						colLadder->listener = this;
+						colLadder->colType = LADDER;
+						colLadder = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						colliders.add(colLadder);
 						
 					}
 

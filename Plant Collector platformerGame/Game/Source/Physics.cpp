@@ -211,9 +211,8 @@ PhysBody* Physics::CreateCircle(int x, int y, int radius, int dynamic = 0)
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
-	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
-
+	b->SetUserData(pbody);
 	// Return our PhysBody class
 	return pbody;
 }
@@ -256,10 +255,9 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, int dyna
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
-	b->SetUserData(pbody);
 	pbody->width = width * 0.5f;
 	pbody->height = height * 0.5f;
-
+	b->SetUserData(pbody);
 	// Return our PhysBody class
 	return pbody;
 }
@@ -303,10 +301,9 @@ PhysBody* Physics::CreateRectangleSensor(int x, int y, int width, int height, in
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
-	b->SetUserData(pbody);
 	pbody->width = width;
 	pbody->height = height;
-
+	b->SetUserData(pbody);
 	// Return our PhysBody class
 	return pbody;
 }
@@ -354,9 +351,8 @@ PhysBody* Physics::CreateCircleSensor(int x, int y, int radius, int dynamic = 0)
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
-	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
-
+	b->SetUserData(pbody);
 	// Return our PhysBody class
 	return pbody;
 }
@@ -407,9 +403,8 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, int dynamic 
 	// Create our custom PhysBody class
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
-	b->SetUserData(pbody);
 	pbody->width = pbody->height = 0;
-
+	b->SetUserData(pbody);
 	// Return our PhysBody class
 	return pbody;
 }
