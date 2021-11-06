@@ -2,10 +2,10 @@
 <!-- Config file for the game -->
 <!-- L01: DONE 1: Create configuration file-->
 <config>
-  <app>
-    <title>Game Development Testbed</title>
-    <organization>UPC</organization>
-  </app>
+  <App>
+    <title>Plant collector platformer</title>
+    <organization>Anna Metreveli and Miguel Tamaño</organization>
+  </App>
 
   <renderer>
     <vsync value="false"/>
@@ -30,6 +30,7 @@
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
     <startPosition x="100" y ="950"/>
     <speed value="1"/>
+    <jumps value="2"/>
   </player>
 
   <!-- L03: Added maps folder as config option -->
