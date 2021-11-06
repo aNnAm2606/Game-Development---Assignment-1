@@ -48,6 +48,21 @@ Player::Player(bool startEnabled) : Module(startEnabled)
 	leftAnim.PushBack({ 96, 160, 32, 32 });
 	leftAnim.loop = true;
 	leftAnim.speed = 0.1f;
+
+	jumpR.PushBack({ 0, 32, 32, 32 });
+	jumpR.PushBack({ 32, 32, 32, 32 });
+	jumpR.PushBack({ 64, 32, 32, 32 });
+	jumpR.PushBack({ 96, 32, 32, 32 });
+	jumpR.loop = false;
+	jumpR.speed = 0.05f;
+
+	jumpL.PushBack({ 0, 192, 32, 32 });
+	jumpL.PushBack({ 32, 192, 32, 32 });
+	jumpL.PushBack({ 64, 192, 32, 32 });
+	jumpL.PushBack({ 96, 192, 32, 32 });
+	jumpL.loop = false;
+	jumpL.speed = 0.05f;
+
 }
 
 Player::~Player()
@@ -68,6 +83,9 @@ bool Player::Awake(pugi::xml_node& config)
 	// Player's initial position saved in xml
 	startPos.x = config.child("startPosition").attribute("x").as_int();
 	startPos.y = config.child("startPosition").attribute("y").as_int();
+
+	// Number of the player's jump
+	jump = config.child("jumps").attribute("value").as_int();
 
 	// Player's speed
 	speed = config.child("speed").attribute("value").as_int();
@@ -117,9 +135,10 @@ bool Player::Start()
 	// Create our custom PhysBody class
 	playerBody = new PhysBody();
 	playerBody->body =b;
-	b->SetUserData(playerBody);
 	playerBody->width = playerBody->height = playerCircle.m_radius;
 	playerBody->listener = this;
+	playerBody->colType = PLAYER;
+	b->SetUserData(playerBody);
 	//---------------------------------------------------------------------------//
 
 
@@ -130,6 +149,9 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
+	onGround = false;
+	if (playerBody->body->GetLinearVelocity().y == 0) onGround = true;
+
 	// Position of player is restarted if game is restarted
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
@@ -139,80 +161,79 @@ bool Player::Update(float dt)
 	// L10: DONE: Implement gamepad support
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		if (playerBody->body->GetLinearVelocity().x >= -2) playerBody->body->ApplyLinearImpulse({ -1.0f,0 }, { 0,0 }, true);
-		if (currentAnimation != &leftAnim)
+		b2Vec2 vel = playerBody->body->GetLinearVelocity();
+		vel.x = -3.0f;
+		playerBody->body->SetLinearVelocity(vel);
+		if (onGround == true)
 		{
-			leftAnim.Reset();
-			currentAnimation = &leftAnim;
+			if (currentAnimation != &leftAnim)
+			{
+				leftAnim.Reset();
+				currentAnimation = &leftAnim;
+			}
 		}
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		if (playerBody->body->GetLinearVelocity().x <= +2) playerBody->body->ApplyLinearImpulse({ 1.0f,0 }, { 0,0 }, true);
-		if (currentAnimation != &rightAnim)
+		b2Vec2 vel = playerBody->body->GetLinearVelocity();
+		vel.x = 3.0f;
+		playerBody->body->SetLinearVelocity(vel);
+		if (onGround == true)
 		{
-			rightAnim.Reset();
-			currentAnimation = &rightAnim;
+			if (currentAnimation != &rightAnim)
+			{
+				rightAnim.Reset();
+				currentAnimation = &rightAnim;
+			}
 		}
 	}
 
-	//if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	//{
-	//	position.y += speed;
-	//	if (currentAnimation != &leftAnim)
-	//	{
-	//		leftAnim.Reset();
-	//		currentAnimation = &leftAnim;
-	//	}
-	//}
+	if (playerBody->body->GetLinearVelocity().y == 0) jump = 2;
 
-	//if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	//{
-	//	position.y -= speed;
-	//	if (currentAnimation != &leftAnim)
-	//	{
-	//		leftAnim.Reset();
-	//		currentAnimation = &leftAnim;
-	//	}
-	//}
-
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && playerBody->body->GetLinearVelocity().y >= 0 && jump != 0)
 	{
-		playerBody->body->ApplyLinearImpulse({ 0,-2 }, { 0,0 }, true);
+		jump--;
+		playerBody->body->SetLinearVelocity({ playerBody->body->GetLinearVelocity().x, -5.0f });
 	}
 
-	//if (app->input->GetKey(SDL_SCANCODE_Z) == KeyState::KEY_DOWN && jump == false && inTheAir == false)
-	//{
-	//	Player->body->ApplyLinearImpulse({ 0,-160 }, { 0,0 }, true);
-	//	app->audio->PlayFx(jumpSound);
-	//	//jump = true;
-	//}
+	if (onGround == false)
+	{
+		if (playerBody->body->GetLinearVelocity().y < -1.0f && playerBody->body->GetLinearVelocity().x > 0.1f ||
+			playerBody->body->GetLinearVelocity().y > 0.1f && playerBody->body->GetLinearVelocity().x > -0.1f)
+		{
+			if (currentAnimation != &jumpR)
+			{
+				jumpR.Reset();
+				currentAnimation = &jumpR;
+			}
+		}
+		if (playerBody->body->GetLinearVelocity().y < -1.0f && playerBody->body->GetLinearVelocity().x < -0.1f ||
+			playerBody->body->GetLinearVelocity().y > 0.1f && playerBody->body->GetLinearVelocity().x < 0.1f)
+		{
+			if (currentAnimation != &jumpL)
+			{
+				jumpL.Reset();
+				currentAnimation = &jumpL;
+			}
+		}
+	}
 
-	// Player bounds
-	//if (position.x == -4476)
-	//{
-	//	position.x = -4476;
-	//}
-	//if (position.x == 0)
-	//{
-	//	position.x = 0;
-	//}
-	//if (position.y == -2319)
-	//{
-	//	position.y = -2319;
-	//}
-	//if (position.y == 0)
-	//{
-	//	position.y = 0;
-	//}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE)
+	if (onGround == true && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE)
 	{
 		if (currentAnimation == &rightAnim)
 		{
 			currentAnimation = &idleAnimR;
 		}
 		if (currentAnimation == &leftAnim)
+		{
+			currentAnimation = &idleAnimL;
+		}
+		if (currentAnimation == &jumpR)
+		{
+			currentAnimation = &idleAnimR;
+		}
+		if (currentAnimation == &jumpL)
 		{
 			currentAnimation = &idleAnimL;
 		}
@@ -234,16 +255,30 @@ bool Player::PostUpdate()
 
 void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-
+	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::WALL)
+	{
+		LOG("it works fst part");
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			playerBody->body->ApplyLinearImpulse({ 0,-5 }, { 0,0 }, true);
+			LOG("it works scnd part");
+		}
+		
+	}
 }
 
 bool Player::LoadState(pugi::xml_node& data)
 {
+	position.x = data.child("position").attribute("x").as_int();
+	position.y = data.child("position").attribute("y").as_int();
+	playerBody->body->SetTransform({ PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y) }, 0.0f);
 	return true;
 }
 
 bool Player::SaveState(pugi::xml_node& data) const
 {
+	data.child("position").attribute("x").set_value(position.x);
+	data.child("position").attribute("y").set_value(position.y);
 	return true;
 }
 

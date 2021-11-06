@@ -57,7 +57,11 @@ public:
 
 	// The speed in which we move the player (pixels per frame)
 	int speed;
-	
+
+	// Jumps of the player
+	int jump;
+	bool onGround;
+
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture* texture = nullptr;
 
