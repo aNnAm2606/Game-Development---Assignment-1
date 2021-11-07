@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Render.h"
 #include "Log.h"
+#include "Window.h"
 
 #include "SDL/include/SDL_render.h"
 
@@ -20,6 +21,9 @@ bool FadeToBlack::Start()
 {
 	LOG("Preparing Fade Screen");
 
+	app->win->GetWindowSize(width, height);
+	screenRect = { 0, 0, (int)width, (int)height };
+
 	// Enable blending mode for transparency
 	SDL_SetRenderDrawBlendMode(app->render->renderer, SDL_BLENDMODE_BLEND);
 	return true;
@@ -27,7 +31,6 @@ bool FadeToBlack::Start()
 
 bool FadeToBlack::Update(float dt)
 {
-	// Exit this function if we are not performing a fade
 	if (currentStep == Fade_Step::NONE) return true;
 
 	if (currentStep == Fade_Step::TO_BLACK)
@@ -35,7 +38,6 @@ bool FadeToBlack::Update(float dt)
 		++frameCount;
 		if (frameCount >= maxFadeFrames)
 		{
-			// L10: DONE 1: Enable / Disable the modules received when FadeToBlack() gets called
 			moduleToDisable->Disable();
 			moduleToEnable->Enable();
 
