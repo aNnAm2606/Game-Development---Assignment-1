@@ -363,8 +363,11 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::STONEWIN)
 	{
-		LOG("you won!");
-		win = true;
+		if (chestOpen == true) 
+		{
+			LOG("you won!");
+			win = true;
+		}
 	}
 
 	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::CONTROLS)
