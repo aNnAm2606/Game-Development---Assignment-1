@@ -3,6 +3,7 @@
 
 #include "Defs.h"
 #include "Log.h"
+#include "Input.h"
 
 // NOTE: Recommended using: Additional Include Directories,
 // instead of 'hardcoding' library location path in code logic
@@ -71,6 +72,20 @@ bool Audio::Update(float dt)
 {
 	// Homework: control the volume of the music
 	Mix_VolumeMusic(volume);
+
+	// L02: Homework: volume control
+	//if the volume is not at max we can set it higher
+	if (app->audio->volume < 128)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_0) == KEY_REPEAT)
+			app->audio->volume++;
+	}
+	if (app->audio->volume > 0)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
+			app->audio->volume--;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) app->audio->volume=0;
 
 	return true;
 }

@@ -44,6 +44,8 @@ public:
 	SString soundtrack;
 	SString fxFiles;
 
+	bool mute = false;
+
 private:
 
 	_Mix_Music* music;
