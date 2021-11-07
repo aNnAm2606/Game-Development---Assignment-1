@@ -36,14 +36,14 @@
   <sceneIntro>
     <title>Assets/textures/title.png</title>
     <IntroScreen>Assets/textures/bgStart.png</IntroScreen>
-    <spaceToStart>Assets/textures/StartButton.png</spaceToStart>
+    <spaceToStart>Assets/textures/space.png</spaceToStart>
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
   </sceneIntro>
 
   <gameOver>
     <gameOverTitle>Assets/textures/GameOver.png</gameOverTitle>
     <background>Assets/textures/1.png</background>
-    <spaceToRestart>Assets/textures/StartButton.png</spaceToRestart>
+    <spaceToRestart>Assets/textures/restartButton.png</spaceToRestart>
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
   </gameOver>
 
