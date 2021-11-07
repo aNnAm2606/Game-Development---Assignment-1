@@ -5,7 +5,8 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "SceneIntro.h"
-#include "Scene.h"
+#include "Level1.h"
+#include "GameOver.h"
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
@@ -28,8 +29,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	fade = new FadeToBlack(true);
-	sceneIntro = new SceneIntro(false);
-	scene = new Scene(true);
+	sceneIntro = new SceneIntro(true);
+	level1 = new Level1(false);
+	gameOver = new GameOver(false);
 	map = new Map(true);
 	player = new Player(false);
 	physics = new Physics(true);
@@ -46,7 +48,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(player);
 	AddModule(sceneIntro);
-	AddModule(scene);
+	AddModule(level1);
+	AddModule(gameOver);
 
 	// Render last to swap buffer
 	AddModule(render);
