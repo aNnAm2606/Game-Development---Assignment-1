@@ -125,10 +125,13 @@ bool Input::PreUpdate()
 				mouseMotionY = event.motion.yrel / scale;
 				mouseX = event.motion.x / scale;
 				mouseY = event.motion.y / scale;
-				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
+				//LOG("Mouse motion x %d y %d", mouseX, mouseY);
 			break;
 		}
 	}
+
+	if (keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
+		return false;
 
 	return true;
 }
