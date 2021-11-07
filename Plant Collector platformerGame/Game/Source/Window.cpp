@@ -5,6 +5,7 @@
 #include "Log.h"
 
 #include "SDL/include/SDL.h"
+#include "SDL_image/include/SDL_image.h"
 
 
 Window::Window(bool startEnabled) : Module(startEnabled)
@@ -39,10 +40,11 @@ bool Window::Awake(pugi::xml_node& config)
 		bool borderless = config.child("borderless").attribute("value").as_bool(false);
 		bool resizable = config.child("resizable").attribute("value").as_bool(false);
 		bool fullscreen_window = config.child("fullscreen_window").attribute("value").as_bool(false);
+		logo.Create(config.child("logo").child_value());
 
 		width = config.child("resolution").attribute("width").as_int();
 		height = config.child("resolution").attribute("height").as_int();
-		scale = 2;
+		scale = config.child("resolution").attribute("scale").as_int();;
 
 		if(fullscreen == true) flags |= SDL_WINDOW_FULLSCREEN;
 		if(borderless == true) flags |= SDL_WINDOW_BORDERLESS;
@@ -61,6 +63,9 @@ bool Window::Awake(pugi::xml_node& config)
 			// Get window surface
 			screenSurface = SDL_GetWindowSurface(window);
 		}
+
+		SDL_Surface* icon = IMG_Load(logo.GetString());
+		SDL_SetWindowIcon(window, icon);
 	}
 
 	return ret;

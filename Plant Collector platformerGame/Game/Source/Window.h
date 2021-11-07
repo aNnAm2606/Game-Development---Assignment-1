@@ -41,9 +41,11 @@ public:
 	uint width;
 	uint height;
 	uint scale;
+	bool vsync;
 
 private:
 	SString title;
+	SString logo;
 	
 };
 

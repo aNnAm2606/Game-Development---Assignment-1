@@ -90,6 +90,7 @@ bool Render::Update(float dt)
 	// Player is enabled 
 	if (app->map->debugColliders == false && app->player->isEnabled == true)
 	{
+		app->win->scale = 2;
 		camera.x = -(app->player->playerBody->body->GetPosition().x * 100) + 640;
 		camera.y = -(app->player->playerBody->body->GetPosition().y * 100) + 500;
 	}

@@ -47,8 +47,6 @@ public:
 	Animation idle;
 	Animation* currentAnimation = nullptr;
 
-	iPoint cPos;
-
 	int frames;
 };
 
