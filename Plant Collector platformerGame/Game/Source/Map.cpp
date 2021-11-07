@@ -358,6 +358,23 @@ bool Map::Load(const char* filename)
     return ret;
 }
 
+bool Map::Unload()
+{
+	bool ret = true;
+	ListItem<PhysBody*>* c = colliders.start;
+
+	while (c != NULL)
+	{
+		app->physics->world->DestroyBody(c->data->body);
+
+		c = c->next;
+	}
+	colliders.clear();
+	delete c;
+
+	return ret;
+}
+
 // L03: TODO: Load map general properties
 bool Map::LoadMap(pugi::xml_node mapFile)
 {

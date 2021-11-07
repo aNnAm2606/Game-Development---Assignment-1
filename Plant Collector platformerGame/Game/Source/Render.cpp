@@ -4,7 +4,6 @@
 #include "Input.h"
 #include "Physics.h"
 #include "Map.h"
-#include "Scene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -112,13 +111,13 @@ bool Render::Update(float dt)
 	if (camera.y <= 0 || camera.h >= -720)
 	{
 		if(camera.y >= 0) camera.y = 0;
-		if (camera.y <= -2319) camera.y = -2319;
+		if (camera.y <= -2056) camera.y = -2056;
 	}
 
 	if (camera.x <= 0 || camera.x >= -1280)
 	{
 		if (camera.x >= 0) camera.x = 0;
-		if (camera.x <= -4476) camera.x = -4476;
+		if (camera.x <= -3906) camera.x = -3906;
 	}
 
 	return true;
