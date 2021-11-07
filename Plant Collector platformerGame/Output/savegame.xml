@@ -6,12 +6,14 @@
 	<audio>
 		<volume value="128" />
 	</audio>
-	<scene />
+	<sceneIntro>
+		<Level level1="true" level2="false" />
+	</sceneIntro>
 	<renderer>
-		<camera x="-1495" y="-606" />
+		<camera x="-1178" y="-47" />
 	</renderer>
 	<player>
 		<startPosition x="0" y="0" />
-		<position x="1067" y="553" />
+		<position x="909" y="273" />
 	</player>
 </save_state>
