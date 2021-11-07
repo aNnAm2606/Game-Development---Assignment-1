@@ -76,11 +76,14 @@ public:
 	Animation climbDownAnim;
 	Animation rightAnim;
 	Animation leftAnim;
+	Animation rightAnimShift;
+	Animation leftAnimShift;
 	Animation jumpL;
 	Animation jumpR;
 	Animation fallL;
 	Animation fallR;
 	// A flag to detect when the player has been destroyed
+	int lives = 3;
 	bool dead = false;
 	bool GodMode = false;
 	bool win = false;

@@ -9,7 +9,6 @@
 #include "Module.h"
 #include "Log.h"
 #include "Physics.h"
-#include "Scene.h"
 
 //#include "FadeToBlack.h"
 
@@ -48,6 +47,20 @@ Player::Player(bool startEnabled) : Module(startEnabled)
 	leftAnim.PushBack({ 96, 160, 32, 32 });
 	leftAnim.loop = true;
 	leftAnim.speed = 0.1f;
+
+	rightAnimShift.PushBack({ 0, 0, 32, 32 });
+	rightAnimShift.PushBack({ 32, 0, 32, 32 });
+	rightAnimShift.PushBack({ 64, 0, 32, 32 });
+	rightAnimShift.PushBack({ 96, 0, 32, 32 });
+	rightAnimShift.loop = true;
+	rightAnimShift.speed = 0.2f;
+
+	leftAnimShift.PushBack({ 0, 160, 32, 32 });
+	leftAnimShift.PushBack({ 32, 160, 32, 32 });
+	leftAnimShift.PushBack({ 64, 160, 32, 32 });
+	leftAnimShift.PushBack({ 96, 160, 32, 32 });
+	leftAnimShift.loop = true;
+	leftAnimShift.speed = 0.2f;
 
 	jumpR.PushBack({ 0, 32, 32, 32 });
 	jumpR.PushBack({ 32, 32, 32, 32 });
@@ -108,6 +121,7 @@ bool Player::Start()
 	dead = false;
 	GodMode = false;
 	win = false;
+	lives = 3;
 
 	position.x = startPos.x;
 	position.y = startPos.y;
@@ -163,30 +177,62 @@ bool Player::Update(float dt)
 	{
 		b2Vec2 vel = playerBody->body->GetLinearVelocity();
 		vel.x = -3.0f;
-		playerBody->body->SetLinearVelocity(vel);
-		if (onGround == true)
+		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
-			if (currentAnimation != &leftAnim)
+			if (onGround == true)
 			{
-				leftAnim.Reset();
-				currentAnimation = &leftAnim;
+				vel.x = -5.0f;
+				if (currentAnimation != &leftAnimShift)
+				{
+					leftAnim.Reset();
+					currentAnimation = &leftAnimShift;
+				}
 			}
 		}
+		else
+		{
+			if (onGround == true)
+			{
+				vel.x = -3.0f;
+				if (currentAnimation != &leftAnim)
+				{
+					leftAnim.Reset();
+					currentAnimation = &leftAnim;
+				}
+			}
+		}
+		playerBody->body->SetLinearVelocity(vel);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		b2Vec2 vel = playerBody->body->GetLinearVelocity();
 		vel.x = 3.0f;
-		playerBody->body->SetLinearVelocity(vel);
-		if (onGround == true)
+		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
-			if (currentAnimation != &rightAnim)
+			if (onGround == true)
 			{
-				rightAnim.Reset();
-				currentAnimation = &rightAnim;
+				vel.x = 5.0f;
+				if (currentAnimation != &rightAnimShift)
+				{
+					leftAnim.Reset();
+					currentAnimation = &rightAnimShift;
+				}
 			}
 		}
+		else
+		{
+			if (onGround == true)
+			{
+				vel.x = 3.0f;
+				if (currentAnimation != &rightAnim)
+				{
+					rightAnim.Reset();
+					currentAnimation = &rightAnim;
+				}
+			}
+		}
+		playerBody->body->SetLinearVelocity(vel);
 	}
 
 	if (playerBody->body->GetLinearVelocity().y == 0) jump = 2;
@@ -199,15 +245,6 @@ bool Player::Update(float dt)
 
 	if (onGround == false)
 	{
-		if (playerBody->body->GetLinearVelocity().y < -1.0f && playerBody->body->GetLinearVelocity().x > 0.1f ||
-			playerBody->body->GetLinearVelocity().y > 0.1f && playerBody->body->GetLinearVelocity().x > -0.1f)
-		{
-			if (currentAnimation != &jumpR)
-			{
-				jumpR.Reset();
-				currentAnimation = &jumpR;
-			}
-		}
 		if (playerBody->body->GetLinearVelocity().y < -1.0f && playerBody->body->GetLinearVelocity().x < -0.1f ||
 			playerBody->body->GetLinearVelocity().y > 0.1f && playerBody->body->GetLinearVelocity().x < 0.1f)
 		{
@@ -217,25 +254,53 @@ bool Player::Update(float dt)
 				currentAnimation = &jumpL;
 			}
 		}
+		if (playerBody->body->GetLinearVelocity().y < -1.0f && playerBody->body->GetLinearVelocity().x > 0.1f ||
+			playerBody->body->GetLinearVelocity().y > 0.1f && playerBody->body->GetLinearVelocity().x > -0.1f)
+		{
+			if (currentAnimation != &jumpR)
+			{
+				jumpR.Reset();
+				currentAnimation = &jumpR;
+			}
+		}
 	}
 
-	if (onGround == true && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE)
+	if (onGround == true && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && 
+		app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE
+		&& app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE
+		&& app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_IDLE)
 	{
-		if (currentAnimation == &rightAnim)
+		if (currentAnimation == &rightAnim || currentAnimation == &jumpR)
 		{
 			currentAnimation = &idleAnimR;
 		}
-		if (currentAnimation == &leftAnim)
+		if (currentAnimation == &leftAnim || currentAnimation == &jumpL)
 		{
 			currentAnimation = &idleAnimL;
 		}
-		if (currentAnimation == &jumpR)
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		GodMode =!GodMode;
+		if (GodMode == true)
 		{
-			currentAnimation = &idleAnimR;
+			LOG("God mode ON!");
+			lives = 3;
 		}
-		if (currentAnimation == &jumpL)
+		if (GodMode == false) LOG("Gode mode OFF!");
+	}
+
+	if (GodMode == false)
+	{
+		if (position.y > 1550)
 		{
-			currentAnimation = &idleAnimL;
+			lives-=1;
+			if (lives > 0)
+			{
+				playerBody->body->SetTransform({ PIXEL_TO_METERS(startPos.x), PIXEL_TO_METERS(startPos.y) }, 0.0f);
+				LOG("lives count: %i", lives);
+			}
 		}
 	}
 
@@ -255,16 +320,17 @@ bool Player::PostUpdate()
 
 void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::WALL)
-	{
-		LOG("it works fst part");
-		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		{
-			playerBody->body->ApplyLinearImpulse({ 0,-5 }, { 0,0 }, true);
-			LOG("it works scnd part");
-		}
-		
-	}
+	// Ladders doesn't work for now
+	//if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::WALL)
+	//{
+	//	LOG("it works fst part");
+	//	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	//	{
+	//		playerBody->body->ApplyLinearImpulse({ 0,-5 }, { 0,0 }, true);
+	//		LOG("it works scnd part");
+	//	}
+	//	
+	//}
 }
 
 bool Player::LoadState(pugi::xml_node& data)
@@ -284,6 +350,7 @@ bool Player::SaveState(pugi::xml_node& data) const
 
 bool Player::CleanUp()
 {
+	LOG("Destroying Player");
 	bool ret = true;
 	app->tex->UnLoad(texture);
 	app->physics->world->DestroyBody(b);
