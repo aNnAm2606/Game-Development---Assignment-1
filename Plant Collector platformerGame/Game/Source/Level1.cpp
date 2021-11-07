@@ -111,8 +111,12 @@ bool Level1::Update(float dt)
 	// Draw map
 	app->map->Draw();
 	app->map->DrawColliders();
-	//app->render->DrawRectangle(app->player->playerSquare, );
-	app->render->DrawRectangle(app->render->cameraBounds, 255, 0, 0, true);
+
+	if (app->player->controlsVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->controlsTex, 124, 930, NULL);
+	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 462, 930, &app->player->tutRect);
+	if (app->player->chestFound == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 2039, 1207, &app->player->chestRect);
+	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 1073, 1144, &app->player->ladderRect);
+	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 2008, 958, &app->player->ladderRect);
 
 	return true;
 }
@@ -129,10 +133,11 @@ bool Level1::PostUpdate()
 	{
 		app->fade->Fade_To_Black(this, (Module*)app->gameOver);
 	}
-	//if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
-	//{
-	//	app->fade->Fade_To_Black(this, (Module*)app->level2);
-	//}
+
+	if (app->player->win == true || app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		app->fade->Fade_To_Black(this, (Module*)app->winScreen);
+	}
 
 	return ret;
 }

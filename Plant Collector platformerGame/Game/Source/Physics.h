@@ -21,7 +21,11 @@ enum collisionType {
 	WALL,
 	COINS,
 	LADDER,
-	DOOR
+	STONEWIN,
+	CHEST,
+	STONE,
+	CONTROLS,
+	TUORIALS
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies

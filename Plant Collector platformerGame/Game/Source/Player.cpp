@@ -76,6 +76,12 @@ Player::Player(bool startEnabled) : Module(startEnabled)
 	jumpL.loop = false;
 	jumpL.speed = 0.05f;
 
+	JumpTut.PushBack({ 0, 32, 96, 32 });
+
+	ladderTut.PushBack({0, 0, 160,32 });
+
+	openTut.PushBack({ 0, 64, 96, 32 });
+
 }
 
 Player::~Player()
@@ -92,6 +98,10 @@ bool Player::Awake(pugi::xml_node& config)
 	// Load character's sprites
 	// Easy for changing sprites of characters from xml and folders
 	playerSprites.Create(config.child("spritesFolder").child_value());
+
+	// Controls sprites for drawing in screen
+	controls.Create(config.child("controls").child_value());
+	tutorials.Create(config.child("tutorials").child_value());
 
 	// Player's initial position saved in xml
 	startPos.x = config.child("startPosition").attribute("x").as_int();
@@ -112,13 +122,18 @@ bool Player::Start()
 
 	bool ret = true;
 
+	// Textures
 	texture = app->tex->Load(playerSprites.GetString());
-	
+	controlsTex = app->tex->Load(controls.GetString());
+	tutorialsTex = app->tex->Load(tutorials.GetString());
+
 	// stating animation
 	currentAnimation = &idleAnimR;
 
 	// L10: DONE 4: Retrieve the player when playing a second time
-	dead = false;
+	controlsVisible = false;
+	tutorialVisible = false;
+	chestFound = false;
 	GodMode = false;
 	win = false;
 	lives = 3;
@@ -151,7 +166,7 @@ bool Player::Start()
 	playerBody->body =b;
 	playerBody->width = playerBody->height = playerCircle.m_radius;
 	playerBody->listener = this;
-	playerBody->colType = PLAYER;
+	playerBody->colType = collisionType::PLAYER;
 	b->SetUserData(playerBody);
 	//---------------------------------------------------------------------------//
 
@@ -313,6 +328,9 @@ bool Player::PostUpdate()
 {
 	bool ret = true;
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	tutRect = JumpTut.GetCurrentFrame();
+	chestRect = openTut.GetCurrentFrame();
+	ladderRect = ladderTut.GetCurrentFrame();
 	playerBody->GetPosition(position.x, position.y);
 	app->render->DrawTexture(texture, position.x-16, position.y-16, &rect);
 	return ret;
@@ -321,16 +339,43 @@ bool Player::PostUpdate()
 void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	// Ladders doesn't work for now
-	//if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::WALL)
-	//{
-	//	LOG("it works fst part");
-	//	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-	//	{
-	//		playerBody->body->ApplyLinearImpulse({ 0,-5 }, { 0,0 }, true);
-	//		LOG("it works scnd part");
-	//	}
-	//	
-	//}
+	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::LADDER)
+	{
+		LOG("it works fst part");
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT  && playerBody->body->GetLinearVelocity().y < -0.25f)
+		{
+			playerBody->body->ApplyLinearImpulse({ 0,-0.43f }, { 0,0 }, true);
+			LOG("it works scnd part");
+		}
+		
+	}
+
+	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::STONEWIN)
+	{
+		LOG("you won!");
+		win = true;
+	}
+
+	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::CONTROLS)
+	{
+		LOG("these are the controls");
+		controlsVisible = true;
+	}
+	else controlsVisible = false;
+
+	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::TUORIALS)
+	{
+		LOG("tutorial!");
+		tutorialVisible = true;
+	}
+	else tutorialVisible = false;
+
+	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::CHEST)
+	{
+		LOG("open chest!");
+		chestFound = true;
+	}
+	else chestFound = false;
 }
 
 bool Player::LoadState(pugi::xml_node& data)

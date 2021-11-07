@@ -98,53 +98,69 @@ void Map::Colliders()
 
 	while (mapLayerItem != NULL)
 	{
-		if (mapLayerItem->data->properties.GetProperty("Navigation") == 1)
+		for (int x = 0; x < mapLayerItem->data->width; x++)
 		{
-			for (int x = 0; x < mapLayerItem->data->width; x++)
+			for (int y = 0; y < mapLayerItem->data->height; y++)
 			{
-				for (int y = 0; y < mapLayerItem->data->height; y++)
+				int gid = mapLayerItem->data->Get(x, y);
+
+				if (gid > 0)
 				{
-					int gid = mapLayerItem->data->Get(x, y);
+					TileSet* tileset = GetTilesetFromTileId(gid);
 
-					if (gid > 0) 
+					SDL_Rect r = tileset->GetTileRect(gid);
+					iPoint pos = MapToWorld(x, y);
+
+					if (mapLayerItem->data->properties.GetProperty("Navigation") == 1)
 					{
-						TileSet* tileset = GetTilesetFromTileId(gid);
-
-						SDL_Rect r = tileset->GetTileRect(gid);
-						iPoint pos = MapToWorld(x, y);
-						colWall = new PhysBody();
-						colWall->listener = this;
-						colWall->colType = WALL;
-						colWall = app->physics->CreateRectangle(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						colliders.add(colWall);
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangle(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						collider->colType = collisionType::WALL;
+						colliders.add(collider);
 					}
-
-				}
-			}
-		}
-		else if (mapLayerItem->data->properties.GetProperty("Ladder") == 1)
-		{
-			for (int x = 0; x < mapLayerItem->data->width; x++)
-			{
-				for (int y = 0; y < mapLayerItem->data->height; y++)
-				{
-					int gid = mapLayerItem->data->Get(x, y);
-
-					if (gid > 0)
+					else if (mapLayerItem->data->properties.GetProperty("Ladder") == 1)
 					{
-						TileSet* tileset = GetTilesetFromTileId(gid);
-
-						SDL_Rect r = tileset->GetTileRect(gid);
-						iPoint pos = MapToWorld(x, y);
-						colLadder = new PhysBody();
-						colLadder->listener = this;
-						colLadder->colType = LADDER;
-						colLadder = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						colliders.add(colLadder);
-						
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						collider->colType = collisionType::LADDER;
+						colliders.add(collider);
 					}
-
+					else if (mapLayerItem->data->properties.GetProperty("Win") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						collider->colType = collisionType::STONEWIN;
+						colliders.add(collider);
+					}
+					else if (mapLayerItem->data->properties.GetProperty("Controls") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w-4, r.h-4, 1);
+						collider->colType = collisionType::CONTROLS;
+						colliders.add(collider);
+					}
+					else if (mapLayerItem->data->properties.GetProperty("Tutorials") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w - 6, r.h - 6, 1);
+						collider->colType = collisionType::TUORIALS;
+						colliders.add(collider);
+					}
+					else if (mapLayerItem->data->properties.GetProperty("openChest") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x, pos.y, r.w - 12, r.h - 12, 1);
+						collider->colType = collisionType::CHEST;
+						colliders.add(collider);
+					}
 				}
+
 			}
 		}
 

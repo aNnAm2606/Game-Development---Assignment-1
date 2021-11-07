@@ -64,6 +64,8 @@ public:
 
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture* texture = nullptr;
+	SDL_Texture* controlsTex;
+	SDL_Texture* tutorialsTex;
 
 	// The pointer to the current player animation
 	// It will be switched depending on the player's movement direction
@@ -82,15 +84,30 @@ public:
 	Animation jumpR;
 	Animation fallL;
 	Animation fallR;
+
+	// Tutorials animations
+	Animation JumpTut;
+	Animation ladderTut;
+	Animation openTut;
+
+	SDL_Rect tutRect;
+	SDL_Rect chestRect;
+	SDL_Rect ladderRect;
+
 	// A flag to detect when the player has been destroyed
 	int lives = 3;
-	bool dead = false;
+	bool controlsVisible = false;
+	bool tutorialVisible = false;
+	bool chestFound = false;
+	bool ladderClose = false;
 	bool GodMode = false;
 	bool win = false;
 
 
 	// XML files
 	SString playerSprites;
+	SString controls;
+	SString tutorials;
 
 	// Sound effects indices
 	//uint laserFx = 0;
