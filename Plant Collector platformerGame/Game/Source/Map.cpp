@@ -147,7 +147,7 @@ void Map::Colliders()
 					{
 						collider = new PhysBody();
 						collider->listener = this;
-						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w - 6, r.h - 6, 1);
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w - 6, r.h +16, 1);
 						collider->colType = collisionType::TUORIALS;
 						colliders.add(collider);
 					}

@@ -47,8 +47,6 @@ public:
 	Animation sleep;
 	Animation* currentAnimation = nullptr;
 
-	iPoint cPos;
-
 	int frames;
 };
 

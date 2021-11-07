@@ -134,6 +134,7 @@ bool Player::Start()
 	controlsVisible = false;
 	tutorialVisible = false;
 	chestFound = false;
+	chestOpen = false;
 	GodMode = false;
 	win = false;
 	lives = 3;
@@ -295,6 +296,8 @@ bool Player::Update(float dt)
 		}
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) { controlsVisible = !controlsVisible; tutorialVisible = !tutorialVisible; }
+
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		GodMode =!GodMode;
@@ -319,6 +322,14 @@ bool Player::Update(float dt)
 		}
 	}
 
+	if (chestFound == true)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			chestOpen = true;
+			LOG("chest opened yaaaay!");
+		}
+	}
 	currentAnimation->Update();
 
 	return ret;

@@ -22,7 +22,7 @@ bool FadeToBlack::Start()
 	LOG("Preparing Fade Screen");
 
 	app->win->GetWindowSize(width, height);
-	screenRect = { 0, 0, (int)width, (int)height };
+	screenRect = { 0, 0, (int)width*4, (int)height*4 };
 
 	// Enable blending mode for transparency
 	SDL_SetRenderDrawBlendMode(app->render->renderer, SDL_BLENDMODE_BLEND);

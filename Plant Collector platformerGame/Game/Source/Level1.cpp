@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Animation.h"
 #include "Input.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -17,6 +18,22 @@
 Level1::Level1(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("Level1");
+
+	coins.PushBack({ 0, 128, 32, 32 });
+	coins.PushBack({ 0, 128, 32, 32 });
+	coins.PushBack({ 0, 128, 32, 32 });
+	coins.PushBack({ 0, 128, 32, 32 });
+	coins.loop = true;
+	coins.speed = 0.05f;
+
+	chestClosed.PushBack({ 0, 0, 32, 32 });
+	chestClosed.loop = false;
+
+	chestOpened.PushBack({ 32, 0, 32, 32 });
+	chestOpened.PushBack({ 64, 0, 32, 32 });
+	chestOpened.PushBack({ 96, 0, 32, 32 });
+	chestOpened.loop = false;
+	chestOpened.speed = 0.05f;
 }
 
 // Destructor
@@ -24,10 +41,11 @@ Level1::~Level1()
 {}
 
 // Called before render is available
-bool Level1::Awake()
+bool Level1::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Level 1");
 	bool ret = true;
+	assets.Create(config.child("assets").child_value());
 
 	return ret;
 }
@@ -53,6 +71,12 @@ bool Level1::Start()
 	particles1 = app->tex->Load("Assets/textures/03_Particles.png");
 	bushes = app->tex->Load("Assets/textures/02_Bushes.png");
 	mist = app->tex->Load("Assets/textures/01_Mist.png");
+
+	// Load Items coins, chests, powerups
+	assetsTex = app->tex->Load(assets.GetString());
+
+	// stating animation
+	currentChestAnimation = &chestClosed;
 
 	app->player->Enable();
 	app->map->Colliders();
@@ -114,9 +138,15 @@ bool Level1::Update(float dt)
 
 	if (app->player->controlsVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->controlsTex, 124, 930, NULL);
 	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 462, 930, &app->player->tutRect);
-	if (app->player->chestFound == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 2039, 1207, &app->player->chestRect);
+	if (app->player->chestFound      == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 2039, 1207, &app->player->chestRect);
 	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 1073, 1144, &app->player->ladderRect);
 	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 2008, 958, &app->player->ladderRect);
+
+	
+	
+
+	// update animation
+	currentChestAnimation->Update();
 
 	return true;
 }
@@ -126,6 +156,17 @@ bool Level1::PostUpdate()
 {
 	bool ret = true;
 
+	SDL_Rect rect = currentChestAnimation->GetCurrentFrame();
+	if (app->player->chestOpen == true)
+	{
+		currentChestAnimation = &chestOpened;
+		app->render->DrawTexture(assetsTex, 2048, 1248, &rect);
+	}
+	else 
+	{
+		app->render->DrawTexture(assetsTex, 2048, 1248, &rect);
+	}
+
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
@@ -134,7 +175,7 @@ bool Level1::PostUpdate()
 		app->fade->Fade_To_Black(this, (Module*)app->gameOver);
 	}
 
-	if (app->player->win == true || app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	if (app->player->win == true || app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		app->fade->Fade_To_Black(this, (Module*)app->winScreen);
 	}

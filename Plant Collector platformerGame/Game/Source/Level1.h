@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
 
@@ -15,7 +16,7 @@ public:
 	virtual ~Level1();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 
 	// Called before the first frame
 	bool Start();
@@ -44,8 +45,18 @@ private:
 	SDL_Texture* particles1;
 	SDL_Texture* bushes;
 	SDL_Texture* mist;
+	SDL_Texture* assetsTex;
+
+	SString assets;
+
+	Animation coins;
+	Animation chestClosed;
+	Animation chestOpened;
+	Animation* currentChestAnimation = nullptr;
 
 public:
+	SDL_Rect assetRect;
+	SDL_Rect ChestRect;
 	bool F6Load = false;
 };
 

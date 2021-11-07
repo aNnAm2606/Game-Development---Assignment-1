@@ -93,12 +93,14 @@ public:
 	SDL_Rect tutRect;
 	SDL_Rect chestRect;
 	SDL_Rect ladderRect;
+	SDL_Rect rect;
 
 	// A flag to detect when the player has been destroyed
 	int lives = 3;
 	bool controlsVisible = false;
 	bool tutorialVisible = false;
 	bool chestFound = false;
+	bool chestOpen = false;
 	bool ladderClose = false;
 	bool GodMode = false;
 	bool win = false;
