@@ -17,6 +17,7 @@ class Textures;
 class Audio;
 class SceneIntro;
 class Level1;
+class WinScreen;
 class GameOver;
 class Map;
 class Physics;
@@ -93,6 +94,7 @@ public:
 	Audio* audio;
 	SceneIntro* sceneIntro;
 	Level1* level1;
+	WinScreen* winScreen;
 	GameOver* gameOver;
 	Map* map;
 	Physics* physics;

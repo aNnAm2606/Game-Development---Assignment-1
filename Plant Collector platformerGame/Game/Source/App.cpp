@@ -7,6 +7,7 @@
 #include "SceneIntro.h"
 #include "Level1.h"
 #include "GameOver.h"
+#include "WinScreen.h"
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
@@ -29,8 +30,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	fade = new FadeToBlack(true);
-	sceneIntro = new SceneIntro(true);
+	sceneIntro = new SceneIntro(false);
 	level1 = new Level1(false);
+	winScreen = new WinScreen(true);
 	gameOver = new GameOver(false);
 	map = new Map(true);
 	player = new Player(false);
@@ -50,6 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(sceneIntro);
 	AddModule(level1);
 	AddModule(gameOver);
+	AddModule(winScreen);
 
 	// Render last to swap buffer
 	AddModule(render);

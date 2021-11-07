@@ -28,6 +28,8 @@
 
   <player>
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
+    <controls>Assets/textures/controls.png</controls>
+    <tutorials>Assets/textures/tutorials.png</tutorials>
     <startPosition x="100" y ="950"/>
     <speed value="1"/>
     <jumps value="2"/>
@@ -46,6 +48,13 @@
     <spaceToRestart>Assets/textures/restartButton.png</spaceToRestart>
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
   </gameOver>
+
+  <WinScreen>
+    <WinTitle>Assets/textures/WinTitle.png</WinTitle>
+    <background>Assets/textures/2.png</background>
+    <spaceToRestart>Assets/textures/restartButton.png</spaceToRestart>
+    <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
+  </WinScreen>
 
   <!-- L03: Added maps folder as config option -->
   <map>

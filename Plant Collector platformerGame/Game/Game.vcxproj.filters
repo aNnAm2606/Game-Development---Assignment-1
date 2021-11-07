@@ -23,6 +23,7 @@
     <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\GameOver.cpp" />
     <ClCompile Include="Source\Level1.cpp" />
+    <ClCompile Include="Source\WinScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -68,6 +69,7 @@
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\GameOver.h" />
     <ClInclude Include="Source\Level1.h" />
+    <ClInclude Include="Source\WinScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
