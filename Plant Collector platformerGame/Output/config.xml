@@ -19,8 +19,8 @@
   </audio>
 
   <window>
-    <resolution width="1280" height="720" scale="2"/>
-    <fullscreen value="false"/>
+    <resolution width="1920" height="1080" scale="2"/>
+    <fullscreen value="true"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>
@@ -32,6 +32,20 @@
     <speed value="1"/>
     <jumps value="2"/>
   </player>
+
+  <sceneIntro>
+    <title>Assets/textures/title.png</title>
+    <IntroScreen>Assets/textures/bgStart.png</IntroScreen>
+    <spaceToStart>Assets/textures/StartButton.png</spaceToStart>
+    <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
+  </sceneIntro>
+
+  <gameOver>
+    <gameOverTitle>Assets/textures/GameOver.png</gameOverTitle>
+    <background>Assets/textures/1.png</background>
+    <spaceToRestart>Assets/textures/StartButton.png</spaceToRestart>
+    <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
+  </gameOver>
 
   <!-- L03: Added maps folder as config option -->
   <map>
