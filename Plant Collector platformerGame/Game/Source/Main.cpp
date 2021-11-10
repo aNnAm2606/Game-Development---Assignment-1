@@ -10,6 +10,11 @@
 //#pragma comment(lib, "../Game/Source/External/SDL/libx86/SDL2.lib")
 //#pragma comment(lib, "../Game/Source/External/SDL/libx86/SDL2main.lib")
 
+
+// L09: TODO 1: Include the Optick library header and add the library to the linker
+// Make sure to link the proper library depending on DEBUG/RELEASE project configuration
+#include "External/Optick/include/optick.h"
+
 #include <stdlib.h>
 
 enum MainState
@@ -36,6 +41,8 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
+		OPTICK_FRAME("Main Loop");
+
 		startTick = SDL_GetTicks();
 		switch(state)
 		{

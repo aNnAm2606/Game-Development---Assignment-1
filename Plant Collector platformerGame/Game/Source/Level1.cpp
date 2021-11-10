@@ -15,6 +15,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include "External/Optick/include/optick.h"
+
 Level1::Level1(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("Level1");
@@ -86,12 +88,14 @@ bool Level1::Start()
 // Called each loop iteration
 bool Level1::PreUpdate()
 {
+	OPTICK_CATEGORY("lvl1 PreUpdate", Optick::Category::Scene);
 	return true;
 }
 
 // Called each loop iteration
 bool Level1::Update(float dt)
 {
+	OPTICK_CATEGORY("lvl1 Update", Optick::Category::Scene);
     // L02: DONE 3: Request Load / Save when pressing L/S
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
@@ -154,6 +158,8 @@ bool Level1::Update(float dt)
 // Called each loop iteration
 bool Level1::PostUpdate()
 {
+	OPTICK_CATEGORY("lvl1 PostUpdate", Optick::Category::Scene);
+
 	bool ret = true;
 
 	SDL_Rect rect = currentChestAnimation->GetCurrentFrame();

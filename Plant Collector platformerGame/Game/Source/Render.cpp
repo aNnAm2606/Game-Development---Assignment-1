@@ -10,6 +10,8 @@
 
 #include "Player.h"
 
+#include "External/Optick/include/optick.h"
+
 #define VSYNC true
 
 Render::Render(bool startEnabled) : Module(startEnabled)
@@ -81,12 +83,15 @@ bool Render::Start()
 // Called each loop iteration
 bool Render::PreUpdate()
 {
+	OPTICK_CATEGORY("Render PreUpdate", Optick::Category::Rendering);
 	SDL_RenderClear(renderer);
 	return true;
 }
 
 bool Render::Update(float dt)
 {
+	OPTICK_CATEGORY("RenderUpdate", Optick::Category::Rendering);
+
 	// Player is enabled 
 	if (app->map->debugColliders == false && app->player->isEnabled == true)
 	{
@@ -126,6 +131,8 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
+	OPTICK_CATEGORY("Render PostUpdate", Optick::Category::Rendering);
+
 	bool ret = true;
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
