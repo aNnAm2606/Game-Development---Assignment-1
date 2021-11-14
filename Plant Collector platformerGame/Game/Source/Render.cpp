@@ -68,6 +68,9 @@ bool Render::Awake(pugi::xml_node& config)
 		cameraBounds.y = -1947;
 	}
 
+	// Set render logical size
+	SDL_RenderSetLogicalSize(renderer, app->win->width, app->win->height);
+
 	return ret;
 }
 
@@ -95,9 +98,9 @@ bool Render::Update(float dt)
 	// Player is enabled 
 	if (app->map->debugColliders == false && app->player->isEnabled == true)
 	{
-		app->win->scale = 2;
-		camera.x = -(app->player->playerBody->body->GetPosition().x * 100) + 640;
-		camera.y = -(app->player->playerBody->body->GetPosition().y * 100) + 500;
+		app->win->scale = 1;
+		camera.x = -(app->player->playerBody->body->GetPosition().x * 50) + 450;
+		camera.y = -(app->player->playerBody->body->GetPosition().y * 50) + 300;
 	}
 	else
 	{
@@ -117,13 +120,13 @@ bool Render::Update(float dt)
 	if (camera.y <= 0 || camera.h >= -720)
 	{
 		if(camera.y >= 0) camera.y = 0;
-		if (camera.y <= -2056) camera.y = -2056;
+		if (camera.y <= -1078) camera.y = -1078;
 	}
 
 	if (camera.x <= 0 || camera.x >= -1280)
 	{
 		if (camera.x >= 0) camera.x = 0;
-		if (camera.x <= -3906) camera.x = -3906;
+		if (camera.x <= -1947) camera.x = -1947;
 	}
 
 	return true;
