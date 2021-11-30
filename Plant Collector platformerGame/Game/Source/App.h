@@ -18,6 +18,7 @@ class Audio;
 class SceneIntro;
 class Level1;
 class WinScreen;
+class PathFinding;
 class GameOver;
 class Map;
 class Physics;
@@ -95,6 +96,7 @@ public:
 	SceneIntro* sceneIntro;
 	Level1* level1;
 	WinScreen* winScreen;
+	PathFinding* pathfinding;
 	GameOver* gameOver;
 	Map* map;
 	Physics* physics;
