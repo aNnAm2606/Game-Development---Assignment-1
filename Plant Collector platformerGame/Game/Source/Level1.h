@@ -45,13 +45,16 @@ private:
 	SDL_Texture* particles1;
 	SDL_Texture* bushes;
 	SDL_Texture* mist;
-	SDL_Texture* assetsTex;
+	SDL_Texture* treasureChest;
+	SDL_Texture* coin;
 
-	SString assets;
+	SString textureChest;
+	SString textureCoin;
 
 	Animation coins;
 	Animation chestClosed;
 	Animation chestOpened;
+	Animation* currentCoinsAnim = nullptr;
 	Animation* currentChestAnimation = nullptr;
 
 public:

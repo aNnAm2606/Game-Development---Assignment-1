@@ -24,6 +24,7 @@ class Map;
 class Physics;
 class Player;
 class FadeToBlack;
+class Particles;
 
 class App
 {
@@ -100,10 +101,12 @@ public:
 	GameOver* gameOver;
 	Map* map;
 	Physics* physics;
+	Particles* particles;
 	Player* player;
 	FadeToBlack* fade;
 	SString title;
 	SString organization;
+
 
 	float deltaTime;
 

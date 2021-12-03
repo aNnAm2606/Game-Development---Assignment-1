@@ -28,7 +28,8 @@
   </window>
 
   <Level1>
-    <assets>Assets/textures/items.png</assets>
+    <textureChest>Assets/textures/Chest.png</textureChest>
+    <textureCoin>Assets/textures/Coin.png</textureCoin>
   </Level1>
 
   <player>

@@ -21,12 +21,12 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("Level1");
 
-	coins.PushBack({ 0, 128, 32, 32 });
-	coins.PushBack({ 0, 128, 32, 32 });
-	coins.PushBack({ 0, 128, 32, 32 });
-	coins.PushBack({ 0, 128, 32, 32 });
+	coins.PushBack({ 0, 0, 10, 10 });
+	coins.PushBack({ 10, 0, 10, 10 });
+	coins.PushBack({ 20, 0, 10, 10 });
+	coins.PushBack({ 30, 0, 10, 10 });
 	coins.loop = true;
-	coins.speed = 0.05f;
+	coins.speed = 0.1f;
 
 	chestClosed.PushBack({ 0, 0, 32, 32 });
 	chestClosed.loop = false;
@@ -47,7 +47,8 @@ bool Level1::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Level 1");
 	bool ret = true;
-	assets.Create(config.child("assets").child_value());
+	textureChest.Create(config.child("textureChest").child_value());
+	textureCoin.Create(config.child("textureCoin").child_value());
 
 	return ret;
 }
@@ -75,10 +76,12 @@ bool Level1::Start()
 	mist = app->tex->Load("Assets/textures/01_Mist.png");
 
 	// Load Items coins, chests, powerups
-	assetsTex = app->tex->Load(assets.GetString());
+	treasureChest = app->tex->Load(textureChest.GetString());
+	coin = app->tex->Load(textureCoin.GetString());
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
+	currentCoinsAnim = &coins;
 
 	app->player->Enable();
 	app->map->Colliders();
@@ -151,6 +154,7 @@ bool Level1::Update(float dt)
 
 	// update animation
 	currentChestAnimation->Update();
+	currentCoinsAnim->Update();
 
 	return true;
 }
@@ -166,12 +170,15 @@ bool Level1::PostUpdate()
 	if (app->player->chestOpen == true)
 	{
 		currentChestAnimation = &chestOpened;
-		app->render->DrawTexture(assetsTex, 2048, 1248, &rect);
+		app->render->DrawTexture(treasureChest, 2048, 1248, &rect);
 	}
 	else 
 	{
-		app->render->DrawTexture(assetsTex, 2048, 1248, &rect);
+		app->render->DrawTexture(treasureChest, 2048, 1248, &rect);
 	}
+
+	SDL_Rect rectC = currentCoinsAnim ->GetCurrentFrame();
+	app->render->DrawTexture(coin, 992, 864, &rectC);
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;

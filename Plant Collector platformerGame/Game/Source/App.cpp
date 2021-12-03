@@ -12,6 +12,7 @@
 #include "Physics.h"
 #include "Player.h"
 #include "FadeToBlack.h"
+#include "Particles.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -37,6 +38,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	winScreen = new WinScreen(false);
 	gameOver = new GameOver(false);
 	map = new Map(true);
+	particles = new Particles(true);
 	player = new Player(false);
 	physics = new Physics(true);
 
@@ -50,6 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(fade);
 	AddModule(map);
+	AddModule(particles);
 	AddModule(player);
 	AddModule(sceneIntro);
 	AddModule(level1);
