@@ -28,6 +28,14 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	coins.loop = true;
 	coins.speed = 0.1f;
 
+	dogs.PushBack({ 0, 0, 64, 64 });
+	dogs.PushBack({ 64, 0, 64, 64 });
+	dogs.PushBack({ 128, 0, 64, 64 });
+	dogs.PushBack({ 192, 0, 64, 64 });
+	dogs.loop = true;
+	dogs.speed = 0.1f;
+
+
 	chestClosed.PushBack({ 0, 0, 32, 32 });
 	chestClosed.loop = false;
 
@@ -49,6 +57,7 @@ bool Level1::Awake(pugi::xml_node& config)
 	bool ret = true;
 	textureChest.Create(config.child("textureChest").child_value());
 	textureCoin.Create(config.child("textureCoin").child_value());
+	textureDog.Create(config.child("textureDog").child_value());
 
 	return ret;
 }
@@ -75,13 +84,16 @@ bool Level1::Start()
 	bushes = app->tex->Load("Assets/textures/02_Bushes.png");
 	mist = app->tex->Load("Assets/textures/01_Mist.png");
 
+
 	// Load Items coins, chests, powerups
 	treasureChest = app->tex->Load(textureChest.GetString());
 	coin = app->tex->Load(textureCoin.GetString());
+	dog = app->tex->Load(textureDog.GetString());
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
 	currentCoinsAnim = &coins;
+	currentDogAnim = &dogs;
 
 	app->player->Enable();
 	app->map->Colliders();
@@ -179,6 +191,9 @@ bool Level1::PostUpdate()
 
 	SDL_Rect rectC = currentCoinsAnim ->GetCurrentFrame();
 	app->render->DrawTexture(coin, 992, 864, &rectC);
+
+	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
+	app->render->DrawTexture(dog, 1152, 895, &rectD);
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;

@@ -47,15 +47,19 @@ private:
 	SDL_Texture* mist;
 	SDL_Texture* treasureChest;
 	SDL_Texture* coin;
+	SDL_Texture* dog;
 
 	SString textureChest;
 	SString textureCoin;
+	SString textureDog;
 
 	Animation coins;
+	Animation dogs;
 	Animation chestClosed;
 	Animation chestOpened;
 	Animation* currentCoinsAnim = nullptr;
 	Animation* currentChestAnimation = nullptr;
+	Animation* currentDogAnim = nullptr;
 
 public:
 	SDL_Rect assetRect;
