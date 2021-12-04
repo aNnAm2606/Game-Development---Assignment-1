@@ -30,7 +30,7 @@
   <Level1>
     <textureChest>Assets/textures/Chest.png</textureChest>
     <textureCoin>Assets/textures/Coin.png</textureCoin>
-    <textureDog>Assets/textures/Dog/Idle.png</textureDog>
+    <textureDog>Assets/textures/Dog/Attack.png</textureDog>
   </Level1>
 
   <player>

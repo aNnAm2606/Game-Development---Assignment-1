@@ -33,7 +33,7 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	dogs.PushBack({ 128, 0, 64, 64 });
 	dogs.PushBack({ 192, 0, 64, 64 });
 	dogs.loop = true;
-	dogs.speed = 0.1f;
+	dogs.speed = 0.05f;
 
 
 	chestClosed.PushBack({ 0, 0, 32, 32 });
@@ -167,6 +167,7 @@ bool Level1::Update(float dt)
 	// update animation
 	currentChestAnimation->Update();
 	currentCoinsAnim->Update();
+	currentDogAnim->Update();
 
 	return true;
 }
@@ -193,7 +194,7 @@ bool Level1::PostUpdate()
 	app->render->DrawTexture(coin, 992, 864, &rectC);
 
 	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
-	app->render->DrawTexture(dog, 1152, 895, &rectD);
+	app->render->DrawTexture(dog, 1152, 915, &rectD);
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
