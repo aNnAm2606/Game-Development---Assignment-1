@@ -149,7 +149,7 @@ bool App::Start()
 // Called each loop iteration
 bool App::Update()
 {
-	OPTICK_CATEGORY("UpdateLogic", Optick::Category::GameLogic);
+	/*OPTICK_CATEGORY("UpdateLogic", Optick::Category::GameLogic);*/
 
 	bool ret = true;
 	PrepareUpdate();
@@ -187,7 +187,7 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
-	OPTICK_CATEGORY("Prepare UpdateLogic", Optick::Category::GameLogic);
+	/*OPTICK_CATEGORY("Prepare UpdateLogic", Optick::Category::GameLogic);*/
 }
 
 // ---------------------------------------------
@@ -201,7 +201,7 @@ void App::FinishUpdate()
 // Call modules before each loop iteration
 bool App::PreUpdate()
 {
-	OPTICK_CATEGORY("PreUpdate Logic", Optick::Category::GameLogic)
+	/*OPTICK_CATEGORY("PreUpdate Logic", Optick::Category::GameLogic)*/
 
 	bool ret = true;
 
@@ -226,7 +226,7 @@ bool App::PreUpdate()
 // Call modules on each loop iteration
 bool App::DoUpdate()
 {
-	OPTICK_CATEGORY("DoUpdate Logic", Optick::Category::GameLogic)
+	/*OPTICK_CATEGORY("DoUpdate Logic", Optick::Category::GameLogic)*/
 
 	bool ret = true;
 	ListItem<Module*>* item;
@@ -251,7 +251,7 @@ bool App::DoUpdate()
 // Call modules after each loop iteration
 bool App::PostUpdate()
 {
-	OPTICK_CATEGORY("PostUpdate Logic", Optick::Category::GameLogic)
+	/*OPTICK_CATEGORY("PostUpdate Logic", Optick::Category::GameLogic)*/
 
 	bool ret = true;
 	ListItem<Module*>* item;

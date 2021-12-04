@@ -41,7 +41,7 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
-		OPTICK_FRAME("Main Loop");
+		/*OPTICK_FRAME("Main Loop");*/
 
 		startTick = SDL_GetTicks();
 		switch(state)
