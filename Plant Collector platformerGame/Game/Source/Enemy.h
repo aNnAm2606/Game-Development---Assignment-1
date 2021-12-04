@@ -1,7 +1,7 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 
-
+#include "Point.h" 
 #include "Animation.h"
 
 struct SDL_Texture;
@@ -36,7 +36,7 @@ public:
 
 public:
 	// The current position in the world
-	/*iPoint position;*/
+	iPoint position;
 
 	// The enemy's texture
 	SDL_Texture* texture = nullptr;
