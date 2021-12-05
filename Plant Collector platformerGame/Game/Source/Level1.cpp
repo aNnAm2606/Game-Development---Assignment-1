@@ -110,6 +110,22 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	birdR.loop = true;
 	birdR.speed = 0.05f;
 
+	birdL.PushBack({ 192, 192, 64, 64 });
+	birdL.PushBack({ 128, 192, 64, 64 });
+	birdL.PushBack({ 64, 192, 64, 64 });
+	birdL.PushBack({ 0, 192, 64, 64 });
+	birdL.loop = true;
+	birdL.speed = 0.05f;
+
+	birdHurtR.PushBack({ 0, 256, 64, 64 });
+	birdHurtR.PushBack({ 64, 256, 64, 64 });
+	birdHurtR.loop = true;
+	birdHurtR.speed = 0.05f;
+
+	birdHurtL.PushBack({ 64, 320, 64, 64 });
+	birdHurtL.PushBack({ 0, 320, 64, 64 });
+	birdHurtL.loop = true;
+	birdHurtL.speed = 0.05f;
 
 
 	//Chest Animation
@@ -286,7 +302,7 @@ bool Level1::PostUpdate()
 	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
-		currentBirdAnim = &dogsDieL;
+		currentBirdAnim = &birdHurtL;
 		app->render->DrawTexture(bird, 864, 800, &rectB);
 	}
 	else
