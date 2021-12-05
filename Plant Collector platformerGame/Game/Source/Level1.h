@@ -54,7 +54,16 @@ private:
 	SString textureDog;
 
 	Animation coins;
-	Animation dogs;
+	Animation dogsR;
+	Animation dogsL;
+	Animation dogsRunR;
+	Animation dogsRunL;
+	Animation dogsDieR;
+	Animation dogsDieL;
+	Animation dogsHurtR;
+	Animation dogsHurtL;
+	Animation dogsBarkR;
+	Animation dogsBarkL;
 	Animation chestClosed;
 	Animation chestOpened;
 	Animation* currentCoinsAnim = nullptr;

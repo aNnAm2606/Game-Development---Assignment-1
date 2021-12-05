@@ -28,12 +28,75 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	coins.loop = true;
 	coins.speed = 0.1f;
 
-	dogs.PushBack({ 0, 0, 64, 64 });
-	dogs.PushBack({ 64, 0, 64, 64 });
-	dogs.PushBack({ 128, 0, 64, 64 });
-	dogs.PushBack({ 192, 0, 64, 64 });
-	dogs.loop = true;
-	dogs.speed = 0.05f;
+	dogsR.PushBack({ 0, 192, 64, 64 });
+	dogsR.PushBack({ 64, 192, 64, 64 });
+	dogsR.PushBack({ 128, 192, 64, 64 });
+	dogsR.PushBack({ 192, 192, 64, 64 });
+	dogsR.loop = true;
+	dogsR.speed = 0.05f;
+
+	dogsL.PushBack({ 0, 256, 64, 64 });
+	dogsL.PushBack({ 64, 256, 64, 64 });
+	dogsL.PushBack({ 128, 256, 64, 64 });
+	dogsL.PushBack({ 192, 256, 64, 64 });
+	dogsR.loop = true;
+	dogsR.speed = 0.05f;
+
+	dogsBarkR.PushBack({ 192, 320, 64, 64 });
+	dogsBarkR.PushBack({ 128, 320, 64, 64 });
+	dogsBarkR.PushBack({ 64, 320, 64, 64 });
+	dogsBarkR.PushBack({ 0, 320, 64, 64 });
+	dogsBarkR.loop = true;
+	dogsBarkR.speed = 0.05f;
+
+	dogsBarkL.PushBack({ 0, 0, 64, 64 });
+	dogsBarkL.PushBack({ 64, 0, 64, 64 });
+	dogsBarkL.PushBack({ 128, 0, 64, 64 });
+	dogsBarkL.PushBack({ 192, 0, 64, 64 });
+	dogsBarkL.loop = true;
+	dogsBarkL.speed = 0.05f;
+
+	dogsRunR.PushBack({ 0, 64, 64, 64 });
+	dogsRunR.PushBack({ 64, 64, 64, 64 });
+	dogsRunR.PushBack({ 128, 64, 64, 64 });
+	dogsRunR.PushBack({ 192, 64, 64, 64 });
+	dogsRunR.PushBack({ 256, 64, 64, 64 });
+	dogsRunR.PushBack({ 320, 64, 64, 64 });
+	dogsRunR.loop = true;
+	dogsRunR.speed = 0.15f;
+
+	dogsRunL.PushBack({ 320, 128, 64, 64 });
+	dogsRunL.PushBack({ 256, 128, 64, 64 });
+	dogsRunL.PushBack({ 192, 128, 64, 64 });
+	dogsRunL.PushBack({ 128, 128, 64, 64 });
+	dogsRunL.PushBack({ 64, 128, 64, 64 });
+	dogsRunL.PushBack({ 0, 128, 64, 64 });
+	dogsRunL.loop = true;
+	dogsRunL.speed = 0.15f;
+
+	dogsDieR.PushBack({ 0, 384, 64, 64 });
+	dogsDieR.PushBack({ 64, 384, 64, 64 });
+	dogsDieR.PushBack({ 128, 384, 64, 64 });
+	dogsDieR.PushBack({ 192, 384, 64, 64 });
+	dogsDieR.loop = false;
+	dogsDieR.speed = 0.05f;
+
+	dogsDieL.PushBack({ 192, 448, 64, 64 });
+	dogsDieL.PushBack({ 128, 448, 64, 64 });
+	dogsDieL.PushBack({ 64, 448, 64, 64 });
+	dogsDieL.PushBack({ 0, 448, 64, 64 });
+	dogsDieL.loop = false;
+	dogsDieL.speed = 0.05f;
+
+	dogsHurtR.PushBack({ 0, 512, 64, 64 });
+	dogsHurtR.PushBack({ 64, 512, 64, 64 });
+	dogsHurtR.loop = true;
+	dogsHurtR.speed = 0.05f;
+
+	dogsHurtL.PushBack({ 64, 576, 64, 64 });
+	dogsHurtL.PushBack({ 0, 576, 64, 64 });
+	dogsHurtL.loop = true;
+	dogsHurtL.speed = 0.05f;
 
 
 	chestClosed.PushBack({ 0, 0, 32, 32 });
@@ -93,7 +156,7 @@ bool Level1::Start()
 	// stating animation
 	currentChestAnimation = &chestClosed;
 	currentCoinsAnim = &coins;
-	currentDogAnim = &dogs;
+	currentDogAnim = &dogsR;
 
 	app->player->Enable();
 	app->map->Colliders();
@@ -160,8 +223,6 @@ bool Level1::Update(float dt)
 	if ((app->player->chestFound     == true || app->map->debugColliders == true) && app->player->chestOpen == false) app->render->DrawTexture(app->player->tutorialsTex, 2039, 1207, &app->player->chestRect);
 	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 1073, 1144, &app->player->ladderRect);
 	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 2008, 958, &app->player->ladderRect);
-
-	
 	
 
 	// update animation
@@ -194,7 +255,15 @@ bool Level1::PostUpdate()
 	app->render->DrawTexture(coin, 992, 864, &rectC);
 
 	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
-	app->render->DrawTexture(dog, 1152, 915, &rectD);
+	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		currentDogAnim = &dogsDieL;
+		app->render->DrawTexture(dog, 1152, 915, &rectD);
+	}
+	else 
+	{
+		app->render->DrawTexture(dog, 1152, 915, &rectD);
+	}
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
