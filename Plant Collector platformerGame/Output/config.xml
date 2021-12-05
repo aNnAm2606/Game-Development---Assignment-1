@@ -31,6 +31,7 @@
     <textureChest>Assets/textures/Chest.png</textureChest>
     <textureCoin>Assets/textures/Coin.png</textureCoin>
     <textureDog>Assets/textures/Dog/Attack.png</textureDog>
+    <textureBird>Assets/textures/Bird/Death.png</textureBird>
   </Level1>
 
   <player>

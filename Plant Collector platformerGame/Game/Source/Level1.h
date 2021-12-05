@@ -48,10 +48,12 @@ private:
 	SDL_Texture* treasureChest;
 	SDL_Texture* coin;
 	SDL_Texture* dog;
+	SDL_Texture* bird;
 
 	SString textureChest;
 	SString textureCoin;
 	SString textureDog;
+	SString textureBird;
 
 	Animation coins;
 	Animation dogsR;
@@ -64,11 +66,20 @@ private:
 	Animation dogsHurtL;
 	Animation dogsBarkR;
 	Animation dogsBarkL;
+	Animation birdR;
+	Animation birdL;
+	Animation birdFlyR;
+	Animation birdFlyL;
+	Animation birdDieR;
+	Animation birdDieL;
+	Animation birdHurtR;
+	Animation birdHurtL;
 	Animation chestClosed;
 	Animation chestOpened;
 	Animation* currentCoinsAnim = nullptr;
 	Animation* currentChestAnimation = nullptr;
 	Animation* currentDogAnim = nullptr;
+	Animation* currentBirdAnim = nullptr;
 
 public:
 	SDL_Rect assetRect;

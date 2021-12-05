@@ -28,6 +28,7 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	coins.loop = true;
 	coins.speed = 0.1f;
 
+	//Dog Animation
 	dogsR.PushBack({ 0, 192, 64, 64 });
 	dogsR.PushBack({ 64, 192, 64, 64 });
 	dogsR.PushBack({ 128, 192, 64, 64 });
@@ -78,6 +79,7 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	dogsDieR.PushBack({ 64, 384, 64, 64 });
 	dogsDieR.PushBack({ 128, 384, 64, 64 });
 	dogsDieR.PushBack({ 192, 384, 64, 64 });
+	dogsDieR.PushBack({ 256, 384, 64, 64 });
 	dogsDieR.loop = false;
 	dogsDieR.speed = 0.05f;
 
@@ -85,6 +87,7 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	dogsDieL.PushBack({ 128, 448, 64, 64 });
 	dogsDieL.PushBack({ 64, 448, 64, 64 });
 	dogsDieL.PushBack({ 0, 448, 64, 64 });
+	dogsDieL.PushBack({ 256, 448, 64, 64 });
 	dogsDieL.loop = false;
 	dogsDieL.speed = 0.05f;
 
@@ -99,6 +102,17 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	dogsHurtL.speed = 0.05f;
 
 
+	//Bird Animation
+	birdR.PushBack({ 0, 128, 64, 64 });
+	birdR.PushBack({ 64, 128, 64, 64 });
+	birdR.PushBack({ 128, 128, 64, 64 });
+	birdR.PushBack({ 192, 128, 64, 64 });
+	birdR.loop = true;
+	birdR.speed = 0.05f;
+
+
+
+	//Chest Animation
 	chestClosed.PushBack({ 0, 0, 32, 32 });
 	chestClosed.loop = false;
 
@@ -121,6 +135,7 @@ bool Level1::Awake(pugi::xml_node& config)
 	textureChest.Create(config.child("textureChest").child_value());
 	textureCoin.Create(config.child("textureCoin").child_value());
 	textureDog.Create(config.child("textureDog").child_value());
+	textureBird.Create(config.child("textureBird").child_value());
 
 	return ret;
 }
@@ -152,11 +167,13 @@ bool Level1::Start()
 	treasureChest = app->tex->Load(textureChest.GetString());
 	coin = app->tex->Load(textureCoin.GetString());
 	dog = app->tex->Load(textureDog.GetString());
+	bird = app->tex->Load(textureBird.GetString());
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
 	currentCoinsAnim = &coins;
 	currentDogAnim = &dogsR;
+	currentBirdAnim = &birdR;
 
 	app->player->Enable();
 	app->map->Colliders();
@@ -229,6 +246,7 @@ bool Level1::Update(float dt)
 	currentChestAnimation->Update();
 	currentCoinsAnim->Update();
 	currentDogAnim->Update();
+	currentBirdAnim->Update();
 
 	return true;
 }
@@ -263,6 +281,17 @@ bool Level1::PostUpdate()
 	else 
 	{
 		app->render->DrawTexture(dog, 1152, 915, &rectD);
+	}
+
+	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
+	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		currentBirdAnim = &dogsDieL;
+		app->render->DrawTexture(bird, 864, 800, &rectB);
+	}
+	else
+	{
+		app->render->DrawTexture(bird, 864, 800, &rectB);
 	}
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
