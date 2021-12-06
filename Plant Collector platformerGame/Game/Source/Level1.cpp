@@ -162,6 +162,66 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	birdFlyR.speed = 0.15f;
 
 
+	//Cat Animation
+	catsR.PushBack({ 0, 128, 64, 64 });
+	catsR.PushBack({ 64, 128, 64, 64 });
+	catsR.PushBack({ 128, 128, 64, 64 });
+	catsR.PushBack({ 192, 128, 64, 64 });
+	catsR.loop = true;
+	catsR.speed = 0.05f;
+
+	catsL.PushBack({ 192, 192, 64, 64 });
+	catsL.PushBack({ 128, 192, 64, 64 });
+	catsL.PushBack({ 64, 192, 64, 64 });
+	catsL.PushBack({ 0, 192, 64, 64 });
+	catsL.loop = true;
+	catsL.speed = 0.05f;
+
+	catsHurtR.PushBack({ 0, 384, 64, 64 });
+	catsHurtR.PushBack({ 64, 384, 64, 64 });
+	catsHurtR.loop = true;
+	catsHurtR.speed = 0.05f;
+
+	catsHurtL.PushBack({ 64, 448, 64, 64 });
+	catsHurtL.PushBack({ 0, 448, 64, 64 });
+	catsHurtL.loop = true;
+	catsHurtL.speed = 0.05f;
+
+	catsDieR.PushBack({ 0, 256, 64, 64 });
+	catsDieR.PushBack({ 64, 256, 64, 64 });
+	catsDieR.PushBack({ 128, 256, 64, 64 });
+	catsDieR.PushBack({ 192, 256, 64, 64 });
+	catsDieR.PushBack({ 256, 256, 64, 64 });
+	catsDieR.loop = false;
+	catsDieR.speed = 0.05f;
+
+	catsDieL.PushBack({ 192, 320, 64, 64 });
+	catsDieL.PushBack({ 128, 320, 64, 64 });
+	catsDieL.PushBack({ 64, 320, 64, 64 });
+	catsDieL.PushBack({ 0, 320, 64, 64 });
+	catsDieL.PushBack({ 256, 320, 64, 64 });
+	catsDieL.loop = false;
+	catsDieL.speed = 0.05f;
+
+	catsRunL.PushBack({ 320, 576, 64, 64 });
+	catsRunL.PushBack({ 256, 576, 64, 64 });
+	catsRunL.PushBack({ 192, 576, 64, 64 });
+	catsRunL.PushBack({ 128, 576, 64, 64 });
+	catsRunL.PushBack({ 64, 576, 64, 64 });
+	catsRunL.PushBack({ 0, 576, 64, 64 });
+	catsRunL.loop = true;
+	catsRunL.speed = 0.15f;
+
+	catsRunR.PushBack({ 0, 512, 64, 64 });
+	catsRunR.PushBack({ 64, 512, 64, 64 });
+	catsRunR.PushBack({ 128, 512, 64, 64 });
+	catsRunR.PushBack({ 192, 512, 64, 64 });
+	catsRunR.PushBack({ 256, 512, 64, 64 });
+	catsRunR.PushBack({ 320, 512, 64, 64 });
+	catsRunR.loop = true;
+	catsRunR.speed = 0.15f;
+
+
 	//Chest Animation
 	chestClosed.PushBack({ 0, 0, 32, 32 });
 	chestClosed.loop = false;
@@ -186,6 +246,7 @@ bool Level1::Awake(pugi::xml_node& config)
 	textureCoin.Create(config.child("textureCoin").child_value());
 	textureDog.Create(config.child("textureDog").child_value());
 	textureBird.Create(config.child("textureBird").child_value());
+	textureCat.Create(config.child("textureCat").child_value());
 
 	return ret;
 }
@@ -218,12 +279,14 @@ bool Level1::Start()
 	coin = app->tex->Load(textureCoin.GetString());
 	dog = app->tex->Load(textureDog.GetString());
 	bird = app->tex->Load(textureBird.GetString());
+	cat = app->tex->Load(textureCat.GetString());
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
 	currentCoinsAnim = &coins;
 	currentDogAnim = &dogsR;
 	currentBirdAnim = &birdR;
+	currentCatAnim = &catsR;
 
 	app->player->Enable();
 	app->map->Colliders();
@@ -297,6 +360,7 @@ bool Level1::Update(float dt)
 	currentCoinsAnim->Update();
 	currentDogAnim->Update();
 	currentBirdAnim->Update();
+	currentCatAnim->Update();
 
 	return true;
 }
@@ -317,6 +381,17 @@ bool Level1::PostUpdate()
 	else 
 	{
 		app->render->DrawTexture(treasureChest, 2048, 1248, &rect);
+	}
+
+	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
+	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		currentCatAnim = &catsRunL;
+		app->render->DrawTexture(cat, 630, 1046, &rectCat);
+	}
+	else
+	{
+		app->render->DrawTexture(cat, 630, 1046, &rectCat);
 	}
 
 	SDL_Rect rectC = currentCoinsAnim ->GetCurrentFrame();
