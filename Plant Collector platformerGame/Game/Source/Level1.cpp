@@ -127,6 +127,22 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	birdHurtL.loop = true;
 	birdHurtL.speed = 0.05f;
 
+	birdDieR.PushBack({ 0, 384, 64, 64 });
+	birdDieR.PushBack({ 64, 384, 64, 64 });
+	birdDieR.PushBack({ 128, 384, 64, 64 });
+	birdDieR.PushBack({ 192, 384, 64, 64 });
+	birdDieR.PushBack({ 256, 384, 64, 64 });
+	birdDieR.loop = false;
+	birdDieR.speed = 0.05f;
+
+	birdDieL.PushBack({ 192, 448, 64, 64 });
+	birdDieL.PushBack({ 128, 448, 64, 64 });
+	birdDieL.PushBack({ 64, 448, 64, 64 });
+	birdDieL.PushBack({ 0, 448, 64, 64 });
+	birdDieL.PushBack({ 256, 448, 64, 64 });
+	birdDieL.loop = false;
+	birdDieL.speed = 0.05f;
+
 
 	//Chest Animation
 	chestClosed.PushBack({ 0, 0, 32, 32 });
