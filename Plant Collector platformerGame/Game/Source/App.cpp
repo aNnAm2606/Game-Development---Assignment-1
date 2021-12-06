@@ -35,7 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio(true);
 	fade = new FadeToBlack(true);
 	logo = new Logo(true);
-	sceneIntro = new SceneIntro(true);
+	sceneIntro = new SceneIntro(false);
 	level1 = new Level1(false);
 	winScreen = new WinScreen(false);
 	gameOver = new GameOver(false);

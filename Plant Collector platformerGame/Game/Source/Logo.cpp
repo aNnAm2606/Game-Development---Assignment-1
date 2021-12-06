@@ -98,7 +98,7 @@ bool Logo::Update(float dt)
 	bool ret = true;
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
+		app->fade->Fade_To_Black(this, (Module*)app->sceneIntro, 180);
 	}
 
 	//if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
