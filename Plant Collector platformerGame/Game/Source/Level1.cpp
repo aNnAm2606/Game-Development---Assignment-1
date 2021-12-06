@@ -143,6 +143,24 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	birdDieL.loop = false;
 	birdDieL.speed = 0.05f;
 
+	birdFlyL.PushBack({ 320, 448, 64, 64 });
+	birdFlyL.PushBack({ 256, 448, 64, 64 });
+	birdFlyL.PushBack({ 192, 448, 64, 64 });
+	birdFlyL.PushBack({ 128, 448, 64, 64 });
+	birdFlyL.PushBack({ 64, 448, 64, 64 });
+	birdFlyL.PushBack({ 0, 448, 64, 64 });
+	birdFlyL.loop = true;
+	birdFlyL.speed = 0.15f;
+
+	birdFlyR.PushBack({ 0, 384, 64, 64 });
+	birdFlyR.PushBack({ 64, 384, 64, 64 });
+	birdFlyR.PushBack({ 128, 384, 64, 64 });
+	birdFlyR.PushBack({ 192, 384, 64, 64 });
+	birdFlyR.PushBack({ 256, 384, 64, 64 });
+	birdFlyR.PushBack({ 320, 384, 64, 64 });
+	birdFlyR.loop = true;
+	birdFlyR.speed = 0.15f;
+
 
 	//Chest Animation
 	chestClosed.PushBack({ 0, 0, 32, 32 });
@@ -318,7 +336,7 @@ bool Level1::PostUpdate()
 	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
-		currentBirdAnim = &birdHurtL;
+		currentBirdAnim = &birdFlyL;
 		app->render->DrawTexture(bird, 864, 800, &rectB);
 	}
 	else
