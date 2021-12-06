@@ -15,6 +15,7 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class Logo;
 class SceneIntro;
 class Level1;
 class WinScreen;
@@ -94,6 +95,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	Logo* logo;
 	SceneIntro* sceneIntro;
 	Level1* level1;
 	WinScreen* winScreen;

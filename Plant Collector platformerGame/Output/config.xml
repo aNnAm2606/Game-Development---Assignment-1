@@ -45,6 +45,12 @@
     <jumps value="2"/>
   </player>
 
+  <logo>
+    <Logo>Assets/textures/bgStart.png</Logo>
+    <spaceToStart>Assets/textures/space.png</spaceToStart>
+    <spritesFolder>Assets/textures/icon.png</spritesFolder>
+  </logo>
+
   <sceneIntro>
     <title>Assets/textures/title.png</title>
     <IntroScreen>Assets/textures/bgStart.png</IntroScreen>

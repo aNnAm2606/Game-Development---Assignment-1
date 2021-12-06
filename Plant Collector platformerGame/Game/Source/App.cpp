@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "Logo.h"
 #include "SceneIntro.h"
 #include "Level1.h"
 #include "GameOver.h"
@@ -33,6 +34,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	fade = new FadeToBlack(true);
+	logo = new Logo(true);
 	sceneIntro = new SceneIntro(true);
 	level1 = new Level1(false);
 	winScreen = new WinScreen(false);
@@ -54,6 +56,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(particles);
 	AddModule(player);
+	AddModule(logo);
 	AddModule(sceneIntro);
 	AddModule(level1);
 	AddModule(gameOver);
