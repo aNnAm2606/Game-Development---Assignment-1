@@ -33,6 +33,7 @@
     <textureDog>Assets/textures/Dog/Attack.png</textureDog>
     <textureBird>Assets/textures/Bird/Death.png</textureBird>
     <textureCat>Assets/textures/Cat/Attack.png</textureCat>
+    <textureRat>Assets/textures/Rat/Death.png</textureRat>
   </Level1>
 
   <player>

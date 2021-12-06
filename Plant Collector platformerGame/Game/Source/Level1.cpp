@@ -222,6 +222,62 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	catsRunR.speed = 0.15f;
 
 
+	//Rat Animation
+	ratsR.PushBack({ 0, 256, 64, 64 });
+	ratsR.PushBack({ 64, 256, 64, 64 });
+	ratsR.PushBack({ 128, 256, 64, 64 });
+	ratsR.PushBack({ 192, 256, 64, 64 });
+	ratsR.loop = true;
+	ratsR.speed = 0.05f;
+
+	ratsL.PushBack({ 192, 320, 64, 64 });
+	ratsL.PushBack({ 128, 320, 64, 64 });
+	ratsL.PushBack({ 64, 320, 64, 64 });
+	ratsL.PushBack({ 0, 320, 64, 64 });
+	ratsL.loop = true;
+	ratsL.speed = 0.05f;
+
+	ratsHurtR.PushBack({ 0, 128, 64, 64 });
+	ratsHurtR.PushBack({ 64, 128, 64, 64 });
+	ratsHurtR.loop = true;
+	ratsHurtR.speed = 0.05f;
+
+	ratsHurtL.PushBack({ 64, 192, 64, 64 });
+	ratsHurtL.PushBack({ 0, 192, 64, 64 });
+	ratsHurtL.loop = true;
+	ratsHurtL.speed = 0.05f;
+
+	ratsDieR.PushBack({ 0, 0, 64, 64 });
+	ratsDieR.PushBack({ 64, 0, 64, 64 });
+	ratsDieR.PushBack({ 128, 0, 64, 64 });
+	ratsDieR.loop = false;
+	ratsDieR.speed = 0.05f;
+
+
+	ratsDieL.PushBack({ 64, 64, 64, 64 });
+	ratsDieL.PushBack({ 0, 64, 64, 64 });
+	ratsDieL.PushBack({ 128, 64, 64, 64 });
+	ratsDieL.loop = false;
+	ratsDieL.speed = 0.05f;
+
+	ratsRunL.PushBack({ 192, 448, 64, 64 });
+	ratsRunL.PushBack({ 128, 448, 64, 64 });
+	ratsRunL.PushBack({ 64, 448, 64, 64 });
+	ratsRunL.PushBack({ 0, 448, 64, 64 });
+	ratsRunL.loop = true;
+	ratsRunL.speed = 0.15f;
+
+	ratsRunR.PushBack({ 0, 384, 64, 64 });
+	ratsRunR.PushBack({ 64, 384, 64, 64 });
+	ratsRunR.PushBack({ 128, 384, 64, 64 });
+	ratsRunR.PushBack({ 192, 384, 64, 64 });
+	ratsRunR.loop = true;
+	ratsRunR.speed = 0.15f;
+
+
+
+
+
 	//Chest Animation
 	chestClosed.PushBack({ 0, 0, 32, 32 });
 	chestClosed.loop = false;
@@ -247,6 +303,7 @@ bool Level1::Awake(pugi::xml_node& config)
 	textureDog.Create(config.child("textureDog").child_value());
 	textureBird.Create(config.child("textureBird").child_value());
 	textureCat.Create(config.child("textureCat").child_value());
+	textureRat.Create(config.child("textureRat").child_value());
 
 	return ret;
 }
@@ -280,6 +337,7 @@ bool Level1::Start()
 	dog = app->tex->Load(textureDog.GetString());
 	bird = app->tex->Load(textureBird.GetString());
 	cat = app->tex->Load(textureCat.GetString());
+	rat = app->tex->Load(textureRat.GetString());
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
@@ -287,6 +345,7 @@ bool Level1::Start()
 	currentDogAnim = &dogsR;
 	currentBirdAnim = &birdR;
 	currentCatAnim = &catsR;
+	currentRatAnim = &ratsR;
 
 	app->player->Enable();
 	app->map->Colliders();
@@ -361,6 +420,7 @@ bool Level1::Update(float dt)
 	currentDogAnim->Update();
 	currentBirdAnim->Update();
 	currentCatAnim->Update();
+	currentRatAnim->Update();
 
 	return true;
 }
@@ -392,6 +452,17 @@ bool Level1::PostUpdate()
 	else
 	{
 		app->render->DrawTexture(cat, 630, 1046, &rectCat);
+	}
+
+	SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
+	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		currentRatAnim = &ratsRunL;
+		app->render->DrawTexture(rat, 760, 988, &rectRat);
+	}
+	else
+	{
+		app->render->DrawTexture(rat, 760, 988, &rectRat);
 	}
 
 	SDL_Rect rectC = currentCoinsAnim ->GetCurrentFrame();
