@@ -46,9 +46,9 @@
   </player>
 
   <logo>
-    <Logo>Assets/textures/bgStart.png</Logo>
+    <background>Assets/textures/bgStart.png</background>
     <spaceToStart>Assets/textures/space.png</spaceToStart>
-    <spritesFolder>Assets/textures/icon.png</spritesFolder>
+    <icon>Assets/textures/icon.png</icon>
   </logo>
 
   <sceneIntro>
