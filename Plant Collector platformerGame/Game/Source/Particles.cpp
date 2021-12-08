@@ -61,16 +61,11 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 bool Particles::LoadState(pugi::xml_node& data)
 {
-	position.x = data.child("position").attribute("x").as_int();
-	position.y = data.child("position").attribute("y").as_int();
-	playerBody->body->SetTransform({ PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y) }, 0.0f);
 	return true;
 }
 
 bool Particles::SaveState(pugi::xml_node& data) const
 {
-	data.child("position").attribute("x").set_value(position.x);
-	data.child("position").attribute("y").set_value(position.y);
 	return true;
 }
 
