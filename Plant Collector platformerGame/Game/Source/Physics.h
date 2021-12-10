@@ -18,6 +18,7 @@
 enum collisionType {
 	NONE = -1,
 	PLAYER,
+	DOG,
 	WALL,
 	COINS,
 	LADDER,

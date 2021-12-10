@@ -47,61 +47,17 @@ private:
 	SDL_Texture* mist;
 	SDL_Texture* treasureChest;
 	SDL_Texture* coin;
-	SDL_Texture* dog;
-	SDL_Texture* bird;
-	SDL_Texture* cat;
-	SDL_Texture* rat;
 
 	SString textureChest;
 	SString textureCoin;
-	SString textureDog;
-	SString textureBird;
-	SString textureCat;
-	SString textureRat;
 
 	Animation coins;
-	Animation dogsR;
-	Animation dogsL;
-	Animation dogsRunR;
-	Animation dogsRunL;
-	Animation dogsDieR;
-	Animation dogsDieL;
-	Animation dogsHurtR;
-	Animation dogsHurtL;
-	Animation dogsBarkR;
-	Animation dogsBarkL;
-	Animation catsR;
-	Animation catsL;
-	Animation catsRunR;
-	Animation catsRunL;
-	Animation catsDieR;
-	Animation catsDieL;
-	Animation catsHurtR;
-	Animation catsHurtL;
-	Animation ratsR;
-	Animation ratsL;
-	Animation ratsRunR;
-	Animation ratsRunL;
-	Animation ratsDieR;
-	Animation ratsDieL;
-	Animation ratsHurtR;
-	Animation ratsHurtL;
-	Animation birdR;
-	Animation birdL;
-	Animation birdFlyR;
-	Animation birdFlyL;
-	Animation birdDieR;
-	Animation birdDieL;
-	Animation birdHurtR;
-	Animation birdHurtL;
+	
 	Animation chestClosed;
 	Animation chestOpened;
 	Animation* currentCoinsAnim = nullptr;
 	Animation* currentChestAnimation = nullptr;
-	Animation* currentDogAnim = nullptr;
-	Animation* currentBirdAnim = nullptr;
-	Animation* currentCatAnim = nullptr;
-	Animation* currentRatAnim = nullptr;
+
 
 public:
 	SDL_Rect assetRect;

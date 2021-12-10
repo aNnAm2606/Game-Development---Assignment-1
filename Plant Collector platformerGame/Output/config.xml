@@ -30,11 +30,16 @@
   <Level1>
     <textureChest>Assets/textures/Chest.png</textureChest>
     <textureCoin>Assets/textures/Coin.png</textureCoin>
+  </Level1>
+  
+  <Enemy>
     <textureDog>Assets/textures/Dog/Attack.png</textureDog>
     <textureBird>Assets/textures/Bird/Death.png</textureBird>
     <textureCat>Assets/textures/Cat/Attack.png</textureCat>
     <textureRat>Assets/textures/Rat/Death.png</textureRat>
-  </Level1>
+    <startPositionDog x="1185" y ="945"/>
+    <speed value="1"/>
+  </Enemy>
 
   <player>
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>

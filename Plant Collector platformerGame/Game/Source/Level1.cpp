@@ -11,6 +11,7 @@
 #include "Physics.h"
 #include "Player.h"
 #include "FadeToBlack.h"
+#include "Enemy.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -27,256 +28,6 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	coins.PushBack({ 30, 0, 10, 10 });
 	coins.loop = true;
 	coins.speed = 0.1f;
-
-	//Dog Animation
-	dogsR.PushBack({ 0, 192, 64, 64 });
-	dogsR.PushBack({ 64, 192, 64, 64 });
-	dogsR.PushBack({ 128, 192, 64, 64 });
-	dogsR.PushBack({ 192, 192, 64, 64 });
-	dogsR.loop = true;
-	dogsR.speed = 0.05f;
-
-	dogsL.PushBack({ 0, 256, 64, 64 });
-	dogsL.PushBack({ 64, 256, 64, 64 });
-	dogsL.PushBack({ 128, 256, 64, 64 });
-	dogsL.PushBack({ 192, 256, 64, 64 });
-	dogsR.loop = true;
-	dogsR.speed = 0.05f;
-
-	dogsBarkR.PushBack({ 192, 320, 64, 64 });
-	dogsBarkR.PushBack({ 128, 320, 64, 64 });
-	dogsBarkR.PushBack({ 64, 320, 64, 64 });
-	dogsBarkR.PushBack({ 0, 320, 64, 64 });
-	dogsBarkR.loop = true;
-	dogsBarkR.speed = 0.05f;
-
-	dogsBarkL.PushBack({ 0, 0, 64, 64 });
-	dogsBarkL.PushBack({ 64, 0, 64, 64 });
-	dogsBarkL.PushBack({ 128, 0, 64, 64 });
-	dogsBarkL.PushBack({ 192, 0, 64, 64 });
-	dogsBarkL.loop = true;
-	dogsBarkL.speed = 0.05f;
-
-	dogsRunR.PushBack({ 0, 64, 64, 64 });
-	dogsRunR.PushBack({ 64, 64, 64, 64 });
-	dogsRunR.PushBack({ 128, 64, 64, 64 });
-	dogsRunR.PushBack({ 192, 64, 64, 64 });
-	dogsRunR.PushBack({ 256, 64, 64, 64 });
-	dogsRunR.PushBack({ 320, 64, 64, 64 });
-	dogsRunR.loop = true;
-	dogsRunR.speed = 0.15f;
-
-	dogsRunL.PushBack({ 320, 128, 64, 64 });
-	dogsRunL.PushBack({ 256, 128, 64, 64 });
-	dogsRunL.PushBack({ 192, 128, 64, 64 });
-	dogsRunL.PushBack({ 128, 128, 64, 64 });
-	dogsRunL.PushBack({ 64, 128, 64, 64 });
-	dogsRunL.PushBack({ 0, 128, 64, 64 });
-	dogsRunL.loop = true;
-	dogsRunL.speed = 0.15f;
-
-	dogsDieR.PushBack({ 0, 384, 64, 64 });
-	dogsDieR.PushBack({ 64, 384, 64, 64 });
-	dogsDieR.PushBack({ 128, 384, 64, 64 });
-	dogsDieR.PushBack({ 192, 384, 64, 64 });
-	dogsDieR.PushBack({ 256, 384, 64, 64 });
-	dogsDieR.loop = false;
-	dogsDieR.speed = 0.05f;
-
-	dogsDieL.PushBack({ 192, 448, 64, 64 });
-	dogsDieL.PushBack({ 128, 448, 64, 64 });
-	dogsDieL.PushBack({ 64, 448, 64, 64 });
-	dogsDieL.PushBack({ 0, 448, 64, 64 });
-	dogsDieL.PushBack({ 256, 448, 64, 64 });
-	dogsDieL.loop = false;
-	dogsDieL.speed = 0.05f;
-
-	dogsHurtR.PushBack({ 0, 512, 64, 64 });
-	dogsHurtR.PushBack({ 64, 512, 64, 64 });
-	dogsHurtR.loop = true;
-	dogsHurtR.speed = 0.05f;
-
-	dogsHurtL.PushBack({ 64, 576, 64, 64 });
-	dogsHurtL.PushBack({ 0, 576, 64, 64 });
-	dogsHurtL.loop = true;
-	dogsHurtL.speed = 0.05f;
-
-
-	//Bird Animation
-	birdR.PushBack({ 0, 128, 64, 64 });
-	birdR.PushBack({ 64, 128, 64, 64 });
-	birdR.PushBack({ 128, 128, 64, 64 });
-	birdR.PushBack({ 192, 128, 64, 64 });
-	birdR.loop = true;
-	birdR.speed = 0.05f;
-
-	birdL.PushBack({ 192, 192, 64, 64 });
-	birdL.PushBack({ 128, 192, 64, 64 });
-	birdL.PushBack({ 64, 192, 64, 64 });
-	birdL.PushBack({ 0, 192, 64, 64 });
-	birdL.loop = true;
-	birdL.speed = 0.05f;
-
-	birdHurtR.PushBack({ 0, 256, 64, 64 });
-	birdHurtR.PushBack({ 64, 256, 64, 64 });
-	birdHurtR.loop = true;
-	birdHurtR.speed = 0.05f;
-
-	birdHurtL.PushBack({ 64, 320, 64, 64 });
-	birdHurtL.PushBack({ 0, 320, 64, 64 });
-	birdHurtL.loop = true;
-	birdHurtL.speed = 0.05f;
-
-	birdDieR.PushBack({ 0, 384, 64, 64 });
-	birdDieR.PushBack({ 64, 384, 64, 64 });
-	birdDieR.PushBack({ 128, 384, 64, 64 });
-	birdDieR.PushBack({ 192, 384, 64, 64 });
-	birdDieR.PushBack({ 256, 384, 64, 64 });
-	birdDieR.loop = false;
-	birdDieR.speed = 0.05f;
-
-	birdDieL.PushBack({ 192, 448, 64, 64 });
-	birdDieL.PushBack({ 128, 448, 64, 64 });
-	birdDieL.PushBack({ 64, 448, 64, 64 });
-	birdDieL.PushBack({ 0, 448, 64, 64 });
-	birdDieL.PushBack({ 256, 448, 64, 64 });
-	birdDieL.loop = false;
-	birdDieL.speed = 0.05f;
-
-	birdFlyL.PushBack({ 320, 448, 64, 64 });
-	birdFlyL.PushBack({ 256, 448, 64, 64 });
-	birdFlyL.PushBack({ 192, 448, 64, 64 });
-	birdFlyL.PushBack({ 128, 448, 64, 64 });
-	birdFlyL.PushBack({ 64, 448, 64, 64 });
-	birdFlyL.PushBack({ 0, 448, 64, 64 });
-	birdFlyL.loop = true;
-	birdFlyL.speed = 0.15f;
-
-	birdFlyR.PushBack({ 0, 384, 64, 64 });
-	birdFlyR.PushBack({ 64, 384, 64, 64 });
-	birdFlyR.PushBack({ 128, 384, 64, 64 });
-	birdFlyR.PushBack({ 192, 384, 64, 64 });
-	birdFlyR.PushBack({ 256, 384, 64, 64 });
-	birdFlyR.PushBack({ 320, 384, 64, 64 });
-	birdFlyR.loop = true;
-	birdFlyR.speed = 0.15f;
-
-
-	//Cat Animation
-	catsR.PushBack({ 0, 128, 64, 64 });
-	catsR.PushBack({ 64, 128, 64, 64 });
-	catsR.PushBack({ 128, 128, 64, 64 });
-	catsR.PushBack({ 192, 128, 64, 64 });
-	catsR.loop = true;
-	catsR.speed = 0.05f;
-
-	catsL.PushBack({ 192, 192, 64, 64 });
-	catsL.PushBack({ 128, 192, 64, 64 });
-	catsL.PushBack({ 64, 192, 64, 64 });
-	catsL.PushBack({ 0, 192, 64, 64 });
-	catsL.loop = true;
-	catsL.speed = 0.05f;
-
-	catsHurtR.PushBack({ 0, 384, 64, 64 });
-	catsHurtR.PushBack({ 64, 384, 64, 64 });
-	catsHurtR.loop = true;
-	catsHurtR.speed = 0.05f;
-
-	catsHurtL.PushBack({ 64, 448, 64, 64 });
-	catsHurtL.PushBack({ 0, 448, 64, 64 });
-	catsHurtL.loop = true;
-	catsHurtL.speed = 0.05f;
-
-	catsDieR.PushBack({ 0, 256, 64, 64 });
-	catsDieR.PushBack({ 64, 256, 64, 64 });
-	catsDieR.PushBack({ 128, 256, 64, 64 });
-	catsDieR.PushBack({ 192, 256, 64, 64 });
-	catsDieR.PushBack({ 256, 256, 64, 64 });
-	catsDieR.loop = false;
-	catsDieR.speed = 0.05f;
-
-	catsDieL.PushBack({ 192, 320, 64, 64 });
-	catsDieL.PushBack({ 128, 320, 64, 64 });
-	catsDieL.PushBack({ 64, 320, 64, 64 });
-	catsDieL.PushBack({ 0, 320, 64, 64 });
-	catsDieL.PushBack({ 256, 320, 64, 64 });
-	catsDieL.loop = false;
-	catsDieL.speed = 0.05f;
-
-	catsRunL.PushBack({ 320, 576, 64, 64 });
-	catsRunL.PushBack({ 256, 576, 64, 64 });
-	catsRunL.PushBack({ 192, 576, 64, 64 });
-	catsRunL.PushBack({ 128, 576, 64, 64 });
-	catsRunL.PushBack({ 64, 576, 64, 64 });
-	catsRunL.PushBack({ 0, 576, 64, 64 });
-	catsRunL.loop = true;
-	catsRunL.speed = 0.15f;
-
-	catsRunR.PushBack({ 0, 512, 64, 64 });
-	catsRunR.PushBack({ 64, 512, 64, 64 });
-	catsRunR.PushBack({ 128, 512, 64, 64 });
-	catsRunR.PushBack({ 192, 512, 64, 64 });
-	catsRunR.PushBack({ 256, 512, 64, 64 });
-	catsRunR.PushBack({ 320, 512, 64, 64 });
-	catsRunR.loop = true;
-	catsRunR.speed = 0.15f;
-
-
-	//Rat Animation
-	ratsR.PushBack({ 0, 256, 64, 64 });
-	ratsR.PushBack({ 64, 256, 64, 64 });
-	ratsR.PushBack({ 128, 256, 64, 64 });
-	ratsR.PushBack({ 192, 256, 64, 64 });
-	ratsR.loop = true;
-	ratsR.speed = 0.05f;
-
-	ratsL.PushBack({ 192, 320, 64, 64 });
-	ratsL.PushBack({ 128, 320, 64, 64 });
-	ratsL.PushBack({ 64, 320, 64, 64 });
-	ratsL.PushBack({ 0, 320, 64, 64 });
-	ratsL.loop = true;
-	ratsL.speed = 0.05f;
-
-	ratsHurtR.PushBack({ 0, 128, 64, 64 });
-	ratsHurtR.PushBack({ 64, 128, 64, 64 });
-	ratsHurtR.loop = true;
-	ratsHurtR.speed = 0.05f;
-
-	ratsHurtL.PushBack({ 64, 192, 64, 64 });
-	ratsHurtL.PushBack({ 0, 192, 64, 64 });
-	ratsHurtL.loop = true;
-	ratsHurtL.speed = 0.05f;
-
-	ratsDieR.PushBack({ 0, 0, 64, 64 });
-	ratsDieR.PushBack({ 64, 0, 64, 64 });
-	ratsDieR.PushBack({ 128, 0, 64, 64 });
-	ratsDieR.loop = false;
-	ratsDieR.speed = 0.05f;
-
-
-	ratsDieL.PushBack({ 64, 64, 64, 64 });
-	ratsDieL.PushBack({ 0, 64, 64, 64 });
-	ratsDieL.PushBack({ 128, 64, 64, 64 });
-	ratsDieL.loop = false;
-	ratsDieL.speed = 0.05f;
-
-	ratsRunL.PushBack({ 192, 448, 64, 64 });
-	ratsRunL.PushBack({ 128, 448, 64, 64 });
-	ratsRunL.PushBack({ 64, 448, 64, 64 });
-	ratsRunL.PushBack({ 0, 448, 64, 64 });
-	ratsRunL.loop = true;
-	ratsRunL.speed = 0.15f;
-
-	ratsRunR.PushBack({ 0, 384, 64, 64 });
-	ratsRunR.PushBack({ 64, 384, 64, 64 });
-	ratsRunR.PushBack({ 128, 384, 64, 64 });
-	ratsRunR.PushBack({ 192, 384, 64, 64 });
-	ratsRunR.loop = true;
-	ratsRunR.speed = 0.15f;
-
-
-
-
 
 	//Chest Animation
 	chestClosed.PushBack({ 0, 0, 32, 32 });
@@ -300,10 +51,6 @@ bool Level1::Awake(pugi::xml_node& config)
 	bool ret = true;
 	textureChest.Create(config.child("textureChest").child_value());
 	textureCoin.Create(config.child("textureCoin").child_value());
-	textureDog.Create(config.child("textureDog").child_value());
-	textureBird.Create(config.child("textureBird").child_value());
-	textureCat.Create(config.child("textureCat").child_value());
-	textureRat.Create(config.child("textureRat").child_value());
 
 	return ret;
 }
@@ -334,20 +81,14 @@ bool Level1::Start()
 	// Load Items coins, chests, powerups
 	treasureChest = app->tex->Load(textureChest.GetString());
 	coin = app->tex->Load(textureCoin.GetString());
-	dog = app->tex->Load(textureDog.GetString());
-	bird = app->tex->Load(textureBird.GetString());
-	cat = app->tex->Load(textureCat.GetString());
-	rat = app->tex->Load(textureRat.GetString());
+	
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
 	currentCoinsAnim = &coins;
-	currentDogAnim = &dogsR;
-	currentBirdAnim = &birdR;
-	currentCatAnim = &catsR;
-	currentRatAnim = &ratsR;
 
 	app->player->Enable();
+	app->enemy->Enable();
 	app->map->Colliders();
 	return true;
 }
@@ -417,11 +158,7 @@ bool Level1::Update(float dt)
 	// update animation
 	currentChestAnimation->Update();
 	currentCoinsAnim->Update();
-	currentDogAnim->Update();
-	currentBirdAnim->Update();
-	currentCatAnim->Update();
-	currentRatAnim->Update();
-
+	
 	return true;
 }
 
@@ -443,52 +180,52 @@ bool Level1::PostUpdate()
 		app->render->DrawTexture(treasureChest, 2048, 1248, &rect);
 	}
 
-	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentCatAnim = &catsRunL;
-		app->render->DrawTexture(cat, 630, 1046, &rectCat);
-	}
-	else
-	{
-		app->render->DrawTexture(cat, 630, 1046, &rectCat);
-	}
+	//SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
+	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	//{
+	//	currentCatAnim = &catsRunL;
+	//	app->render->DrawTexture(cat, 630, 1046, &rectCat);
+	//}
+	//else
+	//{
+	//	app->render->DrawTexture(cat, 630, 1046, &rectCat);
+	//}
 
-	SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentRatAnim = &ratsRunL;
-		app->render->DrawTexture(rat, 760, 988, &rectRat);
-	}
-	else
-	{
-		app->render->DrawTexture(rat, 760, 988, &rectRat);
-	}
+	//SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
+	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	//{
+	//	currentRatAnim = &ratsRunL;
+	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
+	//}
+	//else
+	//{
+	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
+	//}
 
-	SDL_Rect rectC = currentCoinsAnim ->GetCurrentFrame();
-	app->render->DrawTexture(coin, 992, 864, &rectC);
+	//SDL_Rect rectC = currentCoinsAnim ->GetCurrentFrame();
+	//app->render->DrawTexture(coin, 992, 864, &rectC);
 
-	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentDogAnim = &dogsDieL;
-		app->render->DrawTexture(dog, 1152, 915, &rectD);
-	}
-	else 
-	{
-		app->render->DrawTexture(dog, 1152, 915, &rectD);
-	}
+	//SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
+	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	//{
+	//	currentDogAnim = &dogsDieL;
+	//	app->render->DrawTexture(dog, 1152, 915, &rectD);
+	//}
+	//else 
+	//{
+	//	app->render->DrawTexture(dog, 1152, 915, &rectD);
+	//}
 
-	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentBirdAnim = &birdFlyL;
-		app->render->DrawTexture(bird, 864, 800, &rectB);
-	}
-	else
-	{
-		app->render->DrawTexture(bird, 864, 800, &rectB);
-	}
+	//SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
+	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	//{
+	//	currentBirdAnim = &birdFlyL;
+	//	app->render->DrawTexture(bird, 864, 800, &rectB);
+	//}
+	//else
+	//{
+	//	app->render->DrawTexture(bird, 864, 800, &rectB);
+	//}
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -512,6 +249,7 @@ bool Level1::CleanUp()
 	LOG("Freeing scene");
 
 	app->player->Disable();
+	app->enemy->Disable();
 	app->map->Disable();
 	app->map->Unload();
 

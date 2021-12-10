@@ -24,6 +24,7 @@ class GameOver;
 class Map;
 class Physics;
 class Player;
+class Enemy;
 class FadeToBlack;
 class Particles;
 
@@ -105,6 +106,7 @@ public:
 	Physics* physics;
 	Particles* particles;
 	Player* player;
+	Enemy* enemy;
 	FadeToBlack* fade;
 	SString title;
 	SString organization;
