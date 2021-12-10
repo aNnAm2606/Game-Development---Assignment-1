@@ -47,12 +47,17 @@ private:
 	SDL_Texture* mist;
 	SDL_Texture* treasureChest;
 	SDL_Texture* coin;
+	SDL_Texture* flag;
 
 	SString textureChest;
 	SString textureCoin;
+	SString tectureFlag;
 
 	Animation coins;
-	
+
+	Animation flags;
+	Animation* currentFlagAnim = nullptr;
+
 	Animation chestClosed;
 	Animation chestOpened;
 	Animation* currentCoinsAnim = nullptr;

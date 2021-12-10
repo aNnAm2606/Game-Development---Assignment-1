@@ -108,11 +108,6 @@ bool Level1::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
 		app->LoadGameRequest();
-		//if (app->level2->F6Load == true)
-		//{
-		//	F6Load = false;
-		//	app->fade->Fade_To_Black(this, (Module*)app->level2);
-		//}
 	}
 	
 	if (app->map->debugColliders == false)
@@ -179,53 +174,6 @@ bool Level1::PostUpdate()
 	{
 		app->render->DrawTexture(treasureChest, 2048, 1248, &rect);
 	}
-
-	//SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
-	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	//{
-	//	currentCatAnim = &catsRunL;
-	//	app->render->DrawTexture(cat, 630, 1046, &rectCat);
-	//}
-	//else
-	//{
-	//	app->render->DrawTexture(cat, 630, 1046, &rectCat);
-	//}
-
-	//SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
-	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	//{
-	//	currentRatAnim = &ratsRunL;
-	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
-	//}
-	//else
-	//{
-	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
-	//}
-
-	//SDL_Rect rectC = currentCoinsAnim ->GetCurrentFrame();
-	//app->render->DrawTexture(coin, 992, 864, &rectC);
-
-	//SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
-	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	//{
-	//	currentDogAnim = &dogsDieL;
-	//	app->render->DrawTexture(dog, 1152, 915, &rectD);
-	//}
-	//else 
-	//{
-	//	app->render->DrawTexture(dog, 1152, 915, &rectD);
-	//}
-
-	//SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
-	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	//{
-	//	currentBirdAnim = &birdFlyL;
-	//	app->render->DrawTexture(bird, 864, 800, &rectB);
-	//}
-	//else
-	//{
-	//	app->render->DrawTexture(bird, 864, 800, &rectB);
-	//}
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;

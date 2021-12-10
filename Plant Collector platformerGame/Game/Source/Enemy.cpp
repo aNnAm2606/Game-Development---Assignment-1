@@ -325,9 +325,6 @@ bool Enemy::Start()
 	catPosition.x = startPosCat.x;
 	catPosition.y = startPosCat.y;
 
-	/*                                    BOX2D                                */
-	//-------------------------------------------------------------------------//
-	// Dog body, shape and fixture with Box2D
 	b2BodyDef dogbody;
 	dogbody.type = b2_dynamicBody;
 	dogbody.position.Set(PIXEL_TO_METERS(dogPosition.x), PIXEL_TO_METERS(dogPosition.y));
@@ -348,9 +345,8 @@ bool Enemy::Start()
 	dogBody->body = bdog;
 	dogBody->width = dogBody->height = dogCircle.m_radius;
 	dogBody->listener = this;
-	dogBody->colType = collisionType::DOG;
+	dogBody->colType = CollisionType::DOG;
 	bdog->SetUserData(dogBody);
-
 
 	// Cat body, shape and fixture with Box2D
 	b2BodyDef catbody;
@@ -373,7 +369,7 @@ bool Enemy::Start()
 	catBody->body = bcat;
 	catBody->width = catBody->height = catCircle.m_radius;
 	catBody->listener = this;
-	catBody->colType = collisionType::CAT;
+	catBody->colType = CollisionType::CAT;
 	bcat->SetUserData(catBody);
 	//---------------------------------------------------------------------------//
 
@@ -474,26 +470,6 @@ bool Enemy::Update(float dt)
 
 	catBody->body->SetLinearVelocity(CatVelocity);
 
-
-
-	//if (app->map->debugColliders == false)
-	//{
-	//	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	//	{
-	//		app->SaveGameRequest();
-	//		F6Load = true;
-	//	}
-	//}
-
-	//if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	//	app->physics->CreateRectangle(250, 100, 32, 32, 0);
-
-	//if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	//{
-	//	app->map->debugColliders = !app->map->debugColliders;
-	//}
-
-
 	// update animation
 
 	currentDogAnim->Update();
@@ -547,26 +523,25 @@ bool Enemy::PostUpdate()
 	return ret;
 }
 
-
 void Enemy::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyA->colType == collisionType::DOG && bodyB->colType == collisionType::DOGLIMITSR)
+	if (bodyA->colType == CollisionType::DOG && bodyB->colType == CollisionType::DOGLIMITSR)
 	{
 		dogLimitR = true;
 		dogLimitL = false;
 	}
-	if (bodyA->colType == collisionType::DOG && bodyB->colType == collisionType::DOGLIMITSL)
+	if (bodyA->colType == CollisionType::DOG && bodyB->colType == CollisionType::DOGLIMITSL)
 	{
 		dogLimitL = true;
 		dogLimitR = false;
 	}
 
-	if (bodyA->colType == collisionType::CAT && bodyB->colType == collisionType::CATLIMITSR)
+	if (bodyA->colType == CollisionType::CAT && bodyB->colType == CollisionType::CATLIMITSR)
 	{
 		catLimitR = true;
 		catLimitL = false;
 	}
-	if (bodyA->colType == collisionType::CAT && bodyB->colType == collisionType::CATLIMITSL)
+	if (bodyA->colType == CollisionType::CAT && bodyB->colType == CollisionType::CATLIMITSL)
 	{
 		catLimitL = true;
 		catLimitR = false;
