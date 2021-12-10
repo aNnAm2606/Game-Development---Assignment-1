@@ -248,7 +248,7 @@ bool App::DoUpdate()
 		}
 
 		if (item->data->IsEnabled())
-			ret = item->data->Update(dt);
+			ret = item->data->Update(deltaTime);
 	}
 
 	return ret;
