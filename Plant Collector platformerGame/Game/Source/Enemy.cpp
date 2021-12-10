@@ -291,6 +291,8 @@ bool Enemy::Awake(pugi::xml_node& config)
 	// Dogs's initial position saved in xml
 	startPosDog.x = config.child("startPositionDog").attribute("x").as_int();
 	startPosDog.y = config.child("startPositionDog").attribute("y").as_int();
+	startPosCat.x = config.child("startPositionCat").attribute("x").as_int();
+	startPosCat.y = config.child("startPositionCat").attribute("y").as_int();
 
 	// Enemy's speed
 	speed = config.child("speed").attribute("value").as_int();
@@ -318,15 +320,17 @@ bool Enemy::Start()
 	currentCatAnim = &catsR;
 	currentRatAnim = &ratsR;
 
-	position.x = startPosDog.x;
-	position.y = startPosDog.y;
+	dogPosition.x = startPosDog.x;
+	dogPosition.y = startPosDog.y;
+	catPosition.x = startPosCat.x;
+	catPosition.y = startPosCat.y;
 
 	/*                                    BOX2D                                */
 	//-------------------------------------------------------------------------//
 	// Dog body, shape and fixture with Box2D
 	b2BodyDef dogbody;
 	dogbody.type = b2_dynamicBody;
-	dogbody.position.Set(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y));
+	dogbody.position.Set(PIXEL_TO_METERS(dogPosition.x), PIXEL_TO_METERS(dogPosition.y));
 	dogbody.fixedRotation = true;
 	//create the body in  the world
 	bdog = app->physics->world->CreateBody(&dogbody);
@@ -346,6 +350,31 @@ bool Enemy::Start()
 	dogBody->listener = this;
 	dogBody->colType = collisionType::DOG;
 	bdog->SetUserData(dogBody);
+
+
+	// Cat body, shape and fixture with Box2D
+	b2BodyDef catbody;
+	catbody.type = b2_dynamicBody;
+	catbody.position.Set(PIXEL_TO_METERS(catPosition.x), PIXEL_TO_METERS(catPosition.y));
+	catbody.fixedRotation = true;
+	//create the body in  the world
+	bcat = app->physics->world->CreateBody(&catbody);
+	//add a shape
+	catCircle.m_radius = PIXEL_TO_METERS(12);;
+	//add fixture
+	b2FixtureDef catfixture;
+	catfixture.shape = &catCircle;
+	catfixture.density = 1.5f;
+	catfixture.friction = 100.0f;
+	//add fixture to body
+	bcat->CreateFixture(&catfixture);
+	// Create our custom PhysBody class
+	catBody = new PhysBody();
+	catBody->body = bcat;
+	catBody->width = catBody->height = catCircle.m_radius;
+	catBody->listener = this;
+	catBody->colType = collisionType::CAT;
+	bcat->SetUserData(catBody);
 	//---------------------------------------------------------------------------//
 
 	return true;
@@ -363,6 +392,7 @@ bool Enemy::Update(float dt)
 {
 	onGround = false;
 	if (dogBody->body->GetLinearVelocity().y == 0) onGround = true;
+	if (catBody->body->GetLinearVelocity().y == 0) onGround = true;
 
 	// Position of enemy is restarted if game is restarted
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
@@ -404,6 +434,48 @@ bool Enemy::Update(float dt)
 
 	dogBody->body->SetLinearVelocity(DogVelocity);
 	
+	// Position of cat is restarted if game is restarted
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		catBody->body->SetTransform({ PIXEL_TO_METERS(startPosCat.x), PIXEL_TO_METERS(startPosCat.y) }, 0.0f);
+	}
+
+	CatVelocity = catBody->body->GetLinearVelocity();
+
+	if (catLimitR == false && catLimitL == true)
+	{
+		CatVelocity.x = 3.0f;
+		if (currentCatAnim != &catsRunR)
+		{
+			catsRunR.Reset();
+			currentCatAnim = &catsRunR;
+		}
+	}
+	else
+	{
+		CatVelocity.x = -3.0f;
+		currentCatAnim = &catsRunL;
+	}
+
+	if (catLimitL == false && catLimitR == true)
+	{
+		CatVelocity.x = -3.0f;
+		if (currentCatAnim != &catsRunL)
+		{
+			catsRunL.Reset();
+			currentCatAnim = &catsRunL;
+		}
+	}
+	else
+	{
+		CatVelocity.x = 3.0f;
+		currentCatAnim = &catsRunR;
+	}
+
+	catBody->body->SetLinearVelocity(CatVelocity);
+
+
+
 	//if (app->map->debugColliders == false)
 	//{
 	//	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -439,17 +511,6 @@ bool Enemy::PostUpdate()
 	bool ret = true;
 
 
-	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentCatAnim = &catsRunL;
-		app->render->DrawTexture(cat, 630, 1046, &rectCat);
-	}
-	else
-	{
-		app->render->DrawTexture(cat, 630, 1046, &rectCat);
-	}
-
 	SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
@@ -461,10 +522,15 @@ bool Enemy::PostUpdate()
 		app->render->DrawTexture(rat, 760, 988, &rectRat);
 	}
 
-
+	//Dog 
 	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
-	dogBody->GetPosition(position.x, position.y);
-	app->render->DrawTexture(dog, position.x - 30, position.y - 30, &rectD);
+	dogBody->GetPosition(dogPosition.x, dogPosition.y);
+	app->render->DrawTexture(dog, dogPosition.x - 30, dogPosition.y - 30, &rectD);
+
+	//Cat 
+	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
+	catBody->GetPosition(catPosition.x, catPosition.y);
+	app->render->DrawTexture(cat, catPosition.x - 30, catPosition.y - 30, &rectCat);
 
 	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -495,6 +561,17 @@ void Enemy::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		dogLimitR = false;
 	}
 
+	if (bodyA->colType == collisionType::CAT && bodyB->colType == collisionType::CATLIMITSR)
+	{
+		catLimitR = true;
+		catLimitL = false;
+	}
+	if (bodyA->colType == collisionType::CAT && bodyB->colType == collisionType::CATLIMITSL)
+	{
+		catLimitL = true;
+		catLimitR = false;
+	}
+
 }
 
 bool Enemy::CleanUp()
@@ -502,6 +579,7 @@ bool Enemy::CleanUp()
 	LOG("Destroying Enemy");
 	bool ret = true;
 	app->tex->UnLoad(texture);
-	/*app->physics->world->DestroyBody(b);*/
+	app->physics->world->DestroyBody(bdog);
+	app->physics->world->DestroyBody(bcat);
 	return ret;
 }

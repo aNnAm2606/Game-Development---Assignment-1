@@ -175,6 +175,22 @@ void Map::Colliders()
 						collider->colType = collisionType::DOGLIMITSL;
 						colliders.add(collider);
 					}
+					else if (mapLayerItem->data->properties.GetProperty("CatLimitsR") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						collider->colType = collisionType::CATLIMITSR;
+						colliders.add(collider);
+					}
+					else if (mapLayerItem->data->properties.GetProperty("CatLimitsL") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						collider->colType = collisionType::CATLIMITSL;
+						colliders.add(collider);
+					}
 				}
 
 			}

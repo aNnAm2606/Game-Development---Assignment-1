@@ -101,14 +101,26 @@ private:
 	Animation* currentRatAnim = nullptr;
 
 	b2Vec2 DogVelocity;
+	b2Vec2 CatVelocity;
+	b2Vec2 RatVelocity;
+	b2Vec2 BirdVelocity;
 
 	bool dogLimitR = false;
 	bool dogLimitL = true;
+	bool catLimitR = false;
+	bool catLimitL = true;
+	bool birdLimitR = false;
+	bool birdLimitL = true;
+	bool ratLimitR = false;
+	bool ratLimitL = true;
 
 
 public:
 	// The current position in the world
-	iPoint position;
+	iPoint dogPosition;
+	iPoint catPosition;
+	iPoint ratPosition;
+	iPoint birdPosition;
 
 	// The enemy's texture
 	SDL_Texture* texture = nullptr;
@@ -126,14 +138,30 @@ public:
 	// Position of the player in the map
 	iPoint positionDog;
 	iPoint startPosDog;
+	iPoint positionCat;
+	iPoint startPosCat;
+	iPoint positionBird;
+	iPoint startPosBird;
+	iPoint positionRat;
+	iPoint startPosRat;
+
 	b2Vec2* velocity;
 
 	// player's body
 	PhysBody* dogBody;
 	b2Body* bdog;
+	PhysBody* catBody;
+	b2Body* bcat;
+	PhysBody* birdBody;
+	b2Body* bbird;
+	PhysBody* ratBody;
+	b2Body* brat;
 
 	//add a shape
 	b2CircleShape dogCircle;
+	b2CircleShape catCircle;
+	b2CircleShape ratCircle;
+	b2CircleShape birdCircle;
 
 	// The speed in which we move the player (pixels per frame)
 	int speed;
