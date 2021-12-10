@@ -323,16 +323,14 @@ bool Enemy::Start()
 
 	/*                                    BOX2D                                */
 	//-------------------------------------------------------------------------//
-	// Player body, shape and fixture with Box2D
+	// Dog body, shape and fixture with Box2D
 	b2BodyDef dogbody;
 	dogbody.type = b2_dynamicBody;
 	dogbody.position.Set(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y));
 	dogbody.fixedRotation = true;
 	//create the body in  the world
 	bdog = app->physics->world->CreateBody(&dogbody);
-	////add a shape
-	//b2PolygonShape playerSquare;
-	// 32x32 is the character's dimension in px
+	//add a shape
 	dogCircle.m_radius = PIXEL_TO_METERS(12);;
 	//add fixture
 	b2FixtureDef dogfixture;
