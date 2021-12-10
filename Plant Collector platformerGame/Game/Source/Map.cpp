@@ -159,6 +159,22 @@ void Map::Colliders()
 						collider->colType = collisionType::CHEST;
 						colliders.add(collider);
 					}
+					else if (mapLayerItem->data->properties.GetProperty("DogLimitsR") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						collider->colType = collisionType::DOGLIMITSR;
+						colliders.add(collider);
+					}
+					else if (mapLayerItem->data->properties.GetProperty("DogLimitsL") == 1)
+					{
+						collider = new PhysBody();
+						collider->listener = this;
+						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
+						collider->colType = collisionType::DOGLIMITSL;
+						colliders.add(collider);
+					}
 				}
 
 			}
