@@ -32,8 +32,8 @@ Enemy::Enemy(bool startEnabled) : Module(startEnabled)
 	dogsL.PushBack({ 64, 256, 64, 64 });
 	dogsL.PushBack({ 128, 256, 64, 64 });
 	dogsL.PushBack({ 192, 256, 64, 64 });
-	dogsR.loop = true;
-	dogsR.speed = 0.05f;
+	dogsL.loop = true;
+	dogsL.speed = 0.05f;
 
 	dogsBarkR.PushBack({ 192, 320, 64, 64 });
 	dogsBarkR.PushBack({ 128, 320, 64, 64 });
@@ -372,36 +372,40 @@ bool Enemy::Update(float dt)
 		dogBody->body->SetTransform({ PIXEL_TO_METERS(startPosDog.x), PIXEL_TO_METERS(startPosDog.y) }, 0.0f);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_REPEAT)
+	DogVelocity = dogBody->body->GetLinearVelocity();
+	
+	if (dogLimitR == false && dogLimitL == true)
 	{
-		b2Vec2 vel = dogBody->body->GetLinearVelocity();
-		vel.x = 3.0f;
-
-		if (onGround == true)
+		DogVelocity.x = 3.0f;
+		if (currentDogAnim != &dogsRunR)
 		{
-			vel.x = 3.0f;
-			if (currentDogAnim != &dogsRunR)
-			{
-				dogsRunR.Reset();
-				currentDogAnim = &dogsRunR;
-			}
+			dogsRunR.Reset();
+			currentDogAnim = &dogsRunR;
 		}
-
-		dogBody->body->SetLinearVelocity(vel);
 	}
-
-
-
-	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_UP)
+	else 	
 	{
-		
-			if (currentDogAnim != &dogsR)
-			{
-				dogsR.Reset();
-				currentDogAnim = &dogsR;
-			}
-		
+		DogVelocity.x = -3.0f;
+		currentDogAnim = &dogsRunL;
 	}
+
+	if (dogLimitL == false && dogLimitR == true)
+	{
+		DogVelocity.x = -3.0f;
+		if (currentDogAnim != &dogsRunL)
+		{
+			dogsRunL.Reset();
+			currentDogAnim = &dogsRunL;
+		}
+	}
+	else
+	{
+		DogVelocity.x = 3.0f;
+		currentDogAnim = &dogsRunR;
+	}
+
+	dogBody->body->SetLinearVelocity(DogVelocity);
+	
 	//if (app->map->debugColliders == false)
 	//{
 	//	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -480,33 +484,18 @@ bool Enemy::PostUpdate()
 }
 
 
-void Enemy::OnCollision(Collider* collider)
+void Enemy::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	/*if (!invincible) health--;
-	if (health <= 0)
+	if (bodyA->colType == collisionType::DOG && bodyB->colType == collisionType::DOGLIMITSR)
 	{
-		App->particles->AddParticle(App->particles->enemyExplosion, position.x, position.y);
-		int random = rand() % 100;
-
-		if (powerUp)
-		{
-			if (random <= 3)
-			{
-				App->particles->AddParticle(App->particles->powerUp_Auto, position.x, position.y, Collider::Type::PU_AUTO);
-			}
-			else if (random >= 50 && random <= 55)
-			{
-				App->particles->AddParticle(App->particles->powerUp_ThreeWay, position.x, position.y, Collider::Type::PU_THREEWAY);
-			}
-			else if (random >= 96)
-			{
-				App->particles->AddParticle(App->particles->powerUp_Pow, position.x, position.y, Collider::Type::PU_POW);
-			}
-		}
-		App->audio->PlayFx(destroyedFx);
-
-		SetToDelete();*/
-	/*}*/
+		dogLimitR = true;
+		dogLimitL = false;
+	}
+	if (bodyA->colType == collisionType::DOG && bodyB->colType == collisionType::DOGLIMITSL)
+	{
+		dogLimitL = true;
+		dogLimitR = false;
+	}
 
 }
 

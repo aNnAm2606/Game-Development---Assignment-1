@@ -26,7 +26,8 @@ public:
 
 	// Collision response
 	// Triggers an animation and a sound fx
-	virtual void OnCollision(Collider* collider);
+	// Collision callback, called when the player intersects with another collider
+	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
 
 
 	// Called before render is available
@@ -98,6 +99,11 @@ private:
 	Animation* currentBirdAnim = nullptr;
 	Animation* currentCatAnim = nullptr;
 	Animation* currentRatAnim = nullptr;
+
+	b2Vec2 DogVelocity;
+
+	bool dogLimitR = false;
+	bool dogLimitL = true;
 
 
 public:
