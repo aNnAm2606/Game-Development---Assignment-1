@@ -325,7 +325,7 @@ bool Enemy::Start()
 	//-------------------------------------------------------------------------//
 	// Player body, shape and fixture with Box2D
 	b2BodyDef dogbody;
-	dogbody.type = b2_staticBody;
+	dogbody.type = b2_dynamicBody;
 	dogbody.position.Set(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y));
 	dogbody.fixedRotation = true;
 	//create the body in  the world
@@ -372,6 +372,36 @@ bool Enemy::Update(float dt)
 		dogBody->body->SetTransform({ PIXEL_TO_METERS(startPosDog.x), PIXEL_TO_METERS(startPosDog.y) }, 0.0f);
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_REPEAT)
+	{
+		b2Vec2 vel = dogBody->body->GetLinearVelocity();
+		vel.x = 3.0f;
+
+		if (onGround == true)
+		{
+			vel.x = 3.0f;
+			if (currentDogAnim != &dogsRunR)
+			{
+				dogsRunR.Reset();
+				currentDogAnim = &dogsRunR;
+			}
+		}
+
+		dogBody->body->SetLinearVelocity(vel);
+	}
+
+
+
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_UP)
+	{
+		
+			if (currentDogAnim != &dogsR)
+			{
+				dogsR.Reset();
+				currentDogAnim = &dogsR;
+			}
+		
+	}
 	//if (app->map->debugColliders == false)
 	//{
 	//	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -431,15 +461,8 @@ bool Enemy::PostUpdate()
 
 
 	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentDogAnim = &dogsDieL;
-		app->render->DrawTexture(dog, 1152, 915, &rectD);
-	}
-	else 
-	{
-		app->render->DrawTexture(dog, 1152, 915, &rectD);
-	}
+	dogBody->GetPosition(position.x, position.y);
+	app->render->DrawTexture(dog, position.x - 30, position.y - 30, &rectD);
 
 	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
