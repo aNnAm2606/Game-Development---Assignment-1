@@ -15,7 +15,7 @@
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
-enum collisionType {
+enum CollisionType {
 	NONE = -1,
 	PLAYER,
 	DOG,
@@ -31,7 +31,8 @@ enum collisionType {
 	DOGLIMITSR,
 	DOGLIMITSL,
 	CATLIMITSR,
-	CATLIMITSL
+	CATLIMITSL,
+	CHECKPOINT
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies
@@ -50,7 +51,7 @@ public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
-	collisionType colType;
+	CollisionType colType;
 };
 
 // Module --------------------------------------
