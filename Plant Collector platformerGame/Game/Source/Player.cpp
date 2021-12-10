@@ -390,6 +390,14 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		chestFound = true;
 	}
 	else chestFound = false;
+
+	//ENEMY LOGIC
+
+	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::DOG)
+	{
+		LOG("THE DOG BIT YOU!");
+		playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+	}
 }
 
 bool Player::LoadState(pugi::xml_node& data)
