@@ -46,6 +46,7 @@ public:
 	// Position of the player in the map
 	iPoint position;
 	iPoint startPos;
+	iPoint checkPointPos;
 	b2Vec2* velocity;
 
 	// player's body
@@ -103,6 +104,8 @@ public:
 	bool chestOpen = false;
 	bool ladderClose = false;
 	bool GodMode = false;
+	bool checkPoint = false;
+	bool checkPointReached = false;
 	bool win = false;
 
 

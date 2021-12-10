@@ -136,6 +136,8 @@ bool Player::Start()
 	chestFound = false;
 	chestOpen = false;
 	GodMode = false;
+	checkPoint = false;
+	checkPointReached = false;
 	win = false;
 	lives = 3;
 
@@ -167,7 +169,7 @@ bool Player::Start()
 	playerBody->body =b;
 	playerBody->width = playerBody->height = playerCircle.m_radius;
 	playerBody->listener = this;
-	playerBody->colType = collisionType::PLAYER;
+	playerBody->colType = CollisionType::PLAYER;
 	b->SetUserData(playerBody);
 	//---------------------------------------------------------------------------//
 
@@ -316,10 +318,26 @@ bool Player::Update(float dt)
 			lives-=1;
 			if (lives > 0)
 			{
-				playerBody->body->SetTransform({ PIXEL_TO_METERS(startPos.x), PIXEL_TO_METERS(startPos.y) }, 0.0f);
-				LOG("lives count: %i", lives);
+				if (checkPointReached == false)
+				{
+					playerBody->body->SetTransform({ PIXEL_TO_METERS(startPos.x), PIXEL_TO_METERS(startPos.y) }, 0.0f);
+					LOG("lives count: %i", lives);
+				}
+				else
+				{
+					playerBody->body->SetTransform({ PIXEL_TO_METERS(checkPointPos.x), PIXEL_TO_METERS(checkPointPos.y) }, 0.0f);
+					LOG("lives count: %i", lives);
+				}
 			}
 		}
+	}
+
+	if (checkPoint == true)
+	{
+		checkPointPos.x = position.x;
+		checkPointPos.y = position.y;
+		checkPoint = false;
+		checkPointReached = true;
 	}
 
 	if (chestFound == true)
@@ -350,7 +368,7 @@ bool Player::PostUpdate()
 void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	// Ladders doesn't work for now
-	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::LADDER)
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::LADDER)
 	{
 		LOG("it works fst part");
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT  && playerBody->body->GetLinearVelocity().y < -0.25f)
@@ -361,7 +379,7 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		
 	}
 
-	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::STONEWIN)
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::STONEWIN)
 	{
 		if (chestOpen == true) 
 		{
@@ -370,30 +388,36 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 	}
 
-	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::CONTROLS)
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CONTROLS)
 	{
 		LOG("these are the controls");
 		controlsVisible = true;
 	}
 	else controlsVisible = false;
 
-	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::TUORIALS)
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::TUORIALS)
 	{
 		LOG("tutorial!");
 		tutorialVisible = true;
 	}
 	else tutorialVisible = false;
 
-	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::CHEST)
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHEST)
 	{
 		LOG("open chest!");
 		chestFound = true;
 	}
 	else chestFound = false;
 
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHECKPOINT)
+	{
+		LOG("Checkpoint reached!");
+		checkPoint = true;
+	}
+
 	//ENEMY LOGIC
 
-	if (bodyA->colType == collisionType::PLAYER && bodyB->colType == collisionType::DOG)
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::DOG)
 	{
 		LOG("THE DOG BIT YOU!");
 		playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
