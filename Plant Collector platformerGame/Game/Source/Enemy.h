@@ -6,6 +6,7 @@
 #include "Point.h"
 #include "Box2D/Box2D/Box2D.h"
 #include "List.h"
+#include "Physics.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -116,6 +117,7 @@ private:
 
 
 public:
+
 	// The current position in the world
 	iPoint dogPosition;
 	iPoint catPosition;
