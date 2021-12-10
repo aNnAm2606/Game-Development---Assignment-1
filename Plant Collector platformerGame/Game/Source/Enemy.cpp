@@ -293,6 +293,8 @@ bool Enemy::Awake(pugi::xml_node& config)
 	startPosDog.y = config.child("startPositionDog").attribute("y").as_int();
 	startPosCat.x = config.child("startPositionCat").attribute("x").as_int();
 	startPosCat.y = config.child("startPositionCat").attribute("y").as_int();
+	startPosBird.x = config.child("startPositionBird").attribute("x").as_int();
+	startPosBird.y = config.child("startPositionBird").attribute("y").as_int();
 
 	// Enemy's speed
 	speed = config.child("speed").attribute("value").as_int();
@@ -324,6 +326,8 @@ bool Enemy::Start()
 	dogPosition.y = startPosDog.y;
 	catPosition.x = startPosCat.x;
 	catPosition.y = startPosCat.y;
+	birdPosition.x = startPosBird.x;
+	birdPosition.y = startPosBird.y;
 
 	/*                                    BOX2D                                */
 	//-------------------------------------------------------------------------//
@@ -375,6 +379,33 @@ bool Enemy::Start()
 	catBody->listener = this;
 	catBody->colType = collisionType::CAT;
 	bcat->SetUserData(catBody);
+
+
+	// Bird body, shape and fixture with Box2D
+	b2BodyDef birdbody;
+	birdbody.type = b2_dynamicBody;
+	birdbody.position.Set(PIXEL_TO_METERS(birdPosition.x), PIXEL_TO_METERS(birdPosition.y));
+	birdbody.fixedRotation = true;
+	birdbody.allowSleep = true;
+	/*birdbody.gravityScale = 0;*/
+	//create the body in  the world
+	bbird = app->physics->world->CreateBody(&birdbody);
+	//add a shape
+	birdCircle.m_radius = PIXEL_TO_METERS(12);;
+	//add fixture
+	b2FixtureDef birdfixture;
+	birdfixture.shape = &birdCircle;
+	birdfixture.density = 0.0f;
+	birdfixture.friction = 100.0f;
+	//add fixture to body
+	bbird->CreateFixture(&birdfixture);
+	// Create our custom PhysBody class
+	birdBody = new PhysBody();
+	birdBody->body = bcat;
+	birdBody->width = catBody->height = catCircle.m_radius;
+	birdBody->listener = this;
+	birdBody->colType = collisionType::BIRD;
+	bbird->SetUserData(birdBody);
 	//---------------------------------------------------------------------------//
 
 	return true;
@@ -393,6 +424,7 @@ bool Enemy::Update(float dt)
 	onGround = false;
 	if (dogBody->body->GetLinearVelocity().y == 0) onGround = true;
 	if (catBody->body->GetLinearVelocity().y == 0) onGround = true;
+
 
 	// Position of enemy is restarted if game is restarted
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
@@ -475,6 +507,46 @@ bool Enemy::Update(float dt)
 	catBody->body->SetLinearVelocity(CatVelocity);
 
 
+	// Position of bird is restarted if game is restarted
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		birdBody->body->SetTransform({ PIXEL_TO_METERS(startPosBird.x), PIXEL_TO_METERS(startPosBird.y) }, 0.0f);
+	}
+
+	BirdVelocity = birdBody->body->GetLinearVelocity();
+
+	if (birdLimitR == false && birdLimitL == true)
+	{
+		BirdVelocity.x = 3.0f;
+		if (currentBirdAnim != &birdFlyR)
+		{
+			birdFlyR.Reset();
+			currentBirdAnim = &birdFlyR;
+		}
+	}
+	else
+	{
+		BirdVelocity.x = -3.0f;
+		currentBirdAnim = &birdFlyL;
+	}
+
+	if (birdLimitL == false && birdLimitR == true)
+	{
+		BirdVelocity.x = -3.0f;
+		if (currentBirdAnim != &birdFlyL)
+		{
+			birdFlyL.Reset();
+			currentBirdAnim = &birdFlyL;
+		}
+	}
+	else
+	{
+		BirdVelocity.x = 3.0f;
+		currentBirdAnim = &birdFlyR;
+	}
+
+	birdBody->body->SetLinearVelocity(BirdVelocity);
+
 
 	//if (app->map->debugColliders == false)
 	//{
@@ -532,16 +604,10 @@ bool Enemy::PostUpdate()
 	catBody->GetPosition(catPosition.x, catPosition.y);
 	app->render->DrawTexture(cat, catPosition.x - 30, catPosition.y - 30, &rectCat);
 
+	//Bird
 	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentBirdAnim = &birdFlyL;
-		app->render->DrawTexture(bird, 864, 800, &rectB);
-	}
-	else
-	{
-		app->render->DrawTexture(bird, 864, 800, &rectB);
-	}
+	birdBody->GetPosition(birdPosition.x, birdPosition.y);
+	app->render->DrawTexture(bird, birdPosition.x - 30, birdPosition.y - 30, &rectB);
 
 	
 	return ret;
@@ -572,6 +638,17 @@ void Enemy::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		catLimitR = false;
 	}
 
+	if (bodyA->colType == collisionType::BIRD && bodyB->colType == collisionType::BIRDLIMITSR)
+	{
+		birdLimitR = true;
+		birdLimitL = false;
+	}
+	if (bodyA->colType == collisionType::BIRD && bodyB->colType == collisionType::BIRDLIMITSL)
+	{
+		birdLimitL = true;
+		birdLimitR = false;
+	}
+
 }
 
 bool Enemy::CleanUp()
@@ -581,5 +658,6 @@ bool Enemy::CleanUp()
 	app->tex->UnLoad(texture);
 	app->physics->world->DestroyBody(bdog);
 	app->physics->world->DestroyBody(bcat);
+	app->physics->world->DestroyBody(bbird);
 	return ret;
 }
