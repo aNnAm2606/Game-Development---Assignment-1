@@ -26,7 +26,9 @@ enum collisionType {
 	CHEST,
 	STONE,
 	CONTROLS,
-	TUORIALS
+	TUORIALS,
+	DOGLIMITSR,
+	DOGLIMITSL
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies
