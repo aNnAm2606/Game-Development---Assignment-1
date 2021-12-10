@@ -8,6 +8,14 @@
 #include "List.h"
 
 struct SDL_Texture;
+enum Type {
+	NOTHING = -1,
+	COIN,
+	EXPLOSIONS,
+	HEARTS,
+	KEY,
+	POWERUP
+};
 
 class Particles : public Module
 {
@@ -20,6 +28,9 @@ public:
 
 	// Awake
 	bool Awake(pugi::xml_node&);
+
+	// Create Particles
+	void CreateParticles(Type type, int x, int y);
 
 	// Called when the module is activated
 	// Loads the necessary textures for the player
@@ -50,6 +61,9 @@ public:
 	// player's body
 	PhysBody* playerBody;
 	b2Body* b;
+
+	// Type of particle
+	Type type;
 
 	//add a shape
 	b2CircleShape playerCircle;
