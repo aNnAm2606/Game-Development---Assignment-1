@@ -52,10 +52,21 @@ public:
 	// player's body
 	PhysBody* playerBody;
 	b2Body* b;
+	b2Body* sens;
 
 	//add a shape
 	b2CircleShape playerCircle;
 	b2PolygonShape playerSensor;
+	int  playerHitbox[16] = {
+		0, 2,
+		0, 24,
+		2, 26,
+		24, 26,
+		26, 24,
+		26, 2,
+		24, 0,
+		2, 0
+	};
 
 	// The speed in which we move the player (pixels per frame)
 	int speed;

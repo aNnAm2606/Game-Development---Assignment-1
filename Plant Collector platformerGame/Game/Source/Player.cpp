@@ -154,26 +154,37 @@ bool Player::Start()
 	pbody.fixedRotation = true;
 	//create the body in  the world
 	b = app->physics->world->CreateBody(&pbody);
-	////add a shape
-	//b2PolygonShape playerSquare;
-	// 32x32 is the character's dimension in px
-	playerCircle.m_radius = PIXEL_TO_METERS(14);
-	//add fixture
-	b2FixtureDef playerfixture;
-	playerfixture.shape = &playerCircle;
-	playerfixture.density = 1.5f;
-	playerfixture.friction = 100.0f;
-	//add fixture to body
-	b->CreateFixture(&playerfixture);
+
+	// Create SHAPE
+	int size = 16;
+	int* points = playerHitbox;
+	b2ChainShape shape;
+	b2Vec2* p = new b2Vec2[size / 2];
+	for (uint i = 0; i < size / 2; ++i)
+	{
+		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
+		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
+	}
+	shape.CreateLoop(p, size / 2);
+
+	b2FixtureDef playerHitbox;
+	playerHitbox.shape = &shape;
+	playerHitbox.isSensor = false;
+	playerHitbox.density = 1.5f;
+	playerHitbox.friction = 100.0f;
+
+	b->CreateFixture(&playerHitbox);
 	// Create our custom PhysBody class
+
 	playerBody = new PhysBody();
 	playerBody->body =b;
 	playerBody->width = playerBody->height = playerCircle.m_radius;
 	playerBody->listener = this;
-	playerBody->colType = CollisionType::PLAYER;
+	playerBody->colType = CollisionType::PLAYER;	
 	b->SetUserData(playerBody);
-	//---------------------------------------------------------------------------//
 
+	//---------------------------------------------------------------------------//
+	//app->physics->CreateChain(position.x, position.y, playerHitbox, 24, 0);
 
 	return ret;
 }
@@ -362,7 +373,7 @@ bool Player::PostUpdate()
 	chestRect = openTut.GetCurrentFrame();
 	ladderRect = ladderTut.GetCurrentFrame();
 	playerBody->GetPosition(position.x, position.y);
-	app->render->DrawTexture(texture, position.x-16, position.y-16, &rect);
+	app->render->DrawTexture(texture, position.x-2, position.y-4, &rect);
 	return ret;
 }
 
@@ -374,7 +385,7 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		LOG("it works fst part");
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT  && playerBody->body->GetLinearVelocity().y < -0.25f)
 		{
-			playerBody->body->ApplyLinearImpulse({ 0,-0.43f }, { 0,0 }, true);
+			playerBody->body->ApplyLinearImpulse({ 0,-0.16f }, { 0,0 }, true);
 			LOG("it works scnd part");
 		}
 		
