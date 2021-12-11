@@ -53,6 +53,16 @@ public:
 
 	bool CleanUp() override;
 
+private:
+
+	SDL_Texture* coin;
+
+	SString textureCoin;
+
+	Animation coins;
+
+	Animation* currentCoinsAnim = nullptr;
+
 public:
 	iPoint position;
 	iPoint startPos;
@@ -106,6 +116,7 @@ public:
 	SDL_Rect tutRect;
 	SDL_Rect chestRect;
 	SDL_Rect ladderRect;
+	SDL_Rect coinRect;
 	SDL_Rect rect;
 
 	// A flag to detect when the player has been destroyed
@@ -115,6 +126,8 @@ public:
 	bool chestFound = false;
 	bool chestOpen = false;
 	bool ladderClose = false;
+	bool coinCollision = false;
+	bool coinCollected = false;
 	bool GodMode = false;
 	bool win = false;
 
