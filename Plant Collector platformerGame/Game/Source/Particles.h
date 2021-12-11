@@ -57,13 +57,20 @@ private:
 
 	SDL_Texture* coin;
 	SDL_Texture* noCoin;
+	SDL_Texture* heart;
+	SDL_Texture* noHeart;
+
 
 	SString textureCoin;
+	SString textureHeart;
 
 	Animation coins;
 	Animation noCoins;
+	Animation hearts;
+	Animation noHearts;
 
 	Animation* currentCoinsAnim = nullptr;
+	Animation* currentHeartsAnim = nullptr;
 
 public:
 	iPoint position;
@@ -119,6 +126,7 @@ public:
 	SDL_Rect chestRect;
 	SDL_Rect ladderRect;
 	SDL_Rect coinRect;
+	SDL_Rect heartRect;
 	SDL_Rect rect;
 
 	// A flag to detect when the player has been destroyed

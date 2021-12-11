@@ -23,6 +23,11 @@ Particles::Particles(bool startEnabled) : Module(startEnabled)
 	coins.PushBack({ 30, 0, 10, 10 });
 	coins.loop = true;
 	coins.speed = 0.1f;
+
+	hearts.PushBack({ 0, 0, 10, 10 });
+	hearts.PushBack({ 10, 0, 10, 10 });
+	hearts.loop = true;
+	hearts.speed = 0.1f;
 }
 
 Particles::~Particles()
@@ -35,6 +40,7 @@ bool Particles::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Particles");
 	textureCoin.Create(config.child("textureCoin").child_value());
+	textureHeart.Create(config.child("textureHeart").child_value());
 
 	return true;
 }
@@ -45,9 +51,11 @@ bool Particles::Start()
 
 	// Load Items coins, chests, powerups
 	coin = app->tex->Load(textureCoin.GetString());
+	heart = app->tex->Load(textureHeart.GetString());
 
 	// stating animation
 	currentCoinsAnim = &coins;
+	currentHeartsAnim = &hearts;
 
 
 	return true;
@@ -60,26 +68,36 @@ bool Particles::Update(float dt)
 	//if ((coinCollision == true || app->map->debugColliders == true) && app->particles->coinCollected == false) app->render->DrawTexture(&app->particles->coinRect);
 	// update animation
 	currentCoinsAnim->Update();
+	currentHeartsAnim->Update();
 
 	return true;
 }
 
 bool Particles::PostUpdate()
 {
-	bool ret = true;
+
 
 	coinRect = currentCoinsAnim->GetCurrentFrame();
 	if (app->particles->coinCollision == true)
 	{
 		/*currentCoinsAnim = &noCoin;*/
-		app->render->DrawTexture(coin, 288, 992, &coinRect);
+		app->render->DrawTexture(coin, 672, 960, &coinRect);
 	}
 	else
 	{
 		app->render->DrawTexture(coin, 672, 960, &coinRect);
 	}
 
-	return ret;
+	heartRect = currentHeartsAnim->GetCurrentFrame();
+	//if (app->particles->coinCollision == true)
+	//{
+	//	/*currentCoinsAnim = &noCoin;*/
+	//	app->render->DrawTexture(heart, 288, 992, &heartRect);
+	//}
+	
+		app->render->DrawTexture(heart, 288, 992, &heartRect);
+
+	return true;
 }
 
 void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
