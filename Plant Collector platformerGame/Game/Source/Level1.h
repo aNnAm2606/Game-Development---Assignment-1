@@ -70,6 +70,8 @@ public:
 	SDL_Rect assetRect;
 	SDL_Rect ChestRect;
 	SDL_Rect flagRect;
+
+	bool dontPlayAudio = false;
 	bool F6Load = false;
 };
 

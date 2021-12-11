@@ -110,6 +110,9 @@ bool Level1::Start()
 
 	//app->particles->CreateParticles(COIN, app->player->position.x + 20, app->player->position.y);
 
+	// Reset
+	dontPlayAudio = false;
+
 	return true;
 }
 
@@ -201,16 +204,14 @@ bool Level1::PostUpdate()
 	{
 		currentFlagAnim = &flag1;
 		app->render->DrawTexture(flag, 1728, 1040, &flagRect);
+		if (dontPlayAudio == false) app->audio->PlayFx(checkPointSound);
+		dontPlayAudio = true;
 	}
 	else
 	{
 		app->render->DrawTexture(flag, 1728, 1040, &flagRect);
 	}
 
-	if (app->player->checkPointCollision == true) 
-	{
-		app->audio->PlayFx(checkPointSound);
-	}
 	// Game WiN/Lose
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -237,7 +238,6 @@ bool Level1::CleanUp()
 	app->enemy->Disable();
 	app->map->Disable();
 	app->map->Unload();
-	app->audio->CleanUp();
 
 	return true;
 }

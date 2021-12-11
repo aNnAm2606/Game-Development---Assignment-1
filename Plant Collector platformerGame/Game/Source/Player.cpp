@@ -335,15 +335,10 @@ bool Player::Update(float dt)
 
 	if (checkPoint == true)
 	{
-		checkPointPos.x = position.x+38;
-		checkPointPos.y = position.y-64;
+		checkPointPos.x = position.x;
+		checkPointPos.y = position.y;
 		checkPoint = false;
 		checkPointReached = true;
-		checkPointCollision = true;
-	}
-	else
-	{
-		checkPointCollision = false;
 	}
 
 	if (chestFound == true)
