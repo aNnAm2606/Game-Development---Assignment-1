@@ -15,6 +15,7 @@
   <audio>
     <soundtrack>Assets/audio/music/Day_of_the_river.ogg</soundtrack>
     <fx>Assets/audio/fx/.wav</fx>
+    <flagsound>Assets/audio/checkPointSound.wav</flagsound>
     <volume value="128" valueFx="128" />
   </audio>
 

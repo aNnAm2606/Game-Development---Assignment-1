@@ -64,6 +64,7 @@ private:
 	Animation* currentCoinsAnim = nullptr;
 	Animation* currentChestAnimation = nullptr;
 
+	uint checkPointSound;
 
 public:
 	SDL_Rect assetRect;
