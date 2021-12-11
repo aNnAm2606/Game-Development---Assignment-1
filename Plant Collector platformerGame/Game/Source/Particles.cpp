@@ -13,6 +13,34 @@
 
 #include <stdio.h>
 
+//void Particles::CreateParticles(Type type_, float x, float y)
+//{
+//	Particles* p = new Particles();
+//	p->type = type_;
+//	p->position.x = x - 8;
+//	p->position.y = y - 8;
+//	p->b = app->physics->CreateRectangleSensor(x, y, 16, 16, 1);
+//	p->b->listener = this;
+//	if (type == COIN)
+//	{
+//		coins.PushBack({ 0, 0, 10, 10 });
+//		coins.PushBack({ 10, 0, 10, 10 });
+//		coins.PushBack({ 20, 0, 10, 10 });
+//		coins.PushBack({ 30, 0, 10, 10 });
+//		coins.loop = true;
+//		coins.speed = 0.1f;
+//	}
+//	if (type == HEART)
+//	{
+//		p->hearts.PushBack({ 0, 0, 10, 10 });
+//		p->hearts.PushBack({ 10, 0, 10, 10 });
+//		p->hearts.loop = true;
+//		p->hearts.speed = 0.1f;
+//	}
+//
+//	particles.add(p);
+//}
+
 Particles::Particles(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("Particles");
