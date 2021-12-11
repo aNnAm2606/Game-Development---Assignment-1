@@ -55,9 +55,13 @@ public:
 
 	//add a shape
 	b2CircleShape playerCircle;
+	b2PolygonShape playerSensor;
 
 	// The speed in which we move the player (pixels per frame)
 	int speed;
+
+	// Score
+	int points;
 
 	// Jumps of the player
 	int jump;
