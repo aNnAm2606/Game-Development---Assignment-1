@@ -46,14 +46,11 @@ private:
 	SDL_Texture* bushes;
 	SDL_Texture* mist;
 	SDL_Texture* treasureChest;
-	SDL_Texture* coin;
 	SDL_Texture* flag;
 
 	SString textureChest;
-	SString textureCoin;
 	SString textureFlag;
 
-	Animation coins;
 
 	Animation flag0;
 	Animation flag1;
@@ -61,7 +58,6 @@ private:
 
 	Animation chestClosed;
 	Animation chestOpened;
-	Animation* currentCoinsAnim = nullptr;
 	Animation* currentChestAnimation = nullptr;
 
 	uint checkPointSound;

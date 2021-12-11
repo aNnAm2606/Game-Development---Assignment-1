@@ -23,13 +23,6 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("Level1");
 
-	coins.PushBack({ 0, 0, 10, 10 });
-	coins.PushBack({ 10, 0, 10, 10 });
-	coins.PushBack({ 20, 0, 10, 10 });
-	coins.PushBack({ 30, 0, 10, 10 });
-	coins.loop = true;
-	coins.speed = 0.1f;
-
 	//Chest Animation
 	chestClosed.PushBack({ 0, 0, 32, 32 });
 	chestClosed.loop = false;
@@ -62,7 +55,6 @@ bool Level1::Awake(pugi::xml_node& config)
 	LOG("Loading Level 1");
 	bool ret = true;
 	textureChest.Create(config.child("textureChest").child_value());
-	textureCoin.Create(config.child("textureCoin").child_value());
 	textureFlag.Create(config.child("textureFlag").child_value());
 
 	return ret;
@@ -94,17 +86,15 @@ bool Level1::Start()
 
 	// Load Items coins, chests, powerups
 	treasureChest = app->tex->Load(textureChest.GetString());
-	coin = app->tex->Load(textureCoin.GetString());
 	flag = app->tex->Load(textureFlag.GetString());
 	
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
-	currentCoinsAnim = &coins;
 	currentFlagAnim = &flag0;
 
 	app->player->Enable();
-	//app->particles->Enable();
+	app->particles->Enable();
 	app->enemy->Enable();
 	app->map->Colliders();
 
@@ -175,7 +165,6 @@ bool Level1::Update(float dt)
 
 	// update animation
 	currentChestAnimation->Update();
-	currentCoinsAnim->Update();
 	currentFlagAnim->Update();
 	
 	return true;
@@ -236,6 +225,7 @@ bool Level1::CleanUp()
 
 	app->player->Disable();
 	app->enemy->Disable();
+	app->particles->Disable();
 	app->map->Disable();
 	app->map->Unload();
 

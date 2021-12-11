@@ -9,12 +9,20 @@
 #include "Module.h"
 #include "Log.h"
 #include "Physics.h"
+#include "Map.h"
 
 #include <stdio.h>
 
 Particles::Particles(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("particles");
+
+	coins.PushBack({ 0, 0, 10, 10 });
+	coins.PushBack({ 10, 0, 10, 10 });
+	coins.PushBack({ 20, 0, 10, 10 });
+	coins.PushBack({ 30, 0, 10, 10 });
+	coins.loop = true;
+	coins.speed = 0.1f;
 }
 
 Particles::~Particles()
@@ -26,36 +34,62 @@ Particles::~Particles()
 bool Particles::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Particles");
-	bool ret = true;
+	textureCoin.Create(config.child("textureCoin").child_value());
 
-	return ret;
+	return true;
 }
 
 bool Particles::Start()
 {
 	LOG("Loading Particle textures");
 
-	bool ret = true;
+	// Load Items coins, chests, powerups
+	coin = app->tex->Load(textureCoin.GetString());
 
-	return ret;
+	// stating animation
+	currentCoinsAnim = &coins;
+
+
+	return true;
 }
 
 bool Particles::Update(float dt)
 {
-	bool ret = true;
 
-	return ret;
+
+	//if ((coinCollision == true || app->map->debugColliders == true) && app->particles->coinCollected == false) app->render->DrawTexture(&app->particles->coinRect);
+	// update animation
+	currentCoinsAnim->Update();
+
+	return true;
 }
 
 bool Particles::PostUpdate()
 {
 	bool ret = true;
 
+	coinRect = currentCoinsAnim->GetCurrentFrame();
+	if (app->particles->coinCollision == true)
+	{
+		/*currentCoinsAnim = &noCoin;*/
+		app->render->DrawTexture(coin, 288, 992, &coinRect);
+	}
+	else
+	{
+		app->render->DrawTexture(coin, 672, 960, &coinRect);
+	}
+
 	return ret;
 }
 
 void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::COINS)
+	{
+		LOG("Coin collected");
+		coinCollision = true;
+	}
+	else coinCollision = false;
 
 }
 

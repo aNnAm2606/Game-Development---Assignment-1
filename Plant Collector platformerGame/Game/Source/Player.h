@@ -109,6 +109,7 @@ public:
 	SDL_Rect tutRect;
 	SDL_Rect chestRect;
 	SDL_Rect ladderRect;
+	SDL_Rect coinRect;
 	SDL_Rect rect;
 
 	// A flag to detect when the player has been destroyed

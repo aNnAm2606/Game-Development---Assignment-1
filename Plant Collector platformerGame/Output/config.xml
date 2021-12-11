@@ -30,9 +30,12 @@
 
   <Level1>
     <textureChest>Assets/textures/Chest.png</textureChest>
-    <textureCoin>Assets/textures/Coin.png</textureCoin>
     <textureFlag>Assets/textures/Flag.png</textureFlag>
   </Level1>
+
+  <Particles>
+    <textureCoin>Assets/textures/Coin.png</textureCoin>
+  </Particles>
   
   <Enemy>
     <textureDog>Assets/textures/Dog/Attack.png</textureDog>
