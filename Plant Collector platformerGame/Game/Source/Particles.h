@@ -56,10 +56,12 @@ public:
 private:
 
 	SDL_Texture* coin;
+	SDL_Texture* noCoin;
 
 	SString textureCoin;
 
 	Animation coins;
+	Animation noCoins;
 
 	Animation* currentCoinsAnim = nullptr;
 

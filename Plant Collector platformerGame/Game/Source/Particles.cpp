@@ -35,9 +35,8 @@ bool Particles::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Particles");
 	textureCoin.Create(config.child("textureCoin").child_value());
-	bool ret = true;
 
-	return ret;
+	return true;
 }
 
 bool Particles::Start()
@@ -50,25 +49,35 @@ bool Particles::Start()
 	// stating animation
 	currentCoinsAnim = &coins;
 
-	bool ret = true;
 
-	return ret;
+	return true;
 }
 
 bool Particles::Update(float dt)
 {
-	bool ret = true;
+
 
 	//if ((coinCollision == true || app->map->debugColliders == true) && app->particles->coinCollected == false) app->render->DrawTexture(&app->particles->coinRect);
 	// update animation
 	currentCoinsAnim->Update();
 
-	return ret;
+	return true;
 }
 
 bool Particles::PostUpdate()
 {
 	bool ret = true;
+
+	coinRect = currentCoinsAnim->GetCurrentFrame();
+	if (app->particles->coinCollision == true)
+	{
+		/*currentCoinsAnim = &noCoin;*/
+		app->render->DrawTexture(coin, 288, 992, &coinRect);
+	}
+	else
+	{
+		app->render->DrawTexture(coin, 672, 960, &coinRect);
+	}
 
 	return ret;
 }
