@@ -15,7 +15,7 @@
 
 Particles::Particles(bool startEnabled) : Module(startEnabled)
 {
-	name.Create("particles");
+	name.Create("Particles");
 
 	coins.PushBack({ 0, 0, 10, 10 });
 	coins.PushBack({ 10, 0, 10, 10 });
@@ -57,6 +57,7 @@ bool Particles::Start()
 	currentCoinsAnim = &coins;
 	currentHeartsAnim = &hearts;
 
+	coinCollision = false;
 
 	return true;
 }
@@ -78,13 +79,9 @@ bool Particles::PostUpdate()
 
 
 	coinRect = currentCoinsAnim->GetCurrentFrame();
-	if (app->particles->coinCollision == true)
+	if (app->particles->coinCollision == false)
 	{
 		/*currentCoinsAnim = &noCoin;*/
-		app->render->DrawTexture(coin, 672, 960, &coinRect);
-	}
-	else
-	{
 		app->render->DrawTexture(coin, 672, 960, &coinRect);
 	}
 
