@@ -334,8 +334,8 @@ bool Player::Update(float dt)
 
 	if (checkPoint == true)
 	{
-		checkPointPos.x = position.x;
-		checkPointPos.y = position.y;
+		checkPointPos.x = position.x+38;
+		checkPointPos.y = position.y-64;
 		checkPoint = false;
 		checkPointReached = true;
 	}

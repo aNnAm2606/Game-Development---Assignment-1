@@ -69029,7 +69029,7 @@
  <layer id="19" name="CheckPoint" width="91" height="54">
   <properties>
    <property name="CheckPoint" type="int" value="1"/>
-   <property name="Draw" type="int" value="1"/>
+   <property name="Draw" type="int" value="0"/>
   </properties>
   <data>
    <tile/>
@@ -72089,7 +72089,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="314"/>
+   <tile gid="311"/>
    <tile/>
    <tile/>
    <tile/>

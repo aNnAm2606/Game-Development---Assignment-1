@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
+#include "Particles.h"
 #include "FadeToBlack.h"
 #include "Enemy.h"
 
@@ -38,6 +39,17 @@ Level1::Level1(bool startEnabled) : Module(startEnabled)
 	chestOpened.PushBack({ 96, 0, 32, 32 });
 	chestOpened.loop = false;
 	chestOpened.speed = 0.05f;
+
+	//CheckPoint Animation
+	flag0.PushBack({ 0, 0, 48, 48 });
+	flag0.loop = false;
+
+	flag1.PushBack({   0, 0, 48, 48 });
+	flag1.PushBack({  48, 0, 48, 48 });
+	flag1.PushBack({  96, 0, 48, 48 });
+	flag1.PushBack({ 144, 0, 48, 48 });
+	flag1.loop = true;
+	flag1.speed = 0.05f;
 }
 
 // Destructor
@@ -51,6 +63,7 @@ bool Level1::Awake(pugi::xml_node& config)
 	bool ret = true;
 	textureChest.Create(config.child("textureChest").child_value());
 	textureCoin.Create(config.child("textureCoin").child_value());
+	textureFlag.Create(config.child("textureFlag").child_value());
 
 	return ret;
 }
@@ -81,15 +94,21 @@ bool Level1::Start()
 	// Load Items coins, chests, powerups
 	treasureChest = app->tex->Load(textureChest.GetString());
 	coin = app->tex->Load(textureCoin.GetString());
+	flag = app->tex->Load(textureFlag.GetString());
 	
 
 	// stating animation
 	currentChestAnimation = &chestClosed;
 	currentCoinsAnim = &coins;
+	currentFlagAnim = &flag0;
 
 	app->player->Enable();
+	//app->particles->Enable();
 	app->enemy->Enable();
 	app->map->Colliders();
+
+	//app->particles->CreateParticles(COIN, app->player->position.x + 20, app->player->position.y);
+
 	return true;
 }
 
@@ -153,6 +172,7 @@ bool Level1::Update(float dt)
 	// update animation
 	currentChestAnimation->Update();
 	currentCoinsAnim->Update();
+	currentFlagAnim->Update();
 	
 	return true;
 }
@@ -164,18 +184,30 @@ bool Level1::PostUpdate()
 
 	bool ret = true;
 
-	SDL_Rect rect = currentChestAnimation->GetCurrentFrame();
+	ChestRect = currentChestAnimation->GetCurrentFrame();
 	if (app->player->chestOpen == true)
 	{
 		currentChestAnimation = &chestOpened;
-		app->render->DrawTexture(treasureChest, 2048, 1248, &rect);
+		app->render->DrawTexture(treasureChest, 2048, 1248, &ChestRect);
 	}
 	else 
 	{
-		app->render->DrawTexture(treasureChest, 2048, 1248, &rect);
+		app->render->DrawTexture(treasureChest, 2048, 1248, &ChestRect);
 	}
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	flagRect = currentFlagAnim->GetCurrentFrame();
+	if (app->player->checkPointReached == true)
+	{
+		currentFlagAnim = &flag1;
+		app->render->DrawTexture(flag, 1728, 1040, &flagRect);
+	}
+	else
+	{
+		app->render->DrawTexture(flag, 1728, 1040, &flagRect);
+	}
+
+	// Game WiN/Lose
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	if (app->player->lives == 0 || app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)

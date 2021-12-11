@@ -18,6 +18,7 @@
 enum CollisionType {
 	NONE = -1,
 	PLAYER,
+	PLAYERSENSOR,
 	DOG,
 	CAT,
 	WALL,
@@ -32,7 +33,10 @@ enum CollisionType {
 	DOGLIMITSL,
 	CATLIMITSR,
 	CATLIMITSL,
-	CHECKPOINT
+	CHECKPOINT,
+	HEART,
+	KEY,
+	POWERUP
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies

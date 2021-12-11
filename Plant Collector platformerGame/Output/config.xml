@@ -30,6 +30,7 @@
   <Level1>
     <textureChest>Assets/textures/Chest.png</textureChest>
     <textureCoin>Assets/textures/Coin.png</textureCoin>
+    <textureFlag>Assets/textures/Flag.png</textureFlag>
   </Level1>
   
   <Enemy>

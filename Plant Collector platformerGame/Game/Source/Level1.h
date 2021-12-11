@@ -51,11 +51,12 @@ private:
 
 	SString textureChest;
 	SString textureCoin;
-	SString tectureFlag;
+	SString textureFlag;
 
 	Animation coins;
 
-	Animation flags;
+	Animation flag0;
+	Animation flag1;
 	Animation* currentFlagAnim = nullptr;
 
 	Animation chestClosed;
@@ -67,6 +68,7 @@ private:
 public:
 	SDL_Rect assetRect;
 	SDL_Rect ChestRect;
+	SDL_Rect flagRect;
 	bool F6Load = false;
 };
 
