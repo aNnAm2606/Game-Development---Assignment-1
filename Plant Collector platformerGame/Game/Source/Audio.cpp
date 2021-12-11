@@ -36,6 +36,7 @@ bool Audio::Awake(pugi::xml_node& config)
 
 	// Get the soundrack audio from file path for easy change
 	soundtrack.Create(config.child("soundtrack").child_value());
+	/*flagsound.Create(config.child("flagsound").child_value());*/
 	fxFiles.Create(config.child("fx").child_value());
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)

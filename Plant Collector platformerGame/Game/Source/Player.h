@@ -110,6 +110,7 @@ public:
 	bool GodMode = false;
 	bool checkPoint = false;
 	bool checkPointReached = false;
+	bool checkPointCollision = false;
 	bool win = false;
 
 

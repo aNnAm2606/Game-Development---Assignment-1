@@ -77,6 +77,7 @@ bool Level1::Start()
 	
 	// Load music
 	app->audio->PlayMusic(app->audio->soundtrack.GetString());
+	checkPointSound = app->audio->LoadFx("Assets/audio/checkPointSound.wav");
 
 	// Load the backgrounds
 	sky = app->tex->Load("Assets/textures/10_Sky.png");
@@ -206,6 +207,10 @@ bool Level1::PostUpdate()
 		app->render->DrawTexture(flag, 1728, 1040, &flagRect);
 	}
 
+	if (app->player->checkPointCollision == true) 
+	{
+		app->audio->PlayFx(checkPointSound);
+	}
 	// Game WiN/Lose
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -232,6 +237,7 @@ bool Level1::CleanUp()
 	app->enemy->Disable();
 	app->map->Disable();
 	app->map->Unload();
+	app->audio->CleanUp();
 
 	return true;
 }

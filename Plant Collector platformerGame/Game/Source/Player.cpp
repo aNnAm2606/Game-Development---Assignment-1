@@ -138,6 +138,7 @@ bool Player::Start()
 	GodMode = false;
 	checkPoint = false;
 	checkPointReached = false;
+	checkPointCollision = false;
 	win = false;
 	lives = 3;
 
@@ -338,6 +339,11 @@ bool Player::Update(float dt)
 		checkPointPos.y = position.y-64;
 		checkPoint = false;
 		checkPointReached = true;
+		checkPointCollision = true;
+	}
+	else
+	{
+		checkPointCollision = false;
 	}
 
 	if (chestFound == true)

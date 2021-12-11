@@ -13,8 +13,8 @@ enum Type {
 	COIN,
 	EXPLOSIONS,
 	HEARTS,
-	KEY,
-	POWERUP
+	KEYS,
+	POWERUPS
 };
 
 class Particles : public Module
