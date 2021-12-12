@@ -417,15 +417,21 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 	}
 
-	// CAT LOGIC HERE PLEASE 
-	//      (\_/)
-	//      (·␣·)
-	//      /> <\_
+	// CAT LOGIC 
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CAT)
+	{
+		if (onGround == true)
+		{
+			LOG("THE CAT SCRATCHED YOU!");
+		}
+		else
+		{
+			LOG("YOU KILLED THE CAT!");
+			app->enemy->catDead = true;
+			playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+		}
+	}
 
-	// THAT'S ALL FOR NOW :)
-	// GOOD NIGHT 🌙🐷
-	// OH! AND DON'T  FORGET TO DELETE ALL THESE COMMENTS 
-	// hehe
 }
 
 bool Player::LoadState(pugi::xml_node& data)
