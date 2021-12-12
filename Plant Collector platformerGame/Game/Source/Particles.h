@@ -22,9 +22,9 @@ enum Type {
 struct Particle
 {
 	bool pendingToDelete = false;
+	PhysBody* body;
 	iPoint position;
 	Type type;
-	PhysBody* body;
 
 	Animation coins;
 	Animation hearts;
