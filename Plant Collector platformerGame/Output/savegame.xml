@@ -10,10 +10,10 @@
 		<Level level1="true" level2="false" />
 	</sceneIntro>
 	<renderer>
-		<camera x="-667" y="-645" />
+		<camera x="0" y="-761" />
 	</renderer>
 	<player>
 		<startPosition x="0" y="0" />
-		<position x="1117" y="945" />
+		<position x="118" y="1061" />
 	</player>
 </save_state>

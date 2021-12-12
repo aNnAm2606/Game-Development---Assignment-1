@@ -340,33 +340,26 @@ bool Enemy::Start()
 	dogBody->listener = this;
 	dogBody->colType = CollisionType::DOG;
 
-	// CHANGE THIS PLEASE :) <3 like the dog
-	// U CAN USE THE HITBOX CHAIN FOR IT
+
 	// Cat body, shape and fixture with Box2D
-	b2BodyDef catbody;
-	catbody.type = b2_dynamicBody;
-	catbody.position.Set(PIXEL_TO_METERS(catPosition.x), PIXEL_TO_METERS(catPosition.y));
-	catbody.fixedRotation = true;
-	//create the body in  the world
-	bcat = app->physics->world->CreateBody(&catbody);
-	//add a shape
-	catCircle.m_radius = PIXEL_TO_METERS(12);;
-	//add fixture
-	b2FixtureDef catfixture;
-	catfixture.shape = &catCircle;
-	catfixture.density = 1.5f;
-	catfixture.friction = 100.0f;
-	//add fixture to body
-	bcat->CreateFixture(&catfixture);
-	// Create our custom PhysBody class
-	catBody = new PhysBody();
-	catBody->body = bcat;
-	catBody->width = catBody->height = catCircle.m_radius;
+
+	int catHitbox[18] = {
+	27, 89,
+	30, 95,
+	43, 96,
+	43, 88,
+	45, 88,
+	47, 97,
+	43, 106,
+	25, 106,
+	21, 90
+	};
+
+	catBody = app->physics->CreateChain(catPosition.x, catPosition.y, catHitbox, 18, 0);
 	catBody->listener = this;
 	catBody->colType = CollisionType::CAT;
-	bcat->SetUserData(catBody);
-	//---------------------------------------------------------------------------//
 
+	
 	return true;
 }
 
@@ -437,47 +430,102 @@ bool Enemy::Update(float dt)
 		}
 	}
 	
-	// HERE TOO PLEASE UwU
-	// PUT AN IF LOOP WITH CATDEAD 
+
 	// Position of cat is restarted if game is restarted
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	if (catDead == false)
 	{
-		catBody->body->SetTransform({ PIXEL_TO_METERS(startPosCat.x), PIXEL_TO_METERS(startPosCat.y) }, 0.0f);
+		if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		{
+			catBody->body->SetTransform({ PIXEL_TO_METERS(startPosCat.x), PIXEL_TO_METERS(startPosCat.y) }, 0.0f);
+		}
+
+		CatVelocity = catBody->body->GetLinearVelocity();
+
+		if (catLimitR == false && catLimitL == true)
+		{
+			CatVelocity.x = 3.0f;
+			if (currentCatAnim != &catsRunR)
+			{
+				catsRunR.Reset();
+				currentCatAnim = &catsRunR;
+			}
+		}
+		else
+		{
+			CatVelocity.x = -3.0f;
+			currentCatAnim = &catsRunL;
+		}
+
+		if (catLimitL == false && catLimitR == true)
+		{
+			CatVelocity.x = -3.0f;
+			if (currentCatAnim != &catsRunL)
+			{
+				catsRunL.Reset();
+				currentCatAnim = &catsRunL;
+			}
+		}
+		else
+		{
+			CatVelocity.x = 3.0f;
+			currentCatAnim = &catsRunR;
+		}
+
+		catBody->body->SetLinearVelocity(CatVelocity);
 	}
-
-	CatVelocity = catBody->body->GetLinearVelocity();
-
-	if (catLimitR == false && catLimitL == true)
+	else
 	{
-		CatVelocity.x = 3.0f;
 		if (currentCatAnim != &catsRunR)
 		{
 			catsRunR.Reset();
-			currentCatAnim = &catsRunR;
+			currentCatAnim = &catsDieR;
 		}
-	}
-	else
-	{
-		CatVelocity.x = -3.0f;
-		currentCatAnim = &catsRunL;
-	}
-
-	if (catLimitL == false && catLimitR == true)
-	{
-		CatVelocity.x = -3.0f;
 		if (currentCatAnim != &catsRunL)
 		{
 			catsRunL.Reset();
-			currentCatAnim = &catsRunL;
+			currentCatAnim = &catsDieL;
 		}
 	}
-	else
-	{
-		CatVelocity.x = 3.0f;
-		currentCatAnim = &catsRunR;
-	}
 
-	catBody->body->SetLinearVelocity(CatVelocity);
+
+	//if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	//{
+	//	catBody->body->SetTransform({ PIXEL_TO_METERS(startPosCat.x), PIXEL_TO_METERS(startPosCat.y) }, 0.0f);
+	//}
+
+	//CatVelocity = catBody->body->GetLinearVelocity();
+
+	//if (catLimitR == false && catLimitL == true)
+	//{
+	//	CatVelocity.x = 3.0f;
+	//	if (currentCatAnim != &catsRunR)
+	//	{
+	//		catsRunR.Reset();
+	//		currentCatAnim = &catsRunR;
+	//	}
+	//}
+	//else
+	//{
+	//	CatVelocity.x = -3.0f;
+	//	currentCatAnim = &catsRunL;
+	//}
+
+	//if (catLimitL == false && catLimitR == true)
+	//{
+	//	CatVelocity.x = -3.0f;
+	//	if (currentCatAnim != &catsRunL)
+	//	{
+	//		catsRunL.Reset();
+	//		currentCatAnim = &catsRunL;
+	//	}
+	//}
+	//else
+	//{
+	//	CatVelocity.x = 3.0f;
+	//	currentCatAnim = &catsRunR;
+	//}
+
+	//catBody->body->SetLinearVelocity(CatVelocity);
 	// ADD THE CATDEAD ANIM :)
 
 	// update animation
@@ -496,27 +544,27 @@ bool Enemy::PostUpdate()
 
 	bool ret = true;
 
-	SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentRatAnim = &ratsRunL;
-		app->render->DrawTexture(rat, 760, 988, &rectRat);
-	}
-	else
-	{
-		app->render->DrawTexture(rat, 760, 988, &rectRat);
-	}
+	//SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
+	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	//{
+	//	currentRatAnim = &ratsRunL;
+	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
+	//}
+	//else
+	//{
+	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
+	//}
 
 	//Dog 
 	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
 	dogBody->GetPosition(dogPosition.x, dogPosition.y);
 	app->render->DrawTexture(dog, dogPosition.x - 15, dogPosition.y - 17, &rectD);
 
-	// CENTER THE SPRITE HERE  ^.^
+
 	//Cat 
 	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
 	catBody->GetPosition(catPosition.x, catPosition.y);
-	app->render->DrawTexture(cat, catPosition.x - 30, catPosition.y - 30, &rectCat);
+	app->render->DrawTexture(cat, catPosition.x - 15, catPosition.y - 17, &rectCat);
 
 	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
