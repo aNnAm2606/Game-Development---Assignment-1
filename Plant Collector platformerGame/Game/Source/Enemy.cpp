@@ -378,8 +378,6 @@ bool Enemy::PreUpdate()
 // Called each loop iteration
 bool Enemy::Update(float dt)
 {
-	onGround = false;
-	if (catBody->body->GetLinearVelocity().y == 0) onGround = true;
 
 	// Position of enemy is restarted if game is restarted
 	if (dogDead == false)
