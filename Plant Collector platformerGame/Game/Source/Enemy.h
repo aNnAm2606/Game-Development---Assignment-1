@@ -171,6 +171,14 @@ public:
 	// The speed in which we move the player (pixels per frame)
 	int speed;
 
+	uint catSound;
+	uint birdSound;
+	uint dogSound;
+
+	bool dontPlayAudioBird = false;
+	bool dontPlayAudioCat = false;
+	bool dontPlayAudioDog = false;
+
 	bool onGround;
 };
 

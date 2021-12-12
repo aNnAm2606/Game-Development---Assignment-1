@@ -61,9 +61,6 @@ private:
 	Animation* currentChestAnimation = nullptr;
 
 	uint checkPointSound;
-	uint catSound;
-	uint birdSound;
-	uint dogSound;
 
 
 public:
@@ -72,9 +69,6 @@ public:
 	SDL_Rect flagRect;
 
 	bool dontPlayAudio = false;
-	bool dontPlayAudioBird = false;
-	bool dontPlayAudioCat = false;
-	bool dontPlayAudioDog = false;
 
 	bool F6Load = false;
 };

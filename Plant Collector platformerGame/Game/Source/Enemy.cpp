@@ -298,6 +298,14 @@ bool Enemy::Start()
 	birdBody->colType = CollisionType::BIRD;
 	birdDead = false;
 
+	dogSound = app->audio->LoadFx("Assets/audio/fx/dogSound.wav");
+	birdSound = app->audio->LoadFx("Assets/audio/fx/crowSound.wav");
+	catSound = app->audio->LoadFx("Assets/audio/fx/catSound.wav");
+
+	dontPlayAudioCat = false;
+	dontPlayAudioDog = false;
+	dontPlayAudioBird = false;
+
 	return true;
 }
 
@@ -596,5 +604,7 @@ bool Enemy::CleanUp()
 	app->tex->UnLoad(texture);
 	app->physics->world->DestroyBody(dogBody->body);
 	app->physics->world->DestroyBody(catBody->body);
+	app->physics->world->DestroyBody(birdBody->body);
+	app->audio->Disable();
 	return ret;
 }
