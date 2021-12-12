@@ -125,7 +125,7 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			{
 				app->player->points += 5;
 			}
-			if (c->data->type == HEARTS)
+			if (c->data->type == HEART)
 			{
 				if (app->player->lives < 3)
 				{
