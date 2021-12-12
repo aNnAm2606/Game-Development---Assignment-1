@@ -678,6 +678,9 @@ bool Enemy::CleanUp()
 	app->physics->world->DestroyBody(dogBody->body);
 	app->physics->world->DestroyBody(catBody->body);
 	app->physics->world->DestroyBody(birdBody->body);
-	app->audio->Disable();
+	app->tex->UnLoad(dog);
+	app->tex->UnLoad(bird);
+	app->tex->UnLoad(cat);
+	app->tex->UnLoad(rat);
 	return ret;
 }

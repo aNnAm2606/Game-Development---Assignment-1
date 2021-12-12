@@ -423,7 +423,11 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		else
 		{
 			LOG("YOU KILLED THE DOG!");
-			if(app->enemy->dogDead == false) playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+			if(app->enemy->dogDead == false) 
+			{
+				app->audio->PlayFx(app->enemy->dogSound);
+				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+			}
 			app->enemy->dogDead = true;
 		}
 	}
@@ -439,7 +443,11 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		else
 		{
 			LOG("YOU KILLED THE CAT!");
-			if(app->enemy->catDead == false) playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+			if(app->enemy->catDead == false) 
+			{
+				app->audio->PlayFx(app->enemy->catSound);
+				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+			}
 			app->enemy->catDead = true;
 		}
 	}
@@ -455,7 +463,11 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		else
 		{
 			LOG("YOU KILLED THE BIRD!");
-			if (app->enemy->birdDead == false) playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+			if (app->enemy->birdDead == false)
+			{ 
+				app->audio->PlayFx(app->enemy->birdSound);
+				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true); 
+			}
 			app->enemy->birdDead = true;
 		}
 	}

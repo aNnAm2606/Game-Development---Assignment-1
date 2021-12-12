@@ -85,6 +85,8 @@ bool Lives::CleanUp()
 {
 	LOG("Destroying Particles");
 	bool ret = true;
-	/*particles.clear();*/
+	app->tex->UnLoad(hearts1);
+	app->tex->UnLoad(hearts2);
+	app->tex->UnLoad(hearts3);
 	return ret;
 }

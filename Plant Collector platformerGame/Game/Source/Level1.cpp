@@ -258,7 +258,6 @@ bool Level1::CleanUp()
 	app->player->Disable();
 	app->enemy->Disable();
 	app->particles->Disable();
-	app->audio->Disable();
 	app->map->Disable();
 	app->map->Unload();
 
