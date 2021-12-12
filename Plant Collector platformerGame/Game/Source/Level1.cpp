@@ -119,6 +119,26 @@ bool Level1::Start()
 	app->particles->CreateParticles(COIN, 1920, 1248);
 	app->particles->CreateParticles(COIN, 1984, 1248);
 	app->particles->CreateParticles(COIN, 1248, 928);
+	app->particles->CreateParticles(COIN, 1806, 992);
+	app->particles->CreateParticles(COIN, 1504, 1024);
+	app->particles->CreateParticles(COIN, 1600, 1056);
+	app->particles->CreateParticles(COIN, 1856, 1056);
+	app->particles->CreateParticles(COIN, 1728, 1728);
+	app->particles->CreateParticles(COIN, 2080, 1024);
+	app->particles->CreateParticles(COIN, 1984, 1056);
+	app->particles->CreateParticles(COIN, 2176, 992);
+	app->particles->CreateParticles(COIN, 2272, 992);
+	app->particles->CreateParticles(COIN, 2336, 992);
+	app->particles->CreateParticles(COIN, 2432, 992);
+	app->particles->CreateParticles(COIN, 2368, 1280);
+	app->particles->CreateParticles(COIN, 2272, 1280);
+	app->particles->CreateParticles(COIN, 1856, 864);
+	app->particles->CreateParticles(COIN, 1760, 864);
+	app->particles->CreateParticles(COIN, 1664, 864);
+	app->particles->CreateParticles(COIN, 1664, 672);
+	app->particles->CreateParticles(COIN, 1568, 672);
+	app->particles->CreateParticles(COIN, 1472, 672);
+	app->particles->CreateParticles(COIN, 1280, 672);
 
 	//Adding hearts
 	app->particles->CreateParticles(HEART, 1248, 928);
