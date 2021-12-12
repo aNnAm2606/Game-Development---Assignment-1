@@ -342,20 +342,18 @@ bool Enemy::Start()
 
 
 	// Cat body, shape and fixture with Box2D
-
-	int catHitbox[18] = {
-	27, 89,
-	30, 95,
-	43, 96,
-	43, 88,
-	45, 88,
-	47, 97,
-	43, 106,
-	25, 106,
-	21, 90
+	int catHitbox[16] = {
+	    0, 2,
+		0, 24,
+		2, 26,
+		24, 26,
+		26, 24,
+		26, 2,
+		24, 0,
+		2, 0
 	};
 
-	catBody = app->physics->CreateChain(catPosition.x, catPosition.y, catHitbox, 18, 0);
+	catBody = app->physics->CreateChain(catPosition.x, catPosition.y, catHitbox, 16, 0);
 	catBody->listener = this;
 	catBody->colType = CollisionType::CAT;
 
@@ -486,47 +484,6 @@ bool Enemy::Update(float dt)
 			currentCatAnim = &catsDieL;
 		}
 	}
-
-
-	//if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-	//{
-	//	catBody->body->SetTransform({ PIXEL_TO_METERS(startPosCat.x), PIXEL_TO_METERS(startPosCat.y) }, 0.0f);
-	//}
-
-	//CatVelocity = catBody->body->GetLinearVelocity();
-
-	//if (catLimitR == false && catLimitL == true)
-	//{
-	//	CatVelocity.x = 3.0f;
-	//	if (currentCatAnim != &catsRunR)
-	//	{
-	//		catsRunR.Reset();
-	//		currentCatAnim = &catsRunR;
-	//	}
-	//}
-	//else
-	//{
-	//	CatVelocity.x = -3.0f;
-	//	currentCatAnim = &catsRunL;
-	//}
-
-	//if (catLimitL == false && catLimitR == true)
-	//{
-	//	CatVelocity.x = -3.0f;
-	//	if (currentCatAnim != &catsRunL)
-	//	{
-	//		catsRunL.Reset();
-	//		currentCatAnim = &catsRunL;
-	//	}
-	//}
-	//else
-	//{
-	//	CatVelocity.x = 3.0f;
-	//	currentCatAnim = &catsRunR;
-	//}
-
-	//catBody->body->SetLinearVelocity(CatVelocity);
-	// ADD THE CATDEAD ANIM :)
 
 	// update animation
 
