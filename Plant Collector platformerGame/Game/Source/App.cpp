@@ -7,6 +7,7 @@
 #include "Logo.h"
 #include "SceneIntro.h"
 #include "Level1.h"
+#include "Lives.h"
 #include "GameOver.h"
 #include "WinScreen.h"
 #include "Map.h"
@@ -38,10 +39,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	logo = new Logo(false);
 	sceneIntro = new SceneIntro(false);
 	level1 = new Level1(true);
+	lives = new Lives(false);
 	winScreen = new WinScreen(false);
 	gameOver = new GameOver(false);
 	map = new Map(true);
-	particles = new Particles(true);
+	particles = new Particles(false);
 	player = new Player(false);
 	enemy = new Enemy(false);
 	physics = new Physics(true);
@@ -61,6 +63,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(logo);
 	AddModule(sceneIntro);
 	AddModule(level1);
+	AddModule(lives);
 	AddModule(gameOver);
 	AddModule(winScreen);
 	AddModule(fade);
