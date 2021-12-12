@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 
 #include "App.h"
 #include "Textures.h"
@@ -416,6 +416,16 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
 		}
 	}
+
+	// CAT LOGIC HERE PLEASE 
+	//      (\_/)
+	//      (·␣·)
+	//      /> <\_
+
+	// THAT'S ALL FOR NOW :)
+	// GOOD NIGHT 🌙🐷
+	// OH! AND DON'T  FORGET TO DELETE ALL THESE COMMENTS 
+	// hehe
 }
 
 bool Player::LoadState(pugi::xml_node& data)

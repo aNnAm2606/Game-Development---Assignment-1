@@ -340,6 +340,8 @@ bool Enemy::Start()
 	dogBody->listener = this;
 	dogBody->colType = CollisionType::DOG;
 
+	// CHANGE THIS PLEASE :) <3 like the dog
+	// U CAN USE THE HITBOX CHAIN FOR IT
 	// Cat body, shape and fixture with Box2D
 	b2BodyDef catbody;
 	catbody.type = b2_dynamicBody;
@@ -435,6 +437,8 @@ bool Enemy::Update(float dt)
 		}
 	}
 	
+	// HERE TOO PLEASE UwU
+	// PUT AN IF LOOP WITH CATDEAD 
 	// Position of cat is restarted if game is restarted
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
@@ -474,6 +478,7 @@ bool Enemy::Update(float dt)
 	}
 
 	catBody->body->SetLinearVelocity(CatVelocity);
+	// ADD THE CATDEAD ANIM :)
 
 	// update animation
 
@@ -491,7 +496,6 @@ bool Enemy::PostUpdate()
 
 	bool ret = true;
 
-
 	SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
@@ -508,6 +512,7 @@ bool Enemy::PostUpdate()
 	dogBody->GetPosition(dogPosition.x, dogPosition.y);
 	app->render->DrawTexture(dog, dogPosition.x - 15, dogPosition.y - 17, &rectD);
 
+	// CENTER THE SPRITE HERE  ^.^
 	//Cat 
 	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
 	catBody->GetPosition(catPosition.x, catPosition.y);
@@ -560,6 +565,6 @@ bool Enemy::CleanUp()
 	bool ret = true;
 	app->tex->UnLoad(texture);
 	app->physics->world->DestroyBody(dogBody->body);
-	app->physics->world->DestroyBody(bcat);
+	app->physics->world->DestroyBody(catBody->body);
 	return ret;
 }
