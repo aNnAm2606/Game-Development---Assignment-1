@@ -140,11 +140,14 @@ bool Player::Start()
 	checkPoint = false;
 	checkPointReached = false;
 	checkPointCollision = false;
+	playerHit = false;
 	win = false;
 	lives = 3;
 
 	position.x = startPos.x;
 	position.y = startPos.y;
+	checkPointPos.x = startPos.x;
+	checkPointPos.y = startPos.y;
 
 	// Create Player
 	playerBody = app->physics->CreateChain(position.x, position.y, playerHitbox, 16, 0);
@@ -299,6 +302,12 @@ bool Player::Update(float dt)
 
 	if (GodMode == false)
 	{
+		if (playerHit == true)
+		{
+			playerBody->body->SetTransform({ PIXEL_TO_METERS(checkPointPos.x), PIXEL_TO_METERS(checkPointPos.y) }, 0.0f);
+			lives--;
+			playerHit = false;
+		}
 		if (position.y > 1550)
 		{
 			lives-=1;
@@ -408,7 +417,7 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (onGround == true)
 		{
 			LOG("THE DOG BIT YOU!");
-			if(GodMode == false && app->enemy->dogDead == true) lives--;
+			if(GodMode == false && app->enemy->dogDead == false) playerHit = true;
 		}
 		else
 		{
@@ -424,7 +433,7 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (onGround == true)
 		{
 			LOG("THE CAT SCRATCHED YOU!");
-			if (GodMode == false && app->enemy->catDead == false) lives--;
+			if (GodMode == false && app->enemy->catDead == false) playerHit = true;
 		}
 		else
 		{

@@ -123,6 +123,7 @@ public:
 	bool checkPoint = false;
 	bool checkPointReached = false;
 	bool checkPointCollision = false;
+	bool playerHit = false;
 	bool win = false;
 
 
