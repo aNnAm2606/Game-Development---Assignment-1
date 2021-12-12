@@ -28,7 +28,6 @@
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Particles.cpp" />
     <ClCompile Include="Source\Logo.cpp" />
-    <ClCompile Include="Source\Lives.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -80,7 +79,6 @@
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\Particles.h" />
     <ClInclude Include="Source\Logo.h" />
-    <ClInclude Include="Source\Lives.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

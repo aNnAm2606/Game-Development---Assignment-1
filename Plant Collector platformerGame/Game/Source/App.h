@@ -25,7 +25,6 @@ class Map;
 class Physics;
 class Player;
 class Enemy;
-class Lives;
 class FadeToBlack;
 class Particles;
 
@@ -108,7 +107,6 @@ public:
 	Particles* particles;
 	Player* player;
 	Enemy* enemy;
-	Lives* lives;
 	FadeToBlack* fade;
 	SString title;
 	SString organization;

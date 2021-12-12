@@ -92,7 +92,6 @@
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\GameOver.cpp" />
-    <ClCompile Include="Source\Lives.cpp" />
     <ClCompile Include="Source\Logo.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
@@ -114,7 +113,6 @@
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\GameOver.h" />
-    <ClInclude Include="Source\Lives.h" />
     <ClInclude Include="Source\Logo.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Particles.h" />
