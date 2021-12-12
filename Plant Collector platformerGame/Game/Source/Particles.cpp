@@ -24,7 +24,7 @@ void Particles::CreateParticles(Type type, int x, int y)
 	c->body->listener = this;
 	if (type == COIN)
 	{
-		c->coins.PushBack({ 0, 0, 10, 10 });
+		c->coins.PushBack({  0, 0, 10, 10 });
 		c->coins.PushBack({ 10, 0, 10, 10 });
 		c->coins.PushBack({ 20, 0, 10, 10 });
 		c->coins.PushBack({ 30, 0, 10, 10 });
@@ -33,10 +33,19 @@ void Particles::CreateParticles(Type type, int x, int y)
 	}
 	if (type == HEART)
 	{
-		c->hearts.PushBack({ 0, 0, 10, 10 });
+		c->hearts.PushBack({  0, 0, 10, 10 });
 		c->hearts.PushBack({ 10, 0, 10, 10 });
 		c->hearts.loop = true;
 		c->hearts.speed = 0.05f;
+	}
+	if (type == KEY)
+	{
+		c->keys.PushBack({  0, 0, 8, 8 });
+		c->keys.PushBack({ 12, 0, 8, 8 });
+		c->keys.PushBack({ 24, 0, 8, 8 });
+		c->keys.PushBack({ 36, 0, 8, 8 });
+		c->keys.loop = true;
+		c->keys.speed = 0.1f;
 	}
 
 	particles.add(c);
@@ -55,6 +64,7 @@ bool Particles::Awake(pugi::xml_node& config)
 {
 	textureCoin.Create(config.child("textureCoin").child_value());
 	textureHeart.Create(config.child("textureHeart").child_value());
+	textureKey.Create(config.child("textureKey").child_value());
 	return true;
 }
 
@@ -62,6 +72,7 @@ bool Particles::Start()
 {
 	coin = app->tex->Load(textureCoin.GetString());
 	heart = app->tex->Load(textureHeart.GetString());
+	key = app->tex->Load(textureKey.GetString());
 	return true;
 }
 
@@ -85,6 +96,7 @@ bool Particles::Update(float dt)
 	{
 		c->data->coins.Update();
 		c->data->hearts.Update();
+		c->data->keys.Update();
 	}
 	return true;
 }
@@ -93,8 +105,12 @@ bool Particles::PostUpdate()
 {
 	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
 	{
-		app->render->DrawTexture(coin, c->data->position.x + 4, c->data->position.y + 2, &c->data->coins.GetCurrentFrame());
-		app->render->DrawTexture(heart, c->data->position.x + 4, c->data->position.y + 2, &c->data->hearts.GetCurrentFrame());
+		if (c->data->type == COIN) app->render->DrawTexture(coin, c->data->position.x + 4, c->data->position.y + 2, &c->data->coins.GetCurrentFrame());
+		
+		if (c->data->type == HEART) app->render->DrawTexture(heart, c->data->position.x + 4, c->data->position.y + 2, &c->data->hearts.GetCurrentFrame());
+		
+		if (c->data->type == KEY) app->render->DrawTexture(key, c->data->position.x + 4, c->data->position.y + 2, &c->data->keys.GetCurrentFrame());
+		
 	}
 	return true;
 }
@@ -117,9 +133,9 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 				}
 			}
-			if (c->data->type == COIN)
+			if (c->data->type == KEY)
 			{
-				app->player->points += 5;
+				app->player->keyFound = true;
 			}
 			c->data->pendingToDelete = true;
 		}

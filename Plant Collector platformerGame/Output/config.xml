@@ -36,6 +36,7 @@
   <Particles>
     <textureCoin>Assets/textures/Coin.png</textureCoin>
     <textureHeart>Assets/textures/heart.png</textureHeart>
+    <textureKey>Assets/textures/key.png</textureKey>
   </Particles>
   
   <Enemy>

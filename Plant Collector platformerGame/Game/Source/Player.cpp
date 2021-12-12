@@ -134,6 +134,7 @@ bool Player::Start()
 	// L10: DONE 4: Retrieve the player when playing a second time
 	controlsVisible = false;
 	tutorialVisible = false;
+	keyFound = false;
 	chestFound = false;
 	chestOpen = false;
 	GodMode = false;
@@ -400,9 +401,9 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHEST)
 	{
 		LOG("open chest!");
-		chestFound = true;
+		if(keyFound == true) chestFound = true;
+		else chestFound = false;
 	}
-	//else chestFound = false;
 
 	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHECKPOINT)
 	{

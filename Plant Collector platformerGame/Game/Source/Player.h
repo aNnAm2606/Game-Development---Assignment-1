@@ -116,6 +116,7 @@ public:
 	int lives = 3;
 	bool controlsVisible = false;
 	bool tutorialVisible = false;
+	bool keyFound = false;
 	bool chestFound = false;
 	bool chestOpen = false;
 	bool ladderClose = false;

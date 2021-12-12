@@ -118,12 +118,12 @@ bool Level1::Start()
 	app->particles->CreateParticles(COIN, 1856, 1280);
 	app->particles->CreateParticles(COIN, 1920, 1248);
 	app->particles->CreateParticles(COIN, 1984, 1248);
-	app->particles->CreateParticles(COIN, 1248, 928);
 
 	//Adding hearts
 	app->particles->CreateParticles(HEART, 1248, 928);
 
-
+	// Hidden Key
+	app->particles->CreateParticles(KEY, 2112, 1248);
 
 	// Reset
 	dontPlayAudio = false;
