@@ -117,13 +117,10 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 				}
 			}
-<<<<<<< HEAD
-=======
 			if (c->data->type == COIN)
 			{
 				app->player->points += 5;
 			}
->>>>>>> 43f67d990f41fb24a5cc3ecb8bf3e021fd67e28c
 			c->data->pendingToDelete = true;
 		}
 

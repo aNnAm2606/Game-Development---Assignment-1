@@ -402,7 +402,7 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		LOG("open chest!");
 		chestFound = true;
 	}
-	else chestFound = false;
+	//else chestFound = false;
 
 	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHECKPOINT)
 	{
