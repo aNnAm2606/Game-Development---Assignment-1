@@ -13,7 +13,7 @@ enum Type {
 	NOTHING = -1,
 	COIN,
 	EXPLOSIONS,
-	HEARTS,
+	HEART,
 	KEYS,
 	POWERUPS
 };
@@ -27,6 +27,8 @@ struct Particle
 	PhysBody* body;
 
 	Animation coins;
+	Animation hearts;
+
 };
 
 
@@ -74,6 +76,9 @@ private:
 
 	SDL_Texture* coin;
 	SString textureCoin;
+
+	SDL_Texture* heart;
+	SString textureHeart;
 
 	List<Particle*> particles;
 };

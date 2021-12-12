@@ -98,7 +98,32 @@ bool Level1::Start()
 	app->enemy->Enable();
 	app->map->Colliders();
 
+	//Adding coins
 	app->particles->CreateParticles(COIN, 672, 960);
+	app->particles->CreateParticles(COIN, 608, 1024);
+	app->particles->CreateParticles(COIN, 320, 1024);
+	app->particles->CreateParticles(COIN, 832, 896);
+	app->particles->CreateParticles(COIN, 1152, 1248);
+	app->particles->CreateParticles(COIN, 352, 768);
+	app->particles->CreateParticles(COIN, 512, 768);
+	app->particles->CreateParticles(COIN, 672, 704);
+	app->particles->CreateParticles(COIN, 832, 672);
+	app->particles->CreateParticles(COIN, 992, 1376);
+	app->particles->CreateParticles(COIN, 1120, 1376);
+	app->particles->CreateParticles(COIN, 1280, 1376);
+	app->particles->CreateParticles(COIN, 1408, 1312);
+	app->particles->CreateParticles(COIN, 1568, 1312);
+	app->particles->CreateParticles(COIN, 1728, 1312);
+	app->particles->CreateParticles(COIN, 1792, 1280);
+	app->particles->CreateParticles(COIN, 1856, 1280);
+	app->particles->CreateParticles(COIN, 1920, 1248);
+	app->particles->CreateParticles(COIN, 1984, 1248);
+	app->particles->CreateParticles(COIN, 1248, 928);
+
+	//Adding hearts
+	app->particles->CreateParticles(HEART, 1248, 928);
+
+
 
 	// Reset
 	dontPlayAudio = false;
