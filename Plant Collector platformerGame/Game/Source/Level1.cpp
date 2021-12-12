@@ -69,7 +69,7 @@ bool Level1::Start()
 	app->map->Load("test.tmx");
 	
 	// Load music
-	//app->audio->PlayMusic(app->audio->soundtrack.GetString());
+	app->audio->PlayMusic(app->audio->soundtrack.GetString());
 	checkPointSound = app->audio->LoadFx("Assets/audio/fx/checkPointSound.wav");
 
 	// Load the backgrounds

@@ -44,9 +44,9 @@
     <textureBird>Assets/textures/Bird/Death.png</textureBird>
     <textureCat>Assets/textures/Cat/Attack.png</textureCat>
     <textureRat>Assets/textures/Rat/Death.png</textureRat>
-    <startPositionDog x="1185" y ="940"/>
+    <startPositionDog x="1792" y ="1061"/>
     <startPositionCat x="1120" y ="1376"/>
-    <startPositionBird x="900" y ="800"/>
+    <startPositionBird x="870" y ="805"/>
     <speed value="1"/>
   </Enemy>
 

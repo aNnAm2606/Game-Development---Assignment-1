@@ -124,6 +124,7 @@ Enemy::Enemy(bool startEnabled) : Module(startEnabled)
 	birdDieR.PushBack({ 128, 384, 64, 64 });
 	birdDieR.PushBack({ 192, 384, 64, 64 });
 	birdDieR.PushBack({ 256, 384, 64, 64 });
+	birdDieR.PushBack({ 400, 500, 64, 64 });
 	birdDieR.loop = false;
 	birdDieR.speed = 0.05f;
 
@@ -132,6 +133,7 @@ Enemy::Enemy(bool startEnabled) : Module(startEnabled)
 	birdDieL.PushBack({ 64, 448, 64, 64 });
 	birdDieL.PushBack({ 0, 448, 64, 64 });
 	birdDieL.PushBack({ 256, 448, 64, 64 });
+	birdDieL.PushBack({ 400, 500, 64, 64 });
 	birdDieL.loop = false;
 	birdDieL.speed = 0.05f;
 
@@ -322,37 +324,54 @@ bool Enemy::Update(float dt)
 
 		DogVelocity = dogBody->body->GetLinearVelocity();
 
-		if (dogLimitR == false && dogLimitL == true)
+		if (dogPosition.DistanceTo(app->player->position) < 300)
 		{
-			DogVelocity.x = 3.0f;
-			if (currentDogAnim != &dogsRunR)
+			if (dogPosition.x < app->player->position.x && (dogPosition.y > app->player->position.y || dogPosition.y == app->player->position.y))
 			{
-				dogsRunR.Reset();
 				currentDogAnim = &dogsRunR;
+				dogBody->body->SetLinearVelocity({ 2.5f,0.0f });
 			}
-		}
-		else
-		{
-			DogVelocity.x = -3.0f;
-			currentDogAnim = &dogsRunL;
-		}
-
-		if (dogLimitL == false && dogLimitR == true)
-		{
-			DogVelocity.x = -3.0f;
-			if (currentDogAnim != &dogsRunL)
+			if (dogPosition.x > app->player->position.x && (dogPosition.y > app->player->position.y || dogPosition.y == app->player->position.y))
 			{
-				dogsRunL.Reset();
 				currentDogAnim = &dogsRunL;
+				dogBody->body->SetLinearVelocity({ -2.5f,0.0f });
+
 			}
 		}
 		else
 		{
-			DogVelocity.x = 3.0f;
-			currentDogAnim = &dogsRunR;
-		}
+			b2Vec2 Vel0;
+			Vel0 = { 0.0f,0.0f };
 
-		dogBody->body->SetLinearVelocity(DogVelocity);
+			if (dogPosition.x == startPosDog.x)
+			{
+				if (currentDogAnim == &dogsRunR)
+				{
+					DogVelocity = Vel0;
+					currentDogAnim = &dogsR;
+					dogBody->body->SetLinearVelocity({ 0.0f,0.0f });
+					if (CatVelocity == Vel0) currentCatAnim = &dogsR;
+				}
+				if (currentDogAnim == &dogsRunL)
+				{
+					DogVelocity = Vel0;
+					currentDogAnim = &dogsL;
+					dogBody->body->SetLinearVelocity({ 0.0f,0.0f });
+					if (CatVelocity == Vel0) currentCatAnim = &dogsR;
+				}
+			}
+			if (dogPosition.x < startPosDog.x)
+			{
+				currentDogAnim = &dogsRunR;
+				dogBody->body->SetLinearVelocity({ 1.5f,0.0f });
+			}
+			if (dogPosition.x > startPosDog.x)
+			{
+				currentDogAnim = &dogsRunL;
+				dogBody->body->SetLinearVelocity({ -1.5f,0.0f });
+
+			}
+		}
 	}
 	else
 	{
@@ -379,37 +398,51 @@ bool Enemy::Update(float dt)
 
 		CatVelocity = catBody->body->GetLinearVelocity();
 
-		if (catLimitR == false && catLimitL == true)
+		if (catPosition.DistanceTo(app->player->position) < 300)
 		{
-			CatVelocity.x = 3.0f;
-			if (currentCatAnim != &catsRunR)
+			if (catPosition.x < app->player->position.x && (catPosition.y > app->player->position.y || catPosition.y == app->player->position.y))
 			{
-				catsRunR.Reset();
 				currentCatAnim = &catsRunR;
+				catBody->body->SetLinearVelocity({ 2.5f,0.0f });
 			}
-		}
-		else
-		{
-			CatVelocity.x = -3.0f;
-			currentCatAnim = &catsRunL;
-		}
-
-		if (catLimitL == false && catLimitR == true)
-		{
-			CatVelocity.x = -3.0f;
-			if (currentCatAnim != &catsRunL)
+			if (catPosition.x > app->player->position.x && (catPosition.y > app->player->position.y || catPosition.y == app->player->position.y))
 			{
-				catsRunL.Reset();
 				currentCatAnim = &catsRunL;
+				catBody->body->SetLinearVelocity({ -2.5f,0.0f });
+
 			}
 		}
 		else
 		{
-			CatVelocity.x = 3.0f;
-			currentCatAnim = &catsRunR;
+			b2Vec2 Vel0;
+			Vel0 = { 0.0f,0.0f };
+			if (catPosition.x == startPosCat.x)
+			{
+				CatVelocity = Vel0;
+				if (currentCatAnim == &catsRunR)
+				{
+					currentCatAnim = &catsR;
+					catBody->body->SetLinearVelocity({ 0.0f,0.0f });
+					if(CatVelocity == Vel0) currentCatAnim = &catsR;
+				}
+				if (currentCatAnim == &catsRunL)
+				{
+					currentCatAnim = &catsL;
+					catBody->body->SetLinearVelocity({ 0.0f,0.0f });
+					if (CatVelocity == Vel0) currentCatAnim = &catsL;
+				}
+			}
+			if (catPosition.x < startPosCat.x)
+			{
+				currentCatAnim = &catsRunR;
+				catBody->body->SetLinearVelocity({ 1.5f,0.0f });
+			}
+			if (catPosition.x > startPosCat.x)
+			{
+				currentCatAnim = &catsRunL;
+				catBody->body->SetLinearVelocity({ -1.5f,0.0f });
+			}
 		}
-
-		catBody->body->SetLinearVelocity(CatVelocity);
 	}
 	else
 	{
@@ -436,7 +469,7 @@ bool Enemy::Update(float dt)
 
 		birdBody->body->SetLinearVelocity(BirdVelocity);
 
-		if (birdPosition.DistanceTo(app->player->position) < 200)
+		if (birdPosition.DistanceTo(app->player->position) < 300)
 		{
 			if (birdPosition.x < app->player->position.x)
 			{
@@ -483,6 +516,65 @@ bool Enemy::Update(float dt)
 
 			}
 		}
+		else
+		{
+			if (birdPosition.x == startPosBird.x && birdPosition.y == startPosBird.y)
+			{
+				if (currentBirdAnim == &birdFlyR)
+				{
+					currentBirdAnim = &birdR;
+					birdBody->body->SetLinearVelocity({ 0.0f,0.0f });
+				}
+				if (currentBirdAnim == &birdFlyL)
+				{
+					currentBirdAnim = &birdL;
+					birdBody->body->SetLinearVelocity({ 0.0f,0.0f });
+				}
+			}
+			if (birdPosition.x < startPosBird.x)
+			{
+				currentBirdAnim = &birdFlyR;
+				birdBody->body->SetLinearVelocity({ 0.7f,0.0f });
+			}
+			if (birdPosition.x > startPosBird.x)
+			{
+				currentBirdAnim = &birdFlyL;
+				birdBody->body->SetLinearVelocity({ -0.7f,0.0f });
+
+			}
+			if (birdPosition.y > startPosBird.y)
+			{
+				birdBody->body->SetLinearVelocity({ 0.0f,-0.5f });
+			}
+			if (birdPosition.y < startPosBird.y)
+			{
+				birdBody->body->SetLinearVelocity({ 0.0f,0.5f });
+			}
+			if (birdPosition.x < startPosBird.x && birdPosition.y >  startPosBird.y)
+			{
+				currentBirdAnim = &birdFlyR;
+				birdBody->body->SetLinearVelocity({ 0.7f,-0.5f });
+
+			}
+			if (birdPosition.x > startPosBird.x && birdPosition.y > startPosBird.y)
+			{
+				currentBirdAnim = &birdFlyL;
+				birdBody->body->SetLinearVelocity({ -0.7f,-0.5f });
+
+			}
+			if (birdPosition.x < startPosBird.x && birdPosition.y < startPosBird.y)
+			{
+				currentBirdAnim = &birdFlyR;
+				birdBody->body->SetLinearVelocity({ 0.7f,0.5f });
+
+			}
+			if (birdPosition.x > startPosBird.x && birdPosition.y < startPosBird.y)
+			{
+				currentBirdAnim = &birdFlyL;
+				birdBody->body->SetLinearVelocity({ -0.7f,0.5f });
+
+			}
+		}
 	}
 	else
 	{
@@ -490,11 +582,13 @@ bool Enemy::Update(float dt)
 		{
 			birdFlyR.Reset();
 			currentBirdAnim = &birdDieR;
+			birdBody->body->SetLinearVelocity({ 0.0f,0.0f });
 		}
 		if (currentBirdAnim != &birdFlyL)
 		{
 			birdFlyL.Reset();
 			currentBirdAnim = &birdDieL;
+			birdBody->body->SetLinearVelocity({ 0.0f,0.0f });
 		}
 	}
 
@@ -534,27 +628,6 @@ bool Enemy::PostUpdate()
 
 void Enemy::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyA->colType == CollisionType::DOG && bodyB->colType == CollisionType::DOGLIMITSR)
-	{
-		dogLimitR = true;
-		dogLimitL = false;
-	}
-	if (bodyA->colType == CollisionType::DOG && bodyB->colType == CollisionType::DOGLIMITSL)
-	{
-		dogLimitL = true;
-		dogLimitR = false;
-	}
-
-	if (bodyA->colType == CollisionType::CAT && bodyB->colType == CollisionType::CATLIMITSR)
-	{
-		catLimitR = true;
-		catLimitL = false;
-	}
-	if (bodyA->colType == CollisionType::CAT && bodyB->colType == CollisionType::CATLIMITSL)
-	{
-		catLimitL = true;
-		catLimitR = false;
-	}
 
 }
 
@@ -570,7 +643,7 @@ bool Enemy::LoadState(pugi::xml_node& data)
 
 	birdPosition.x = data.child("birdPosition").attribute("x").as_int();
 	birdPosition.y = data.child("birdPosition").attribute("y").as_int();
-	birdBody->body->SetTransform({ PIXEL_TO_METERS(catPosition.x), PIXEL_TO_METERS(catPosition.y) }, 0.0f);
+	birdBody->body->SetTransform({ PIXEL_TO_METERS(birdPosition.x), PIXEL_TO_METERS(birdPosition.y) }, 0.0f);
 
 	return true;
 }
@@ -583,8 +656,8 @@ bool Enemy::SaveState(pugi::xml_node& data) const
 	data.child("catPosition").attribute("x").set_value(catPosition.x);
 	data.child("catPosition").attribute("y").set_value(catPosition.y);
 
-	data.child("birdPosition").attribute("x").set_value(catPosition.x);
-	data.child("birdPosition").attribute("y").set_value(catPosition.y);
+	data.child("birdPosition").attribute("x").set_value(birdPosition.x);
+	data.child("birdPosition").attribute("y").set_value(birdPosition.y);
 
 	return true;
 }

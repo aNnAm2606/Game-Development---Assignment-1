@@ -369,7 +369,7 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		LOG("it works fst part");
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT  && playerBody->body->GetLinearVelocity().y < -0.25f)
 		{
-			playerBody->body->ApplyLinearImpulse({ 0,-0.16f }, { 0,0 }, true);
+			playerBody->body->SetLinearVelocity({ 0,-5.0f });
 			LOG("it works scnd part");
 		}
 		
@@ -441,6 +441,22 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			LOG("YOU KILLED THE CAT!");
 			if(app->enemy->catDead == false) playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
 			app->enemy->catDead = true;
+		}
+	}
+
+	// CAT LOGIC 
+	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::BIRD)
+	{
+		if (onGround == true)
+		{
+			LOG("BIRD KILLED YOU!");
+			if (GodMode == false && app->enemy->birdDead == false) playerHit = true;
+		}
+		else
+		{
+			LOG("YOU KILLED THE BIRD!");
+			if (app->enemy->birdDead == false) playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+			app->enemy->birdDead = true;
 		}
 	}
 

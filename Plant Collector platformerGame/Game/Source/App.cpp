@@ -36,9 +36,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	fade = new FadeToBlack(true);
-	logo = new Logo(false);
+	logo = new Logo(true);
 	sceneIntro = new SceneIntro(false);
-	level1 = new Level1(true);
+	level1 = new Level1(false);
 	lives = new Lives(false);
 	winScreen = new WinScreen(false);
 	gameOver = new GameOver(false);
