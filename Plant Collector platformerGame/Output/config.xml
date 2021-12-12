@@ -33,6 +33,13 @@
     <textureFlag>Assets/textures/Flag.png</textureFlag>
   </Level1>
 
+  <Lives>
+    <textureLives>Assets/textures/lives.png</textureLives>
+    <textureHearts3>Assets/textures/hearts3.png</textureHearts3>
+    <textureHearts2>Assets/textures/hearts2.png</textureHearts2>
+    <textureHearts1>Assets/textures/hearts1.png</textureHearts1>
+  </Lives>
+
   <Particles>
     <textureCoin>Assets/textures/Coin.png</textureCoin>
     <textureHeart>Assets/textures/heart.png</textureHeart>

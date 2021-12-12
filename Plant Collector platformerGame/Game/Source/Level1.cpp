@@ -13,6 +13,8 @@
 #include "Particles.h"
 #include "FadeToBlack.h"
 #include "Enemy.h"
+#include "Lives.h"
+
 
 #include "Defs.h"
 #include "Log.h"
@@ -97,6 +99,7 @@ bool Level1::Start()
 	app->particles->Enable();
 	app->enemy->Enable();
 	app->map->Colliders();
+	app->lives->Enable();
 
 	//Adding coins
 	app->particles->CreateParticles(COIN, 672, 960);
