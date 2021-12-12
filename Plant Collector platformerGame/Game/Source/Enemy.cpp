@@ -339,26 +339,13 @@ bool Enemy::Start()
 	dogBody = app->physics->CreateChain(dogPosition.x, dogPosition.y, Hitbox, 16, 0);
 	dogBody->listener = this;
 	dogBody->colType = CollisionType::DOG;
-
+	dogDead = false;
 
 	// Cat body, shape and fixture with Box2D
-
-	int catHitbox[18] = {
-	27, 89,
-	30, 95,
-	43, 96,
-	43, 88,
-	45, 88,
-	47, 97,
-	43, 106,
-	25, 106,
-	21, 90
-	};
-
-	catBody = app->physics->CreateChain(catPosition.x, catPosition.y, catHitbox, 18, 0);
+	catBody = app->physics->CreateChain(catPosition.x, catPosition.y, Hitbox, 16, 0);
 	catBody->listener = this;
 	catBody->colType = CollisionType::CAT;
-
+	catDead = false;
 	
 	return true;
 }
