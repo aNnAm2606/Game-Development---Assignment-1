@@ -125,18 +125,18 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			{
 				app->player->keyFound = true;
 			}
-			if (c->data->type == HEART)
+			if (c->data->type == COIN)
 			{
 				app->player->points += 5;
 			}
 			if (c->data->type == HEART && app->player->lives == 2)
 			{
-				app->player->lives ++;
+				app->player->lives = 3;
 
 			}
 			if (c->data->type == HEART && app->player->lives == 1)
 			{
-				app->player->lives ++;
+				app->player->lives = 2;
 				c->data->pendingToDelete = true;
 			}
 

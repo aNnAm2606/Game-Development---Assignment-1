@@ -21,6 +21,7 @@ enum CollisionType {
 	PLAYERSENSOR,
 	DOG,
 	CAT,
+	BIRD,
 	WALL,
 	COINS,
 	LADDER,
@@ -79,6 +80,7 @@ public:
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int dynamic);
 	PhysBody* CreateCircleSensor(int x, int y, int radius, int dynamic);
 	PhysBody* CreateChain(int x, int y, int* points, int size, int dynamic);
+	PhysBody* CreateBirdChain(int x, int y, int* points, int size, int dynamic);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);

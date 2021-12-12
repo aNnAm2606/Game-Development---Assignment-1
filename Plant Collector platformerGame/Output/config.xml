@@ -46,6 +46,7 @@
     <textureRat>Assets/textures/Rat/Death.png</textureRat>
     <startPositionDog x="1185" y ="940"/>
     <startPositionCat x="1120" y ="1376"/>
+    <startPositionBird x="900" y ="800"/>
     <speed value="1"/>
   </Enemy>
 

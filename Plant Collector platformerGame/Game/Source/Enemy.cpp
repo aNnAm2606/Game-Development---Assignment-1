@@ -213,59 +213,6 @@ Enemy::Enemy(bool startEnabled) : Module(startEnabled)
 	catsRunR.loop = true;
 	catsRunR.speed = 0.15f;
 
-
-	//Rat Animation
-	ratsR.PushBack({ 0, 256, 64, 64 });
-	ratsR.PushBack({ 64, 256, 64, 64 });
-	ratsR.PushBack({ 128, 256, 64, 64 });
-	ratsR.PushBack({ 192, 256, 64, 64 });
-	ratsR.loop = true;
-	ratsR.speed = 0.05f;
-
-	ratsL.PushBack({ 192, 320, 64, 64 });
-	ratsL.PushBack({ 128, 320, 64, 64 });
-	ratsL.PushBack({ 64, 320, 64, 64 });
-	ratsL.PushBack({ 0, 320, 64, 64 });
-	ratsL.loop = true;
-	ratsL.speed = 0.05f;
-
-	ratsHurtR.PushBack({ 0, 128, 64, 64 });
-	ratsHurtR.PushBack({ 64, 128, 64, 64 });
-	ratsHurtR.loop = true;
-	ratsHurtR.speed = 0.05f;
-
-	ratsHurtL.PushBack({ 64, 192, 64, 64 });
-	ratsHurtL.PushBack({ 0, 192, 64, 64 });
-	ratsHurtL.loop = true;
-	ratsHurtL.speed = 0.05f;
-
-	ratsDieR.PushBack({ 0, 0, 64, 64 });
-	ratsDieR.PushBack({ 64, 0, 64, 64 });
-	ratsDieR.PushBack({ 128, 0, 64, 64 });
-	ratsDieR.loop = false;
-	ratsDieR.speed = 0.05f;
-
-
-	ratsDieL.PushBack({ 64, 64, 64, 64 });
-	ratsDieL.PushBack({ 0, 64, 64, 64 });
-	ratsDieL.PushBack({ 128, 64, 64, 64 });
-	ratsDieL.loop = false;
-	ratsDieL.speed = 0.05f;
-
-	ratsRunL.PushBack({ 192, 448, 64, 64 });
-	ratsRunL.PushBack({ 128, 448, 64, 64 });
-	ratsRunL.PushBack({ 64, 448, 64, 64 });
-	ratsRunL.PushBack({ 0, 448, 64, 64 });
-	ratsRunL.loop = true;
-	ratsRunL.speed = 0.15f;
-
-	ratsRunR.PushBack({ 0, 384, 64, 64 });
-	ratsRunR.PushBack({ 64, 384, 64, 64 });
-	ratsRunR.PushBack({ 128, 384, 64, 64 });
-	ratsRunR.PushBack({ 192, 384, 64, 64 });
-	ratsRunR.loop = true;
-	ratsRunR.speed = 0.15f;
-
 }
 
 //Enemy::Enemy(int x, int y) : position(x, y)
@@ -293,15 +240,12 @@ bool Enemy::Awake(pugi::xml_node& config)
 	startPosDog.y = config.child("startPositionDog").attribute("y").as_int();
 	startPosCat.x = config.child("startPositionCat").attribute("x").as_int();
 	startPosCat.y = config.child("startPositionCat").attribute("y").as_int();
+	startPosBird.x = config.child("startPositionBird").attribute("x").as_int();
+	startPosBird.y = config.child("startPositionBird").attribute("y").as_int();
 
 	// Enemy's speed
 	speed = config.child("speed").attribute("value").as_int();
 	return ret;
-}
-
-const Collider* Enemy::GetCollider() const
-{
-	return collider;
 }
 
 // Called before the first frame
@@ -324,6 +268,8 @@ bool Enemy::Start()
 	dogPosition.y = startPosDog.y;
 	catPosition.x = startPosCat.x;
 	catPosition.y = startPosCat.y;
+	birdPosition.x = startPosBird.x;
+	birdPosition.y = startPosBird.y;
 
 	int  Hitbox[16] = {
 		0, 2,
@@ -347,6 +293,11 @@ bool Enemy::Start()
 	catBody->colType = CollisionType::CAT;
 	catDead = false;
 	
+	birdBody = app->physics->CreateBirdChain(birdPosition.x, birdPosition.y, Hitbox, 16, 0);
+	birdBody->listener = this;
+	birdBody->colType = CollisionType::BIRD;
+	birdDead = false;
+
 	return true;
 }
 
@@ -474,6 +425,79 @@ bool Enemy::Update(float dt)
 		}
 	}
 
+	if (birdDead == false)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		{
+			birdBody->body->SetTransform({ PIXEL_TO_METERS(startPosBird.x), PIXEL_TO_METERS(startPosBird.y) }, 0.0f);
+		}
+
+		BirdVelocity = birdBody->body->GetLinearVelocity();
+
+		birdBody->body->SetLinearVelocity(BirdVelocity);
+
+		if (birdPosition.DistanceTo(app->player->position) < 200)
+		{
+			if (birdPosition.x < app->player->position.x)
+			{
+				currentBirdAnim = &birdFlyR;
+				birdBody->body->SetLinearVelocity({ 0.7f,0.0f });
+
+			}
+			if (birdPosition.x > app->player->position.x)
+			{
+				currentBirdAnim = &birdFlyL;
+				birdBody->body->SetLinearVelocity({ -0.7f,0.0f });
+
+			}
+			if (birdPosition.y > app->player->position.y)
+			{
+				birdBody->body->SetLinearVelocity({ 0.0f,-0.5f });
+			}
+			if (birdPosition.y < app->player->position.y)
+			{
+				birdBody->body->SetLinearVelocity({ 0.0f,0.5f });
+			}
+			if (birdPosition.x < app->player->position.x && birdPosition.y > app->player->position.y)
+			{
+				currentBirdAnim = &birdFlyR;
+				birdBody->body->SetLinearVelocity({ 0.7f,-0.5f });
+
+			}
+			if (birdPosition.x > app->player->position.x && birdPosition.y > app->player->position.y)
+			{
+				currentBirdAnim = &birdFlyL;
+				birdBody->body->SetLinearVelocity({ -0.7f,-0.5f });
+
+			}
+			if (birdPosition.x < app->player->position.x && birdPosition.y < app->player->position.y)
+			{
+				currentBirdAnim = &birdFlyR;
+				birdBody->body->SetLinearVelocity({ 0.7f,0.5f });
+
+			}
+			if (birdPosition.x > app->player->position.x && birdPosition.y < app->player->position.y)
+			{
+				currentBirdAnim = &birdFlyL;
+				birdBody->body->SetLinearVelocity({ -0.7f,0.5f });
+
+			}
+		}
+	}
+	else
+	{
+		if (currentBirdAnim != &birdFlyR)
+		{
+			birdFlyR.Reset();
+			currentBirdAnim = &birdDieR;
+		}
+		if (currentBirdAnim != &birdFlyL)
+		{
+			birdFlyL.Reset();
+			currentBirdAnim = &birdDieL;
+		}
+	}
+
 	// update animation
 
 	currentDogAnim->Update();
@@ -490,39 +514,20 @@ bool Enemy::PostUpdate()
 
 	bool ret = true;
 
-	//SDL_Rect rectRat = currentRatAnim->GetCurrentFrame();
-	//if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	//{
-	//	currentRatAnim = &ratsRunL;
-	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
-	//}
-	//else
-	//{
-	//	app->render->DrawTexture(rat, 760, 988, &rectRat);
-	//}
-
 	//Dog 
-	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
+	SDL_Rect rectDog = currentDogAnim->GetCurrentFrame();
 	dogBody->GetPosition(dogPosition.x, dogPosition.y);
-	app->render->DrawTexture(dog, dogPosition.x - 15, dogPosition.y - 17, &rectD);
-
+	app->render->DrawTexture(dog, dogPosition.x - 15, dogPosition.y - 17, &rectDog);
 
 	//Cat 
 	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
 	catBody->GetPosition(catPosition.x, catPosition.y);
 	app->render->DrawTexture(cat, catPosition.x - 15, catPosition.y - 17, &rectCat);
 
-	SDL_Rect rectB = currentBirdAnim->GetCurrentFrame();
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		currentBirdAnim = &birdFlyL;
-		app->render->DrawTexture(bird, 864, 800, &rectB);
-	}
-	else
-	{
-		app->render->DrawTexture(bird, 864, 800, &rectB);
-	}
-
+	//Bird
+	SDL_Rect rectBird = currentBirdAnim->GetCurrentFrame();
+	birdBody->GetPosition(birdPosition.x, birdPosition.y);
+	app->render->DrawTexture(bird, birdPosition.x - 15, birdPosition.y - 17, &rectBird);
 	
 	return ret;
 }

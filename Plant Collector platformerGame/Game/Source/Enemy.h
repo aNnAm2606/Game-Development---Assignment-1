@@ -21,10 +21,6 @@ public:
 	// Destructor
 	~Enemy();
 
-	// Returns the enemy's collider
-	const Collider* GetCollider() const;
-
-
 	// Collision response
 	// Triggers an animation and a sound fx
 	// Collision callback, called when the player intersects with another collider
@@ -176,16 +172,6 @@ public:
 	int speed;
 
 	bool onGround;
-
-protected:
-	// A ptr to the current animation
-	Animation* currentAnim = nullptr;
-
-	// The enemy's collider
-	Collider* collider = nullptr;
-
-	// Original spawn position. Stored for movement calculations
-	/*iPoint spawnPos;*/
 };
 
 #endif // __ENEMY_H__
