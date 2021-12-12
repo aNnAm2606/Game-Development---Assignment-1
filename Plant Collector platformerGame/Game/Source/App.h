@@ -18,6 +18,7 @@ class Audio;
 class Logo;
 class SceneIntro;
 class Level1;
+class Lives;
 class WinScreen;
 class PathFinding;
 class GameOver;
@@ -99,6 +100,7 @@ public:
 	Logo* logo;
 	SceneIntro* sceneIntro;
 	Level1* level1;
+	Lives* lives;
 	WinScreen* winScreen;
 	PathFinding* pathfinding;
 	GameOver* gameOver;
