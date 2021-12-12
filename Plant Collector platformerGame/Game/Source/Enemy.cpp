@@ -325,28 +325,20 @@ bool Enemy::Start()
 	catPosition.x = startPosCat.x;
 	catPosition.y = startPosCat.y;
 
-	b2BodyDef dogbody;
-	dogbody.type = b2_dynamicBody;
-	dogbody.position.Set(PIXEL_TO_METERS(dogPosition.x), PIXEL_TO_METERS(dogPosition.y));
-	dogbody.fixedRotation = true;
-	//create the body in  the world
-	bdog = app->physics->world->CreateBody(&dogbody);
-	//add a shape
-	dogCircle.m_radius = PIXEL_TO_METERS(12);;
-	//add fixture
-	b2FixtureDef dogfixture;
-	dogfixture.shape = &dogCircle;
-	dogfixture.density = 1.5f;
-	dogfixture.friction = 100.0f;
-	//add fixture to body
-	bdog->CreateFixture(&dogfixture);
-	// Create our custom PhysBody class
-	dogBody = new PhysBody();
-	dogBody->body = bdog;
-	dogBody->width = dogBody->height = dogCircle.m_radius;
+	int  Hitbox[16] = {
+		0, 2,
+		0, 24,
+		2, 26,
+		24, 26,
+		26, 24,
+		26, 2,
+		24, 0,
+		2, 0
+	};
+
+	dogBody = app->physics->CreateChain(dogPosition.x, dogPosition.y, Hitbox, 16, 0);
 	dogBody->listener = this;
 	dogBody->colType = CollisionType::DOG;
-	bdog->SetUserData(dogBody);
 
 	// Cat body, shape and fixture with Box2D
 	b2BodyDef catbody;
@@ -387,48 +379,63 @@ bool Enemy::PreUpdate()
 bool Enemy::Update(float dt)
 {
 	onGround = false;
-	if (dogBody->body->GetLinearVelocity().y == 0) onGround = true;
 	if (catBody->body->GetLinearVelocity().y == 0) onGround = true;
 
 	// Position of enemy is restarted if game is restarted
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	if (dogDead == false)
 	{
-		dogBody->body->SetTransform({ PIXEL_TO_METERS(startPosDog.x), PIXEL_TO_METERS(startPosDog.y) }, 0.0f);
-	}
-
-	DogVelocity = dogBody->body->GetLinearVelocity();
-	
-	if (dogLimitR == false && dogLimitL == true)
-	{
-		DogVelocity.x = 3.0f;
-		if (currentDogAnim != &dogsRunR)
+		if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		{
-			dogsRunR.Reset();
-			currentDogAnim = &dogsRunR;
+			dogBody->body->SetTransform({ PIXEL_TO_METERS(startPosDog.x), PIXEL_TO_METERS(startPosDog.y) }, 0.0f);
 		}
-	}
-	else 	
-	{
-		DogVelocity.x = -3.0f;
-		currentDogAnim = &dogsRunL;
-	}
 
-	if (dogLimitL == false && dogLimitR == true)
-	{
-		DogVelocity.x = -3.0f;
-		if (currentDogAnim != &dogsRunL)
+		DogVelocity = dogBody->body->GetLinearVelocity();
+
+		if (dogLimitR == false && dogLimitL == true)
 		{
-			dogsRunL.Reset();
+			DogVelocity.x = 3.0f;
+			if (currentDogAnim != &dogsRunR)
+			{
+				dogsRunR.Reset();
+				currentDogAnim = &dogsRunR;
+			}
+		}
+		else
+		{
+			DogVelocity.x = -3.0f;
 			currentDogAnim = &dogsRunL;
 		}
+
+		if (dogLimitL == false && dogLimitR == true)
+		{
+			DogVelocity.x = -3.0f;
+			if (currentDogAnim != &dogsRunL)
+			{
+				dogsRunL.Reset();
+				currentDogAnim = &dogsRunL;
+			}
+		}
+		else
+		{
+			DogVelocity.x = 3.0f;
+			currentDogAnim = &dogsRunR;
+		}
+
+		dogBody->body->SetLinearVelocity(DogVelocity);
 	}
 	else
 	{
-		DogVelocity.x = 3.0f;
-		currentDogAnim = &dogsRunR;
+		if (currentDogAnim != &dogsRunR)
+		{
+			dogsRunR.Reset();
+			currentDogAnim = &dogsDieR;
+		}
+		if (currentDogAnim != &dogsRunL)
+		{
+			dogsRunL.Reset();
+			currentDogAnim = &dogsDieL;
+		}
 	}
-
-	dogBody->body->SetLinearVelocity(DogVelocity);
 	
 	// Position of cat is restarted if game is restarted
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
@@ -501,7 +508,7 @@ bool Enemy::PostUpdate()
 	//Dog 
 	SDL_Rect rectD = currentDogAnim->GetCurrentFrame();
 	dogBody->GetPosition(dogPosition.x, dogPosition.y);
-	app->render->DrawTexture(dog, dogPosition.x - 30, dogPosition.y - 30, &rectD);
+	app->render->DrawTexture(dog, dogPosition.x - 15, dogPosition.y - 17, &rectD);
 
 	//Cat 
 	SDL_Rect rectCat = currentCatAnim->GetCurrentFrame();
@@ -554,7 +561,7 @@ bool Enemy::CleanUp()
 	LOG("Destroying Enemy");
 	bool ret = true;
 	app->tex->UnLoad(texture);
-	app->physics->world->DestroyBody(bdog);
+	app->physics->world->DestroyBody(dogBody->body);
 	app->physics->world->DestroyBody(bcat);
 	return ret;
 }

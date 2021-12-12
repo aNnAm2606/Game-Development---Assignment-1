@@ -393,6 +393,8 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, int dynamic 
 	// Create FIXTURE
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
+	fixture.density = 1.5f;
+	fixture.friction = 100.0f;
 
 	// Add fixture to the BODY
 	b->CreateFixture(&fixture);

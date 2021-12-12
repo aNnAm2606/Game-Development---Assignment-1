@@ -9,6 +9,7 @@
 #include "Module.h"
 #include "Log.h"
 #include "Physics.h"
+#include "Enemy.h"
 
 //#include "FadeToBlack.h"
 
@@ -145,46 +146,19 @@ bool Player::Start()
 	position.x = startPos.x;
 	position.y = startPos.y;
 
-	/*                                    BOX2D                                */
-	//-------------------------------------------------------------------------//
-	// Player body, shape and fixture with Box2D
-	b2BodyDef pbody;
-	pbody.type = b2_dynamicBody;
-	pbody.position.Set(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y));
-	pbody.fixedRotation = true;
-	//create the body in  the world
-	b = app->physics->world->CreateBody(&pbody);
-
-	// Create SHAPE
-	int size = 16;
-	int* points = playerHitbox;
-	b2ChainShape shape;
-	b2Vec2* p = new b2Vec2[size / 2];
-	for (uint i = 0; i < size / 2; ++i)
-	{
-		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
-		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
-	}
-	shape.CreateLoop(p, size / 2);
-
-	b2FixtureDef playerHitbox;
-	playerHitbox.shape = &shape;
-	playerHitbox.isSensor = false;
-	playerHitbox.density = 1.5f;
-	playerHitbox.friction = 100.0f;
-
-	b->CreateFixture(&playerHitbox);
-	// Create our custom PhysBody class
-
-	playerBody = new PhysBody();
-	playerBody->body =b;
-	playerBody->width = playerBody->height = playerCircle.m_radius;
+	// Create Player
+	playerBody = app->physics->CreateChain(position.x, position.y, playerHitbox, 16, 0);
 	playerBody->listener = this;
-	playerBody->colType = CollisionType::PLAYER;	
-	b->SetUserData(playerBody);
+	playerBody->colType = CollisionType::PLAYER;
 
-	//---------------------------------------------------------------------------//
-	//app->physics->CreateChain(position.x, position.y, playerHitbox, 24, 0);
+	// Create Sensor for player
+	b2FixtureDef playerHitbox;
+	b2PolygonShape playerSensor;
+	b2Vec2 vec(PIXEL_TO_METERS(12), PIXEL_TO_METERS(32));
+	playerSensor.SetAsBox(PIXEL_TO_METERS(12), PIXEL_TO_METERS(8),vec,0);
+	playerHitbox.shape = &playerSensor;
+	playerHitbox.isSensor = true;
+	playerBody->body->CreateFixture(&playerHitbox);
 
 	return ret;
 }
@@ -431,8 +405,16 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::DOG)
 	{
-		LOG("THE DOG BIT YOU!");
-		playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+		if (onGround == true)
+		{
+			LOG("THE DOG BIT YOU!");
+		}
+		else
+		{
+			LOG("YOU KILLED THE DOG!");
+			app->enemy->dogDead = true;
+			playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+		}
 	}
 }
 
@@ -456,6 +438,6 @@ bool Player::CleanUp()
 	LOG("Destroying Player");
 	bool ret = true;
 	app->tex->UnLoad(texture);
-	app->physics->world->DestroyBody(b);
+	app->physics->world->DestroyBody(playerBody->body);
 	return ret;
 }

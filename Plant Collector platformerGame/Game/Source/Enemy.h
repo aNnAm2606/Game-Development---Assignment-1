@@ -135,7 +135,10 @@ public:
 
 	int health;
 	bool invincible = false;
-	bool powerUp = true;
+	bool dogDead = false;
+	bool catDead = false;
+	bool birdDead = false;
+
 	/*iPoint direction = { 0, 0 };*/
 	// Position of the player in the map
 	iPoint positionDog;
@@ -168,8 +171,6 @@ public:
 	// The speed in which we move the player (pixels per frame)
 	int speed;
 
-	// Jumps of the player
-	int jump;
 	bool onGround;
 
 protected:

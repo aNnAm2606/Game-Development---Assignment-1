@@ -51,12 +51,12 @@ public:
 
 	// player's body
 	PhysBody* playerBody;
+	PhysBody* sensor;
 	b2Body* b;
-	b2Body* sens;
 
 	//add a shape
-	b2CircleShape playerCircle;
 	b2PolygonShape playerSensor;
+
 	int  playerHitbox[16] = {
 		0, 2,
 		0, 24,
