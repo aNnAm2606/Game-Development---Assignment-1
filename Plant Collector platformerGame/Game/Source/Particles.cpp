@@ -31,6 +31,13 @@ void Particles::CreateParticles(Type type, int x, int y)
 		c->coins.loop = true;
 		c->coins.speed = 0.1f;
 	}
+	if (type == HEART)
+	{
+		c->hearts.PushBack({ 0, 0, 10, 10 });
+		c->hearts.PushBack({ 10, 0, 10, 10 });
+		c->hearts.loop = true;
+		c->hearts.speed = 0.05f;
+	}
 
 	particles.add(c);
 }
@@ -47,12 +54,14 @@ Particles::~Particles()
 bool Particles::Awake(pugi::xml_node& config)
 {
 	textureCoin.Create(config.child("textureCoin").child_value());
+	textureHeart.Create(config.child("textureHeart").child_value());
 	return true;
 }
 
 bool Particles::Start()
 {
 	coin = app->tex->Load(textureCoin.GetString());
+	heart = app->tex->Load(textureHeart.GetString());
 	return true;
 }
 
@@ -75,6 +84,7 @@ bool Particles::Update(float dt)
 	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
 	{
 		c->data->coins.Update();
+		c->data->hearts.Update();
 	}
 	return true;
 }
@@ -84,6 +94,7 @@ bool Particles::PostUpdate()
 	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
 	{
 		app->render->DrawTexture(coin, c->data->position.x + 4, c->data->position.y + 2, &c->data->coins.GetCurrentFrame());
+		app->render->DrawTexture(heart, c->data->position.x + 4, c->data->position.y + 2, &c->data->hearts.GetCurrentFrame());
 	}
 	return true;
 }
@@ -94,7 +105,7 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		if (bodyA == c->data->body && bodyB->colType == CollisionType::PLAYER)
 		{
-			if (c->data->type == COIN)
+			if (c->data->type == HEART)
 			{
 				if (app->player->lives < 3)
 				{
@@ -102,7 +113,7 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 				}
 			}
-			if (c->data->type == HEARTS)
+			if (c->data->type == COIN)
 			{
 				app->player->points += 5;
 			}
