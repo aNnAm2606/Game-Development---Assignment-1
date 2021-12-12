@@ -17,6 +17,26 @@ enum Type {
 	POWERUPS
 };
 
+////Creating coins
+//struct Particles
+//{
+//	bool toRemove = false;
+//	iPoint position;
+//	Type type;
+//	PhysBody* body;
+//
+//	Animation anim;
+//
+//	Animation coins;
+//	Animation noCoins;
+//	Animation hearts;
+//	Animation noHearts;
+//
+//	Animation* currentCoinsAnim = nullptr;
+//	Animation* currentHeartsAnim = nullptr;
+//};
+
+
 class Particles : public Module
 {
 public:
