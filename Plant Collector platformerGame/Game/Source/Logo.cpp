@@ -53,7 +53,13 @@ bool Logo::Start()
 bool Logo::Update(float dt)
 {
 	bool ret = true;
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
+	}
+
 	app->fade->Fade_To_Black(this, (Module*)app->sceneIntro, 240);
+
 	return ret;
 }
 

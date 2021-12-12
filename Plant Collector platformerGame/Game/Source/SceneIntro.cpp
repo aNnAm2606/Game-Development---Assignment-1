@@ -107,21 +107,11 @@ bool SceneIntro::Update(float dt)
 		app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
 	}
 
-	//if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-	//{
-	//	if (level1 == true)
-	//	{
-	//		app->level1->F6Load = true;
-	//		app->level2->F6Load = false;
-	//		app->fade->Fade_To_Black(this, (Module*)app->level1);
-	//	}
-	//	else if (level2 == true)
-	//	{
-	//		app->level2->F6Load = true;
-	//		app->level1->F6Load = false;
-	//		app->fade->Fade_To_Black(this, (Module*)app->level2);
-	//	}
-	//}
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
+	}
+
 	currentAnimation->Update();
 
 	cPos.x += 5;

@@ -54,7 +54,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(fade);
 	AddModule(map);
 	AddModule(particles);
 	AddModule(player);
@@ -64,6 +63,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(level1);
 	AddModule(gameOver);
 	AddModule(winScreen);
+	AddModule(fade);
 
 	// Render last to swap buffer
 	AddModule(render);

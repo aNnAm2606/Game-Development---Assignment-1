@@ -205,12 +205,17 @@ bool Level1::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
+	}
+
 	if (app->player->lives == 0 || app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		app->fade->Fade_To_Black(this, (Module*)app->gameOver);
 	}
 
-	if (app->player->win == true || app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->player->win == true || app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
 		app->fade->Fade_To_Black(this, (Module*)app->winScreen);
 	}
