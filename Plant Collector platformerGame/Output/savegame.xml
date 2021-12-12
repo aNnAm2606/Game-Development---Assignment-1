@@ -15,6 +15,7 @@
 	<Enemy>
 		<dogPosition x="1139" y="933" />
 		<catPosition x="1181" y="1381" />
+    <birdPosition x="900" y="800" />
 	</Enemy>
 	<player>
 		<position x="902" y="933" />

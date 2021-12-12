@@ -568,6 +568,10 @@ bool Enemy::LoadState(pugi::xml_node& data)
 	catPosition.y = data.child("catPosition").attribute("y").as_int();
 	catBody->body->SetTransform({ PIXEL_TO_METERS(catPosition.x), PIXEL_TO_METERS(catPosition.y) }, 0.0f);
 
+	birdPosition.x = data.child("birdPosition").attribute("x").as_int();
+	birdPosition.y = data.child("birdPosition").attribute("y").as_int();
+	birdBody->body->SetTransform({ PIXEL_TO_METERS(catPosition.x), PIXEL_TO_METERS(catPosition.y) }, 0.0f);
+
 	return true;
 }
 
@@ -578,6 +582,9 @@ bool Enemy::SaveState(pugi::xml_node& data) const
 
 	data.child("catPosition").attribute("x").set_value(catPosition.x);
 	data.child("catPosition").attribute("y").set_value(catPosition.y);
+
+	data.child("birdPosition").attribute("x").set_value(catPosition.x);
+	data.child("birdPosition").attribute("y").set_value(catPosition.y);
 
 	return true;
 }

@@ -70,7 +70,7 @@ bool Level1::Start()
 	
 	// Load music
 	//app->audio->PlayMusic(app->audio->soundtrack.GetString());
-	checkPointSound = app->audio->LoadFx("Assets/audio/checkPointSound.wav");
+	checkPointSound = app->audio->LoadFx("Assets/audio/fx/checkPointSound.wav");
 
 	// Load the backgrounds
 	sky = app->tex->Load("Assets/textures/10_Sky.png");
