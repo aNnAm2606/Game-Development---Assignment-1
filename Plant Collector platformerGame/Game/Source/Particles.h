@@ -14,7 +14,7 @@ enum Type {
 	COIN,
 	EXPLOSIONS,
 	HEART,
-	KEYS,
+	KEY,
 	POWERUPS
 };
 
@@ -28,6 +28,7 @@ struct Particle
 
 	Animation coins;
 	Animation hearts;
+	Animation keys;
 
 };
 
@@ -79,6 +80,9 @@ private:
 
 	SDL_Texture* heart;
 	SString textureHeart;
+
+	SDL_Texture* key;
+	SString textureKey;
 
 	List<Particle*> particles;
 };

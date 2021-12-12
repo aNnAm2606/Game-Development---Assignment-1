@@ -10,10 +10,13 @@
 		<Level level1="true" level2="false" />
 	</sceneIntro>
 	<renderer>
-		<camera x="-1541" y="-953" />
+		<camera x="-1528" y="-953" />
 	</renderer>
+	<Enemy>
+		<dogPosition x="1088" y="933" />
+		<catPosition x="1233" y="1381" />
+	</Enemy>
 	<player>
-		<startPosition x="0" y="0" />
-		<position x="1991" y="1253" />
+		<position x="1978" y="1253" />
 	</player>
 </save_state>

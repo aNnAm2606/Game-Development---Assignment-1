@@ -35,7 +35,7 @@ enum CollisionType {
 	CATLIMITSL,
 	CHECKPOINT,
 	HEARTS,
-	KEY,
+	KEYS,
 	POWERUP
 };
 

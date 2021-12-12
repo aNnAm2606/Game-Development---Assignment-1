@@ -474,47 +474,6 @@ bool Enemy::Update(float dt)
 		}
 	}
 
-
-	//if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-	//{
-	//	catBody->body->SetTransform({ PIXEL_TO_METERS(startPosCat.x), PIXEL_TO_METERS(startPosCat.y) }, 0.0f);
-	//}
-
-	//CatVelocity = catBody->body->GetLinearVelocity();
-
-	//if (catLimitR == false && catLimitL == true)
-	//{
-	//	CatVelocity.x = 3.0f;
-	//	if (currentCatAnim != &catsRunR)
-	//	{
-	//		catsRunR.Reset();
-	//		currentCatAnim = &catsRunR;
-	//	}
-	//}
-	//else
-	//{
-	//	CatVelocity.x = -3.0f;
-	//	currentCatAnim = &catsRunL;
-	//}
-
-	//if (catLimitL == false && catLimitR == true)
-	//{
-	//	CatVelocity.x = -3.0f;
-	//	if (currentCatAnim != &catsRunL)
-	//	{
-	//		catsRunL.Reset();
-	//		currentCatAnim = &catsRunL;
-	//	}
-	//}
-	//else
-	//{
-	//	CatVelocity.x = 3.0f;
-	//	currentCatAnim = &catsRunR;
-	//}
-
-	//catBody->body->SetLinearVelocity(CatVelocity);
-	// ADD THE CATDEAD ANIM :)
-
 	// update animation
 
 	currentDogAnim->Update();
@@ -592,6 +551,30 @@ void Enemy::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		catLimitR = false;
 	}
 
+}
+
+bool Enemy::LoadState(pugi::xml_node& data)
+{
+	dogPosition.x = data.child("dogPosition").attribute("x").as_int();
+	dogPosition.y = data.child("dogPosition").attribute("y").as_int();
+	dogBody->body->SetTransform({ PIXEL_TO_METERS(dogPosition.x), PIXEL_TO_METERS(dogPosition.y) }, 0.0f);
+	
+	catPosition.x = data.child("catPosition").attribute("x").as_int();
+	catPosition.y = data.child("catPosition").attribute("y").as_int();
+	catBody->body->SetTransform({ PIXEL_TO_METERS(catPosition.x), PIXEL_TO_METERS(catPosition.y) }, 0.0f);
+
+	return true;
+}
+
+bool Enemy::SaveState(pugi::xml_node& data) const
+{
+	data.child("dogPosition").attribute("x").set_value(dogPosition.x);
+	data.child("dogPosition").attribute("y").set_value(dogPosition.y);
+
+	data.child("catPosition").attribute("x").set_value(catPosition.x);
+	data.child("catPosition").attribute("y").set_value(catPosition.y);
+
+	return true;
 }
 
 bool Enemy::CleanUp()

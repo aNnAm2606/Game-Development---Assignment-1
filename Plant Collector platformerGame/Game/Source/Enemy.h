@@ -46,6 +46,10 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
+	// Save and load the position of the enemies
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
+
 	// Called before quitting
 	bool CleanUp();
 
