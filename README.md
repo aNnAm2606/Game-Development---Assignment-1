@@ -36,7 +36,7 @@ Checkpoints:
 
 
 Save the state of the game when player passes the flag.
-When player passes the first time the is an animation, and sound.
+When player passes the first time there is an animation, and sound.
 
 
 Enemies: 
