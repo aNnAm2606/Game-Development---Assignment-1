@@ -408,12 +408,13 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (onGround == true)
 		{
 			LOG("THE DOG BIT YOU!");
+			if(GodMode == false && app->enemy->dogDead == true) lives--;
 		}
 		else
 		{
 			LOG("YOU KILLED THE DOG!");
+			if(app->enemy->dogDead == false) playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
 			app->enemy->dogDead = true;
-			playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
 		}
 	}
 
@@ -423,12 +424,13 @@ void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (onGround == true)
 		{
 			LOG("THE CAT SCRATCHED YOU!");
+			if (GodMode == false && app->enemy->catDead == false) lives--;
 		}
 		else
 		{
 			LOG("YOU KILLED THE CAT!");
+			if(app->enemy->catDead == false) playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
 			app->enemy->catDead = true;
-			playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
 		}
 	}
 

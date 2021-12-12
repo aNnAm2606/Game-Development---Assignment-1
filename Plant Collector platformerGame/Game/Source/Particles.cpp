@@ -10,130 +10,107 @@
 #include "Log.h"
 #include "Physics.h"
 #include "Map.h"
+#include "Player.h"
 
 #include <stdio.h>
 
-//void Particles::CreateParticles(Type type_, float x, float y)
-//{
-//	Particles* p = new Particles();
-//	p->type = type_;
-//	p->position.x = x - 8;
-//	p->position.y = y - 8;
-//	p->b = app->physics->CreateRectangleSensor(x, y, 16, 16, 1);
-//	p->b->listener = this;
-//	if (type == COIN)
-//	{
-//		coins.PushBack({ 0, 0, 10, 10 });
-//		coins.PushBack({ 10, 0, 10, 10 });
-//		coins.PushBack({ 20, 0, 10, 10 });
-//		coins.PushBack({ 30, 0, 10, 10 });
-//		coins.loop = true;
-//		coins.speed = 0.1f;
-//	}
-//	if (type == HEART)
-//	{
-//		p->hearts.PushBack({ 0, 0, 10, 10 });
-//		p->hearts.PushBack({ 10, 0, 10, 10 });
-//		p->hearts.loop = true;
-//		p->hearts.speed = 0.1f;
-//	}
-//
-//	particles.add(p);
-//}
+void Particles::CreateParticles(Type type, int x, int y)
+{
+	Particle* c = new Particle();
+	c->type = type;
+	c->position.x = x - 8;
+	c->position.y = y - 8;
+	c->body = app->physics->CreateRectangleSensor(x, y, 10, 10, 1);
+	c->body->listener = this;
+	if (type == COIN)
+	{
+		c->coins.PushBack({ 0, 0, 10, 10 });
+		c->coins.PushBack({ 10, 0, 10, 10 });
+		c->coins.PushBack({ 20, 0, 10, 10 });
+		c->coins.PushBack({ 30, 0, 10, 10 });
+		c->coins.loop = true;
+		c->coins.speed = 0.1f;
+	}
+
+	particles.add(c);
+}
 
 Particles::Particles(bool startEnabled) : Module(startEnabled)
 {
 	name.Create("Particles");
-
-	coins.PushBack({ 0, 0, 10, 10 });
-	coins.PushBack({ 10, 0, 10, 10 });
-	coins.PushBack({ 20, 0, 10, 10 });
-	coins.PushBack({ 30, 0, 10, 10 });
-	coins.loop = true;
-	coins.speed = 0.1f;
-
-	hearts.PushBack({ 0, 0, 10, 10 });
-	hearts.PushBack({ 10, 0, 10, 10 });
-	hearts.loop = true;
-	hearts.speed = 0.1f;
 }
 
 Particles::~Particles()
 {
-
 }
 
-// Awake player
 bool Particles::Awake(pugi::xml_node& config)
 {
-	LOG("Loading Particles");
 	textureCoin.Create(config.child("textureCoin").child_value());
-	textureHeart.Create(config.child("textureHeart").child_value());
-
 	return true;
 }
 
 bool Particles::Start()
 {
-	LOG("Loading Particle textures");
-
-	// Load Items coins, chests, powerups
 	coin = app->tex->Load(textureCoin.GetString());
-	heart = app->tex->Load(textureHeart.GetString());
+	return true;
+}
 
-	// stating animation
-	currentCoinsAnim = &coins;
-	currentHeartsAnim = &hearts;
-
-	coinCollision = false;
-
+bool Particles::PreUpdate()
+{
+	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
+	{
+		if (c->data->pendingToDelete)
+		{
+			app->physics->world->DestroyBody(c->data->body->body);
+			particles.del(c);
+			break;
+		}
+	}
 	return true;
 }
 
 bool Particles::Update(float dt)
 {
-
-
-	//if ((coinCollision == true || app->map->debugColliders == true) && app->particles->coinCollected == false) app->render->DrawTexture(&app->particles->coinRect);
-	// update animation
-	currentCoinsAnim->Update();
-	currentHeartsAnim->Update();
-
+	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
+	{
+		c->data->coins.Update();
+	}
 	return true;
 }
 
 bool Particles::PostUpdate()
 {
-
-
-	coinRect = currentCoinsAnim->GetCurrentFrame();
-	if (app->particles->coinCollision == false)
+	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
 	{
-		/*currentCoinsAnim = &noCoin;*/
-		app->render->DrawTexture(coin, 672, 960, &coinRect);
+		app->render->DrawTexture(coin, c->data->position.x + 4, c->data->position.y + 2, &c->data->coins.GetCurrentFrame());
 	}
-
-	heartRect = currentHeartsAnim->GetCurrentFrame();
-	//if (app->particles->coinCollision == true)
-	//{
-	//	/*currentCoinsAnim = &noCoin;*/
-	//	app->render->DrawTexture(heart, 288, 992, &heartRect);
-	//}
-	
-		app->render->DrawTexture(heart, 288, 992, &heartRect);
-
 	return true;
 }
 
 void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::COINS)
+	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
 	{
-		LOG("Coin collected");
-		coinCollision = true;
-	}
-	else coinCollision = false;
+		if (bodyA == c->data->body && bodyB->colType == CollisionType::PLAYER)
+		{
+			if (c->data->type == COIN)
+			{
+				if (app->player->lives < 3)
+				{
+					app->player->lives++;
 
+				}
+			}
+			if (c->data->type == HEARTS)
+			{
+				app->player->points += 5;
+			}
+			c->data->pendingToDelete = true;
+		}
+
+
+	}
 }
 
 bool Particles::LoadState(pugi::xml_node& data)
@@ -150,6 +127,6 @@ bool Particles::CleanUp()
 {
 	LOG("Destroying Particles");
 	bool ret = true;
-
+	particles.clear();
 	return ret;
 }

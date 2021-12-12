@@ -98,7 +98,7 @@ bool Level1::Start()
 	app->enemy->Enable();
 	app->map->Colliders();
 
-	//app->particles->CreateParticles(COIN, app->player->position.x + 20, app->player->position.y);
+	app->particles->CreateParticles(COIN, 672, 960);
 
 	// Reset
 	dontPlayAudio = false;

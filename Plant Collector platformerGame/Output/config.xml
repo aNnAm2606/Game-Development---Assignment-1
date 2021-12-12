@@ -52,7 +52,7 @@
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
     <controls>Assets/textures/controls.png</controls>
     <tutorials>Assets/textures/tutorials.png</tutorials>
-    <startPosition x="120" y ="1070"/>
+    <startPosition x="120" y ="1060"/>
     <speed value="1"/>
     <jumps value="2"/>
   </player>
