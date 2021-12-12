@@ -50,15 +50,15 @@ bool Lives::Update(float dt)
 	// Draw lives
 	if (app->player->lives == 3)
 	{
-		app->render->DrawTexture(hearts3, 64, 800, NULL, true);
+		app->render->DrawTexture(hearts3, 0, 0, NULL, true);
 	}
 	else if (app->player->lives == 2)
 	{
-		app->render->DrawTexture(hearts2, 64, 800, NULL, true);
+		app->render->DrawTexture(hearts2, 0, 0, NULL, true);
 	}
 	if (app->player->lives == 1)
 	{
-		app->render->DrawTexture(hearts1, 64, 800, NULL, true);
+		app->render->DrawTexture(hearts1, 0, 0, NULL, true);
 	}
 
 	return true;
