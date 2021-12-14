@@ -85,6 +85,9 @@ private:
 	SString textureKey;
 
 	List<Particle*> particles;
+
+public:
+	bool heartCollected = false;
 };
 
 #endif // __PARTICLES_H__

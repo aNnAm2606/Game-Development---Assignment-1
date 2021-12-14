@@ -73,6 +73,8 @@ bool Particles::Start()
 	coin = app->tex->Load(textureCoin.GetString());
 	heart = app->tex->Load(textureHeart.GetString());
 	key = app->tex->Load(textureKey.GetString());
+
+	heartCollected = false;
 	return true;
 }
 
@@ -112,6 +114,13 @@ bool Particles::PostUpdate()
 		if (c->data->type == KEY) app->render->DrawTexture(key, c->data->position.x + 4, c->data->position.y + 2, &c->data->keys.GetCurrentFrame());
 		
 	}
+
+	if (heartCollected == true)
+	{
+		app->player->lives += 1;
+		heartCollected = false;
+	}
+
 	return true;
 }
 
@@ -129,15 +138,9 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			{
 				app->player->points += 5;
 			}
-			if (c->data->type == HEART && app->player->lives == 2)
+			if (c->data->type == HEART && app->player->lives < 3)
 			{
-				app->player->lives = 3;
-
-			}
-			if (c->data->type == HEART && app->player->lives == 1)
-			{
-				app->player->lives = 2;
-				c->data->pendingToDelete = true;
+				heartCollected = true;
 			}
 
 			c->data->pendingToDelete = true;
