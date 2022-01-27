@@ -92,6 +92,7 @@
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\GameOver.cpp" />
+    <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
     <ClCompile Include="Source\Lives.cpp" />
     <ClCompile Include="Source\Logo.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\GameOver.h" />
+    <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiControl.h" />
     <ClInclude Include="Source\GuiManager.h" />
     <ClInclude Include="Source\Lives.h" />

@@ -16,10 +16,7 @@
 #include "Enemy.h"
 #include "FadeToBlack.h"
 #include "Particles.h"
-#include "GuiControl.h"
 #include "GuiManager.h"
-
-
 
 #include "Defs.h"
 #include "Log.h"
@@ -51,7 +48,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	player = new Player(false);
 	enemy = new Enemy(false);
 	physics = new Physics(true);
-	guiControl = new GuiControl(false);
 	guiManager = new GuiManager(false);
 
 
@@ -73,7 +69,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOver);
 	AddModule(winScreen);
 	AddModule(fade);
-	AddModule(guiControl);
 	AddModule(guiManager);
 
 

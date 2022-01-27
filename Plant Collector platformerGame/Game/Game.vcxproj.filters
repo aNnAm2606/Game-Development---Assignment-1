@@ -30,6 +30,7 @@
     <ClCompile Include="Source\Logo.cpp" />
     <ClCompile Include="Source\Lives.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\GuiButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -84,6 +85,7 @@
     <ClInclude Include="Source\Lives.h" />
     <ClInclude Include="Source\GuiControl.h" />
     <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\GuiButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
