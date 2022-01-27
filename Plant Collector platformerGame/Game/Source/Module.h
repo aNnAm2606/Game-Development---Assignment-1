@@ -7,6 +7,7 @@
 
 class App;
 class PhysBody;
+class GuiControl;
 
 class Module
 {
@@ -92,6 +93,11 @@ public:
 	bool IsEnabled() const
 	{
 		return isEnabled;
+	}
+
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
 	}
 
 public:
