@@ -28,6 +28,9 @@ class Player;
 class Enemy;
 class FadeToBlack;
 class Particles;
+class GuiControl;
+class GuiManager;
+
 
 class App
 {
@@ -112,6 +115,8 @@ public:
 	FadeToBlack* fade;
 	SString title;
 	SString organization;
+	GuiControl* guiControl;
+	GuiManager* guiManager;
 
 
 	float deltaTime;

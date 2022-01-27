@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Particles.cpp" />
     <ClCompile Include="Source\Logo.cpp" />
     <ClCompile Include="Source\Lives.cpp" />
+    <ClCompile Include="Source\GuiManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -81,6 +82,8 @@
     <ClInclude Include="Source\Particles.h" />
     <ClInclude Include="Source\Logo.h" />
     <ClInclude Include="Source\Lives.h" />
+    <ClInclude Include="Source\GuiControl.h" />
+    <ClInclude Include="Source\GuiManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
