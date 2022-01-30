@@ -2,6 +2,7 @@
 #include "Render.h"
 #include "App.h"
 #include "Audio.h"
+#include "Log.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -19,17 +20,20 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(float dt)
 {
+	LOG("GUI update works");
 	if (state != GuiControlState::DISABLED)
 	{
+		LOG("not disabled");
 		// L14: TODO 3: Update the state of the GUiButton according to the mouse position
 		int mouseX, mouseY;
-		app->input->GetMousePosition(mouseX, mouseY);
+		mouseX = app->input->mouseX;
+		mouseY = app->input->mouseY;
 
 		if ((mouseX > bounds.x ) && (mouseX < (bounds.x + bounds.w )) &&
 			(mouseY > bounds.y ) && (mouseY < (bounds.y + bounds.h )))
 		{
 			state = GuiControlState::FOCUSED;
-
+			LOG("focused");
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
 				state = GuiControlState::PRESSED;

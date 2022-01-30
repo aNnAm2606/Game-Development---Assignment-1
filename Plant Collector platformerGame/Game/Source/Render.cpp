@@ -4,11 +4,13 @@
 #include "Input.h"
 #include "Physics.h"
 #include "Map.h"
+#include "Level1.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #include "Player.h"
+#include "EntityManager.h"
 
 #include "External/Optick/include/optick.h"
 
@@ -96,11 +98,11 @@ bool Render::Update(float dt)
 	/*OPTICK_CATEGORY("RenderUpdate", Optick::Category::Rendering);*/
 
 	// Player is enabled 
-	if (app->map->debugColliders == false && app->player->isEnabled == true)
+	if (app->map->debugColliders == false && app->level1->isEnabled == true)
 	{
 		app->win->scale = 1;
-		camera.x = -(app->player->playerBody->body->GetPosition().x * 50) + 450;
-		camera.y = -(app->player->playerBody->body->GetPosition().y * 50) + 300;
+		camera.x = -(app->entityManager->player->pBody->body->GetPosition().x * 50) + 450;
+		camera.y = -(app->entityManager->player->pBody->body->GetPosition().y * 50) + 300;
 	}
 	else
 	{

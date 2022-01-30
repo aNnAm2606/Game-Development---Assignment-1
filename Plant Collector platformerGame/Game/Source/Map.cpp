@@ -116,7 +116,7 @@ void Map::Colliders()
 						collider = new PhysBody();
 						collider->listener = this;
 						collider = app->physics->CreateRectangle(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::WALL;
+						collider->colType = CollisionType::WALLCOL;
 						colliders.add(collider);
 					}
 					else if (mapLayerItem->data->properties.GetProperty("Ladder") == 1)
@@ -124,7 +124,7 @@ void Map::Colliders()
 						collider = new PhysBody();
 						collider->listener = this;
 						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::LADDER;
+						collider->colType = CollisionType::LADDERCOL;
 						colliders.add(collider);
 					}
 					else if (mapLayerItem->data->properties.GetProperty("Win") == 1)
@@ -132,23 +132,7 @@ void Map::Colliders()
 						collider = new PhysBody();
 						collider->listener = this;
 						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::STONEWIN;
-						colliders.add(collider);
-					}
-					else if (mapLayerItem->data->properties.GetProperty("Controls") == 1)
-					{
-						collider = new PhysBody();
-						collider->listener = this;
-						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w-4, r.h-4, 1);
-						collider->colType = CollisionType::CONTROLS;
-						colliders.add(collider);
-					}
-					else if (mapLayerItem->data->properties.GetProperty("Tutorials") == 1)
-					{
-						collider = new PhysBody();
-						collider->listener = this;
-						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w - 6, r.h +16, 1);
-						collider->colType = CollisionType::TUORIALS;
+						collider->colType = CollisionType::STONEWINCOL;
 						colliders.add(collider);
 					}
 					else if (mapLayerItem->data->properties.GetProperty("openChest") == 1)
@@ -156,39 +140,7 @@ void Map::Colliders()
 						collider = new PhysBody();
 						collider->listener = this;
 						collider = app->physics->CreateRectangleSensor(pos.x, pos.y, r.w - 12, r.h - 12, 1);
-						collider->colType = CollisionType::CHEST;
-						colliders.add(collider);
-					}
-					else if (mapLayerItem->data->properties.GetProperty("DogLimitsR") == 1)
-					{
-						collider = new PhysBody();
-						collider->listener = this;
-						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::DOGLIMITSR;
-						colliders.add(collider);
-					}
-					else if (mapLayerItem->data->properties.GetProperty("DogLimitsL") == 1)
-					{
-						collider = new PhysBody();
-						collider->listener = this;
-						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::DOGLIMITSL;
-						colliders.add(collider);
-					}
-					else if (mapLayerItem->data->properties.GetProperty("CatLimitsR") == 1)
-					{
-						collider = new PhysBody();
-						collider->listener = this;
-						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::CATLIMITSR;
-						colliders.add(collider);
-					}
-					else if (mapLayerItem->data->properties.GetProperty("CatLimitsL") == 1)
-					{
-						collider = new PhysBody();
-						collider->listener = this;
-						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::CATLIMITSL;
+						collider->colType = CollisionType::CHESTCOL;
 						colliders.add(collider);
 					}
 					else if (mapLayerItem->data->properties.GetProperty("CheckPoint") == 1)
@@ -204,7 +156,7 @@ void Map::Colliders()
 						collider = new PhysBody();
 						collider->listener = this;
 						collider = app->physics->CreateRectangleSensor(pos.x + 16, pos.y + 16, r.w, r.h, 1);
-						collider->colType = CollisionType::COINS;
+						collider->colType = CollisionType::COINSCOL;
 						colliders.add(collider);
 					}
 				}
@@ -218,11 +170,10 @@ void Map::Colliders()
 
 void Map::DrawColliders()
 {
+	ListItem<MapLayer*>* mapLayerItem;
+	mapLayerItem = mapData.layers.start;
 	if (debugColliders == true)
 	{
-		ListItem<MapLayer*>* mapLayerItem;
-		mapLayerItem = mapData.layers.start;
-
 		while (mapLayerItem != NULL)
 		{
 			if (mapLayerItem->data->properties.GetProperty("Debug") == 1)

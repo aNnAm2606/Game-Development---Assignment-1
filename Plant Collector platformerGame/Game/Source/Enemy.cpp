@@ -5,6 +5,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Player.h"
+#include "EntityManager.h"
 #include "Input.h"
 #include "Textures.h"
 #include "Module.h"
@@ -286,18 +287,18 @@ bool Enemy::Start()
 
 	dogBody = app->physics->CreateChain(dogPosition.x, dogPosition.y, Hitbox, 16, 0);
 	dogBody->listener = this;
-	dogBody->colType = CollisionType::DOG;
+	dogBody->colType = CollisionType::DOGCOL;
 	dogDead = false;
 
 	// Cat body, shape and fixture with Box2D
 	catBody = app->physics->CreateChain(catPosition.x, catPosition.y, Hitbox, 16, 0);
 	catBody->listener = this;
-	catBody->colType = CollisionType::CAT;
+	catBody->colType = CollisionType::CATCOL;
 	catDead = false;
 	
 	birdBody = app->physics->CreateBirdChain(birdPosition.x, birdPosition.y, Hitbox, 16, 0);
 	birdBody->listener = this;
-	birdBody->colType = CollisionType::BIRD;
+	birdBody->colType = CollisionType::BIRDCOL;
 	birdDead = false;
 
 	dogSound = app->audio->LoadFx("Assets/audio/fx/dogSound.wav");
@@ -332,14 +333,14 @@ bool Enemy::Update(float dt)
 
 		DogVelocity = dogBody->body->GetLinearVelocity();
 
-		if (dogPosition.DistanceTo(app->player->position) < 300)
+		if (dogPosition.DistanceTo(app->entityManager->player->position) < 300)
 		{
-			if (dogPosition.x < app->player->position.x && (dogPosition.y > app->player->position.y || dogPosition.y == app->player->position.y))
+			if (dogPosition.x < app->entityManager->player->position.x && (dogPosition.y > app->entityManager->player->position.y || dogPosition.y == app->entityManager->player->position.y))
 			{
 				currentDogAnim = &dogsRunR;
 				dogBody->body->SetLinearVelocity({ 2.5f,0.0f });
 			}
-			if (dogPosition.x > app->player->position.x && (dogPosition.y > app->player->position.y || dogPosition.y == app->player->position.y))
+			if (dogPosition.x > app->entityManager->player->position.x && (dogPosition.y > app->entityManager->player->position.y || dogPosition.y == app->entityManager->player->position.y))
 			{
 				currentDogAnim = &dogsRunL;
 				dogBody->body->SetLinearVelocity({ -2.5f,0.0f });
@@ -358,14 +359,14 @@ bool Enemy::Update(float dt)
 					DogVelocity = Vel0;
 					currentDogAnim = &dogsR;
 					dogBody->body->SetLinearVelocity({ 0.0f,0.0f });
-					if (CatVelocity == Vel0) currentCatAnim = &dogsR;
+					if (DogVelocity == Vel0) currentDogAnim = &dogsR;
 				}
 				if (currentDogAnim == &dogsRunL)
 				{
 					DogVelocity = Vel0;
 					currentDogAnim = &dogsL;
 					dogBody->body->SetLinearVelocity({ 0.0f,0.0f });
-					if (CatVelocity == Vel0) currentCatAnim = &dogsR;
+					if (DogVelocity == Vel0) currentDogAnim = &dogsR;
 				}
 			}
 			if (dogPosition.x < startPosDog.x)
@@ -406,14 +407,14 @@ bool Enemy::Update(float dt)
 
 		CatVelocity = catBody->body->GetLinearVelocity();
 
-		if (catPosition.DistanceTo(app->player->position) < 300)
+		if (catPosition.DistanceTo(app->entityManager->player->position) < 300)
 		{
-			if (catPosition.x < app->player->position.x && (catPosition.y > app->player->position.y || catPosition.y == app->player->position.y))
+			if (catPosition.x < app->entityManager->player->position.x && (catPosition.y > app->entityManager->player->position.y || catPosition.y == app->entityManager->player->position.y))
 			{
 				currentCatAnim = &catsRunR;
 				catBody->body->SetLinearVelocity({ 2.5f,0.0f });
 			}
-			if (catPosition.x > app->player->position.x && (catPosition.y > app->player->position.y || catPosition.y == app->player->position.y))
+			if (catPosition.x > app->entityManager->player->position.x && (catPosition.y > app->entityManager->player->position.y || catPosition.y == app->entityManager->player->position.y))
 			{
 				currentCatAnim = &catsRunL;
 				catBody->body->SetLinearVelocity({ -2.5f,0.0f });
@@ -477,47 +478,47 @@ bool Enemy::Update(float dt)
 
 		birdBody->body->SetLinearVelocity(BirdVelocity);
 
-		if (birdPosition.DistanceTo(app->player->position) < 300)
+		if (birdPosition.DistanceTo(app->entityManager->player->position) < 300)
 		{
-			if (birdPosition.x < app->player->position.x)
+			if (birdPosition.x < app->entityManager->player->position.x)
 			{
 				currentBirdAnim = &birdFlyR;
 				birdBody->body->SetLinearVelocity({ 0.7f,0.0f });
 
 			}
-			if (birdPosition.x > app->player->position.x)
+			if (birdPosition.x > app->entityManager->player->position.x)
 			{
 				currentBirdAnim = &birdFlyL;
 				birdBody->body->SetLinearVelocity({ -0.7f,0.0f });
 
 			}
-			if (birdPosition.y > app->player->position.y)
+			if (birdPosition.y > app->entityManager->player->position.y)
 			{
 				birdBody->body->SetLinearVelocity({ 0.0f,-0.5f });
 			}
-			if (birdPosition.y < app->player->position.y)
+			if (birdPosition.y < app->entityManager->player->position.y)
 			{
 				birdBody->body->SetLinearVelocity({ 0.0f,0.5f });
 			}
-			if (birdPosition.x < app->player->position.x && birdPosition.y > app->player->position.y)
+			if (birdPosition.x < app->entityManager->player->position.x && birdPosition.y > app->entityManager->player->position.y)
 			{
 				currentBirdAnim = &birdFlyR;
 				birdBody->body->SetLinearVelocity({ 0.7f,-0.5f });
 
 			}
-			if (birdPosition.x > app->player->position.x && birdPosition.y > app->player->position.y)
+			if (birdPosition.x > app->entityManager->player->position.x && birdPosition.y > app->entityManager->player->position.y)
 			{
 				currentBirdAnim = &birdFlyL;
 				birdBody->body->SetLinearVelocity({ -0.7f,-0.5f });
 
 			}
-			if (birdPosition.x < app->player->position.x && birdPosition.y < app->player->position.y)
+			if (birdPosition.x < app->entityManager->player->position.x && birdPosition.y < app->entityManager->player->position.y)
 			{
 				currentBirdAnim = &birdFlyR;
 				birdBody->body->SetLinearVelocity({ 0.7f,0.5f });
 
 			}
-			if (birdPosition.x > app->player->position.x && birdPosition.y < app->player->position.y)
+			if (birdPosition.x > app->entityManager->player->position.x && birdPosition.y < app->entityManager->player->position.y)
 			{
 				currentBirdAnim = &birdFlyL;
 				birdBody->body->SetLinearVelocity({ -0.7f,0.5f });

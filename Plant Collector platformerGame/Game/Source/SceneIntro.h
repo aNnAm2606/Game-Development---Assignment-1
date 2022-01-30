@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Animation.h"
 #include "Point.h"
+#include "GuiButton.h"
 
 struct SDL_Texture;
 
@@ -35,6 +36,9 @@ public:
 	// Performs the render call of all the parts of the scene's background
 	bool PostUpdate() override;
 
+	// Define multiple Gui Event methods
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 	bool CleanUp();
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
@@ -57,6 +61,9 @@ public:
 	bool level1;
 	bool level2;
 	int frames;
+
+	GuiButton* btn1;
+	GuiButton* btn2;
 };
 
 #endif	// __SCENEINTRO_H__

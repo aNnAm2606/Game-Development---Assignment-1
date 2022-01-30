@@ -26,7 +26,6 @@ public:
 	// Collision callback, called when the player intersects with another collider
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
 
-
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
 
@@ -105,16 +104,6 @@ private:
 	b2Vec2 CatVelocity;
 	b2Vec2 RatVelocity;
 	b2Vec2 BirdVelocity;
-
-	bool dogLimitR = false;
-	bool dogLimitL = true;
-	bool catLimitR = false;
-	bool catLimitL = true;
-	bool birdLimitR = false;
-	bool birdLimitL = true;
-	bool ratLimitR = false;
-	bool ratLimitL = true;
-
 
 public:
 

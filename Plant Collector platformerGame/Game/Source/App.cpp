@@ -12,10 +12,10 @@
 #include "WinScreen.h"
 #include "Map.h"
 #include "Physics.h"
-#include "Player.h"
 #include "Enemy.h"
 #include "FadeToBlack.h"
 #include "Particles.h"
+#include "EntityManager.h"
 #include "GuiManager.h"
 
 #include "Defs.h"
@@ -37,18 +37,17 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	fade = new FadeToBlack(true);
-	logo = new Logo(true);
-	sceneIntro = new SceneIntro(false);
+	logo = new Logo(false);
+	sceneIntro = new SceneIntro(true);
 	level1 = new Level1(false);
 	lives = new Lives(false);
 	winScreen = new WinScreen(false);
 	gameOver = new GameOver(false);
 	map = new Map(true);
 	particles = new Particles(false);
-	player = new Player(false);
-	enemy = new Enemy(false);
 	physics = new Physics(true);
-	guiManager = new GuiManager(false);
+	entityManager = new EntityManager(false);
+	guiManager = new GuiManager(true);
 
 
 	// Ordered for awake / Start / Update
@@ -60,17 +59,16 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(particles);
-	AddModule(player);
-	AddModule(enemy);
+	//AddModule(enemy);
 	AddModule(logo);
 	AddModule(sceneIntro);
+	AddModule(entityManager);
 	AddModule(level1);
 	AddModule(lives);
 	AddModule(gameOver);
 	AddModule(winScreen);
-	AddModule(fade);
 	AddModule(guiManager);
-
+	AddModule(fade);
 
 	// Render last to swap buffer
 	AddModule(render);

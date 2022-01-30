@@ -24,10 +24,10 @@ class PathFinding;
 class GameOver;
 class Map;
 class Physics;
-class Player;
-class Enemy;
+//class Enemy;
 class FadeToBlack;
 class Particles;
+class EntityManager;
 class GuiManager;
 
 
@@ -109,14 +109,15 @@ public:
 	Map* map;
 	Physics* physics;
 	Particles* particles;
-	Player* player;
-	Enemy* enemy;
+	//Enemy* enemy;
 	FadeToBlack* fade;
-	SString title;
-	SString organization;
+	EntityManager* entityManager;
 	GuiManager* guiManager;
 
-	float deltaTime;
+	SString title;
+	SString organization;
+
+	float deltaTime = 0.0f;
 
 private:
 

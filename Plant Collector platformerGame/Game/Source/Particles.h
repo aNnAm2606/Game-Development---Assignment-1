@@ -11,10 +11,10 @@ struct SDL_Texture;
 
 enum Type {
 	NOTHING = -1,
-	COIN,
+	COINP,
 	EXPLOSIONS,
 	HEART,
-	KEY,
+	KEYP,
 	POWERUPS
 };
 
