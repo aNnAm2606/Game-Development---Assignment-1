@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="Source\Bird.cpp" />
     <ClCompile Include="Source\Dog.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\WinScreen.cpp" />
+    <ClInclude Include="Fonts.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Bird.h" />

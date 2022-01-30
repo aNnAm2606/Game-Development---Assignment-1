@@ -17,6 +17,7 @@
 #include "Particles.h"
 #include "EntityManager.h"
 #include "GuiManager.h"
+#include "Fonts.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +49,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	physics = new Physics(true);
 	entityManager = new EntityManager(false);
 	guiManager = new GuiManager(true);
+	fonts = new Fonts(false);
 
 
 	// Ordered for awake / Start / Update
@@ -69,6 +71,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(winScreen);
 	AddModule(guiManager);
 	AddModule(fade);
+	AddModule(fonts);
 
 	// Render last to swap buffer
 	AddModule(render);

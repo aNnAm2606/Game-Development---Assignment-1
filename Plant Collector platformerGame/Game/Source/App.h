@@ -30,6 +30,8 @@ class Particles;
 class EntityManager;
 class GuiManager;
 
+class Fonts;
+
 
 class App
 {
@@ -113,6 +115,8 @@ public:
 	FadeToBlack* fade;
 	EntityManager* entityManager;
 	GuiManager* guiManager;
+
+	Fonts* fonts;
 
 	SString title;
 	SString organization;
