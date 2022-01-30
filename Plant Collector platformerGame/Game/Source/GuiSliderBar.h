@@ -1,4 +1,4 @@
-##ifndef __GUISLIDEBAR_H__
+#ifndef __GUISLIDEBAR_H__
 #define __GUISLIDEBAR_H__
 
 #include "GuiControl.h"
@@ -6,7 +6,7 @@
 #include "Point.h"
 #include "SString.h"
 
-class GuiSlideBar : public GuiSlideBar
+class GuiSlideBar : public GuiControl
 {
 public:
 

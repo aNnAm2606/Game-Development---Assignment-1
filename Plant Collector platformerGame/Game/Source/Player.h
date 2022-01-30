@@ -1,7 +1,7 @@
 #ifndef __MODULEPLAYER_H__
 #define __MODULEPLAYER_H__
 
-#include "Module.h"
+#include "Entity.h"
 #include "Animation.h"
 #include "Point.h"
 #include "Box2D/Box2D/Box2D.h"
@@ -9,32 +9,21 @@
 
 struct SDL_Texture;
 
-class Player : public Module
+class Player : public Entity
 {
 public:
 	// Constructor
-	Player(bool startEnabled);
+	Player(iPoint position_);
 
 	// Destructor
 	~Player();
 
 	// Awake
-	bool Awake(pugi::xml_node&);
-
-	// Called when the module is activated
-	// Loads the necessary textures for the player
-	bool Start() override;
+	//bool Awake(pugi::xml_node&);
 
 	// Called at the middle of the application loop
 	// Processes new input and handles player movement
 	bool Update(float dt) override;
-
-	// Called at the end of the application loop
-	// Performs the render call of the player sprite
-	bool PostUpdate() override;
-
-	// Collision callback, called when the player intersects with another collider
-	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
 
 	// Save and load the position of the playerç
 	bool LoadState(pugi::xml_node&);
@@ -44,13 +33,9 @@ public:
 
 public:
 	// Position of the player in the map
-	iPoint position;
-	iPoint startPos;
 	iPoint checkPointPos;
-	b2Vec2* velocity;
 
 	// player's body
-	PhysBody* playerBody;
 	PhysBody* sensor;
 	b2Body* b;
 
@@ -85,7 +70,6 @@ public:
 
 	// The pointer to the current player animation
 	// It will be switched depending on the player's movement direction
-	Animation* currentAnimation = nullptr;
 
 	// A set of animations
 	Animation idleAnimR;
@@ -114,10 +98,7 @@ public:
 
 	// A flag to detect when the player has been destroyed
 	int lives = 3;
-	bool controlsVisible = false;
-	bool tutorialVisible = false;
 	bool keyFound = false;
-	bool chestFound = false;
 	bool chestOpen = false;
 	bool ladderClose = false;
 	bool GodMode = false;

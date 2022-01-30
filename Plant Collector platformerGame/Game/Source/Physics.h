@@ -17,17 +17,17 @@
 
 enum CollisionType {
 	NONE = -1,
-	PLAYER,
+	PLAYERCOL,
 	PLAYERSENSOR,
-	DOG,
-	CAT,
-	BIRD,
-	WALL,
-	COINS,
-	LADDER,
-	STONEWIN,
-	CHEST,
-	STONE,
+	DOGCOL,
+	CATCOL,
+	BIRDCOL,
+	WALLCOL,
+	COINSCOL,
+	LADDERCOL,
+	STONEWINCOL,
+	CHESTCOL,
+	STONECOL,
 	CONTROLS,
 	TUORIALS,
 	DOGLIMITSR,
@@ -35,10 +35,12 @@ enum CollisionType {
 	CATLIMITSR,
 	CATLIMITSL,
 	CHECKPOINT,
-	HEARTS,
-	KEYS,
-	POWERUP
+	HEARTSCOL,
+	KEYSCOL,
+	POWERUPCOL
 };
+
+class Entity;
 
 // Small class to return to other modules to track position and rotation of physics bodies
 class PhysBody
@@ -56,6 +58,7 @@ public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
+	Entity* entityListener;
 	CollisionType colType;
 };
 

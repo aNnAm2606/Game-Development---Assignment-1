@@ -10,6 +10,8 @@
 #include "Player.h"
 #include "Level1.h"
 #include "Level2.h"
+#include "Window.h"
+#include "GuiManager.h"
 
 SceneIntro::SceneIntro(bool startEnabled) : Module(startEnabled)
 {
@@ -60,6 +62,12 @@ bool SceneIntro::Start()
 	LOG("settting camera to (0,0)");
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
+
+	//GUI
+	uint x;
+	uint y;
+	app->win->GetWindowSize(x, y);
+	btn1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Test1", { ((int)x / 2)-55, (int)y / 2, 111, 52 }, this);
 
 	return ret;
 }
@@ -125,13 +133,46 @@ bool SceneIntro::PostUpdate()
 	app->render->DrawTexture(bg1, 0, 0, NULL);
 	app->render->DrawTexture(bg2, 0, 0, NULL);
 
-	if ((frames / 60) % 2 == 0)
-	{
-		app->render->DrawTexture(bg3, 0, 0, NULL);
-	}
+	// commented the press space to start and replaced by GUI button
+	//if ((frames / 60) % 2 == 0)
+	//{
+	//	app->render->DrawTexture(bg3, 0, 0, NULL);
+	//}
 
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(character, cPos.x, cPos.y, &rect);
+
+	//Draw GUI
+	app->guiManager->Draw();
+
+
+	return true;
+}
+
+bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
+{
+
+	switch (control->type)
+	{
+	case GuiControlType::BUTTON:
+	{
+		//Checks the GUI element ID
+		if (control->id == 1)
+		{
+			LOG("Click on button 1");
+			app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
+		}
+
+		if (control->id == 2)
+		{
+			LOG("Click on button 2");
+		}
+
+	}
+	//Other cases here
+
+	default: break;
+	}
 
 	return true;
 }

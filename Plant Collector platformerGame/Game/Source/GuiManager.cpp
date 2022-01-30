@@ -1,6 +1,7 @@
 #include "GuiManager.h"
 #include "App.h"
 #include "Textures.h"
+#include "Log.h"
 
 #include "GuiButton.h"
 //#include "GuiSlideBar.h"
@@ -43,13 +44,18 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	//control->SetTexture(texture);
 
 	// Created GuiControls are added to the list of controls
-	if (control != nullptr) controls.add(control);
+	if (control != nullptr) 
+	{ 
+		LOG("control added to list");
+		controls.add(control); 
+	}
 
 	return control;
 }
 
 bool GuiManager::Update(float dt)
 {	
+	LOG("GUI MANAGER UPDATE WORKS");
 	accumulatedTime += dt;
 	if (accumulatedTime >= updateMsCycle) doLogic = true;
 
@@ -64,7 +70,8 @@ bool GuiManager::Update(float dt)
 	return true;
 }
 
-bool GuiManager::UpdateAll(float dt, bool doLogic) {
+bool GuiManager::UpdateAll(float dt, bool doLogic) 
+{
 
 	if (doLogic) {
 

@@ -41,9 +41,9 @@
   </Particles>
   
   <Enemy>
-    <textureDog>Assets/textures/Dog/Attack.png</textureDog>
-    <textureBird>Assets/textures/Bird/Death.png</textureBird>
-    <textureCat>Assets/textures/Cat/Attack.png</textureCat>
+    <textureDog>Assets/textures/Dog.png</textureDog>
+    <textureBird>Assets/textures/Bird.png</textureBird>
+    <textureCat>Assets/textures/Cat.png</textureCat>
     <textureRat>Assets/textures/Rat/Death.png</textureRat>
     <startPositionDog x="1792" y ="1061"/>
     <startPositionCat x="1120" y ="1376"/>
@@ -59,6 +59,13 @@
     <speed value="1"/>
     <jumps value="2"/>
   </player>
+
+  <entitymanager>
+    <playerTexture>Assets/textures/mushyPlayer.png </playerTexture>
+    <dogTexture>Assets/textures/Dog.png</dogTexture>
+    <catTexture>Assets/textures/Cat.png</catTexture>
+    <birdTexture>Assets/textures/Bird.png</birdTexture>
+  </entitymanager>
 
   <logo>
     <background>Assets/textures/bgStart.png</background>

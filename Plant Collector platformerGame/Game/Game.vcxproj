@@ -89,11 +89,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Bird.cpp" />
+    <ClCompile Include="Source\Dog.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\GameOver.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\Cat.cpp" />
     <ClCompile Include="Source\GuiSliderBar.cpp" />
     <ClCompile Include="Source\GuiToggle.cpp" />
     <ClCompile Include="Source\Lives.cpp" />
@@ -115,12 +119,17 @@
     <ClCompile Include="Source\WinScreen.cpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Bird.h" />
+    <ClInclude Include="Source\Dog.h" />
     <ClInclude Include="Source\Enemy.h" />
+    <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\GameOver.h" />
     <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiControl.h" />
     <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\Cat.h" />
     <ClInclude Include="Source\GuiSliderBar.h" />
     <ClInclude Include="Source\GuiToggle.h" />
     <ClInclude Include="Source\Lives.h" />

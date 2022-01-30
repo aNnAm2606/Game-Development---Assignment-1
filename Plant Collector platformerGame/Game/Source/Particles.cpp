@@ -11,6 +11,7 @@
 #include "Physics.h"
 #include "Map.h"
 #include "Player.h"
+#include "EntityManager.h"
 
 #include <stdio.h>
 
@@ -22,7 +23,7 @@ void Particles::CreateParticles(Type type, int x, int y)
 	c->position.y = y - 8;
 	c->body = app->physics->CreateRectangleSensor(x, y, 10, 10, 1);
 	c->body->listener = this;
-	if (type == COIN)
+	if (type == COINP)
 	{
 		c->coins.PushBack({  0, 0, 10, 10 });
 		c->coins.PushBack({ 10, 0, 10, 10 });
@@ -38,7 +39,7 @@ void Particles::CreateParticles(Type type, int x, int y)
 		c->hearts.loop = true;
 		c->hearts.speed = 0.05f;
 	}
-	if (type == KEY)
+	if (type == KEYP)
 	{
 		c->keys.PushBack({  0, 0, 8, 8 });
 		c->keys.PushBack({ 12, 0, 8, 8 });
@@ -107,17 +108,17 @@ bool Particles::PostUpdate()
 {
 	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
 	{
-		if (c->data->type == COIN) app->render->DrawTexture(coin, c->data->position.x + 4, c->data->position.y + 2, &c->data->coins.GetCurrentFrame());
+		if (c->data->type == COINP) app->render->DrawTexture(coin, c->data->position.x + 4, c->data->position.y + 2, &c->data->coins.GetCurrentFrame());
 		
 		if (c->data->type == HEART) app->render->DrawTexture(heart, c->data->position.x + 4, c->data->position.y + 2, &c->data->hearts.GetCurrentFrame());
 		
-		if (c->data->type == KEY) app->render->DrawTexture(key, c->data->position.x + 4, c->data->position.y + 2, &c->data->keys.GetCurrentFrame());
+		if (c->data->type == KEYP) app->render->DrawTexture(key, c->data->position.x + 4, c->data->position.y + 2, &c->data->keys.GetCurrentFrame());
 		
 	}
 
 	if (heartCollected == true)
 	{
-		app->player->lives += 1;
+		app->entityManager->player->lives += 1;
 		heartCollected = false;
 	}
 
@@ -128,24 +129,23 @@ void Particles::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	for (ListItem<Particle*>* c = particles.start; c != NULL; c = c->next)
 	{
-		if (bodyA == c->data->body && bodyB->colType == CollisionType::PLAYER)
+		if (bodyA == c->data->body && bodyB->colType == CollisionType::PLAYERCOL)
 		{
 			if (c->data->type == KEY)
 			{
-				app->player->keyFound = true;
+				app->entityManager->player->keyFound = true;
 			}
 			if (c->data->type == COIN)
 			{
-				app->player->points += 5;
+				app->entityManager->player->points += 5;
 			}
-			if (c->data->type == HEART && app->player->lives < 3)
+			if (c->data->type == HEART && app->entityManager->player->lives < 3)
 			{
 				heartCollected = true;
 			}
 
 			c->data->pendingToDelete = true;
 		}
-
 
 	}
 }

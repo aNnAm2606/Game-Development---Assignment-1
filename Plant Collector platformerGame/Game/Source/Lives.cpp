@@ -11,6 +11,7 @@
 #include "Physics.h"
 #include "Map.h"
 #include "Player.h"
+#include "EntityManager.h"
 
 #include <stdio.h>
 
@@ -48,15 +49,15 @@ bool Lives::PreUpdate()
 bool Lives::Update(float dt)
 {
 	// Draw lives
-	if (app->player->lives == 3)
+	if (app->entityManager->player->lives == 3)
 	{
 		app->render->DrawTexture(hearts3, 0, 0, NULL, true);
 	}
-	else if (app->player->lives == 2)
+	else if (app->entityManager->player->lives == 2)
 	{
 		app->render->DrawTexture(hearts2, 0, 0, NULL, true);
 	}
-	if (app->player->lives == 1)
+	if (app->entityManager->player->lives == 1)
 	{
 		app->render->DrawTexture(hearts1, 0, 0, NULL, true);
 	}

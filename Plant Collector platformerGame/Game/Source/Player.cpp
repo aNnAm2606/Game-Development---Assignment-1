@@ -10,15 +10,16 @@
 #include "Log.h"
 #include "Physics.h"
 #include "Enemy.h"
+#include "EntityManager.h"
 
 //#include "FadeToBlack.h"
 
 #include <stdio.h>
 
-Player::Player(bool startEnabled) : Module(startEnabled)
+Player::Player(iPoint position_) : Entity(EntityType::PLAYER, position_)
 {
 	name.Create("player");
-
+	
 	// Player's animation:
 	// idle animation - just one sprite
 	idleAnimR.PushBack({ 0, 64, 32, 32 });
@@ -83,6 +84,17 @@ Player::Player(bool startEnabled) : Module(startEnabled)
 
 	openTut.PushBack({ 0, 64, 96, 32 });
 
+	currentAnimation = &idleAnimR;
+
+	// Create Player
+	pBody = app->physics->CreateChain(position_.x, position_.y, playerHitbox, 16, 0);
+	this->pBody->entityListener = this;
+	pBody->colType = CollisionType::PLAYERCOL;
+
+	startPos.x = position.x;
+	startPos.y = position.y;
+
+	chestOpen = false;
 }
 
 Player::~Player()
@@ -90,100 +102,26 @@ Player::~Player()
 
 }
 
-// Awake player
-bool Player::Awake(pugi::xml_node& config)
-{
-	LOG("Loading Player");
-	bool ret = true;
-
-	// Load character's sprites
-	// Easy for changing sprites of characters from xml and folders
-	playerSprites.Create(config.child("spritesFolder").child_value());
-
-	// Controls sprites for drawing in screen
-	controls.Create(config.child("controls").child_value());
-	tutorials.Create(config.child("tutorials").child_value());
-
-	// Player's initial position saved in xml
-	startPos.x = config.child("startPosition").attribute("x").as_int();
-	startPos.y = config.child("startPosition").attribute("y").as_int();
-
-	// Number of the player's jump
-	jump = config.child("jumps").attribute("value").as_int();
-
-	// Player's speed
-	speed = config.child("speed").attribute("value").as_int();
-
-	return ret;
-}
-
-bool Player::Start()
-{
-	LOG("Loading player textures");
-
-	bool ret = true;
-
-	// Textures
-	texture = app->tex->Load(playerSprites.GetString());
-	controlsTex = app->tex->Load(controls.GetString());
-	tutorialsTex = app->tex->Load(tutorials.GetString());
-
-	// stating animation
-	currentAnimation = &idleAnimR;
-
-	// L10: DONE 4: Retrieve the player when playing a second time
-	controlsVisible = false;
-	tutorialVisible = false;
-	keyFound = false;
-	chestFound = false;
-	chestOpen = false;
-	GodMode = false;
-	checkPoint = false;
-	checkPointReached = false;
-	checkPointCollision = false;
-	playerHit = false;
-	win = false;
-	lives = 3;
-
-	position.x = startPos.x;
-	position.y = startPos.y;
-	checkPointPos.x = startPos.x;
-	checkPointPos.y = startPos.y;
-
-	// Create Player
-	playerBody = app->physics->CreateChain(position.x, position.y, playerHitbox, 16, 0);
-	playerBody->listener = this;
-	playerBody->colType = CollisionType::PLAYER;
-
-	// Create Sensor for player
-	b2FixtureDef playerHitbox;
-	b2PolygonShape playerSensor;
-	b2Vec2 vec(PIXEL_TO_METERS(12), PIXEL_TO_METERS(32));
-	playerSensor.SetAsBox(PIXEL_TO_METERS(12), PIXEL_TO_METERS(8),vec,0);
-	playerHitbox.shape = &playerSensor;
-	playerHitbox.isSensor = true;
-	playerBody->body->CreateFixture(&playerHitbox);
-
-	return ret;
-}
-
 bool Player::Update(float dt)
 {
 	bool ret = true;
 
+	position.x = METERS_TO_PIXELS(pBody->body->GetPosition().x);
+	position.y = METERS_TO_PIXELS(pBody->body->GetPosition().y);
+
 	onGround = false;
-	if (playerBody->body->GetLinearVelocity().y == 0) onGround = true;
+	if (pBody->body->GetLinearVelocity().y == 0) onGround = true;
 
 	// Position of player is restarted if game is restarted
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		playerBody->body->SetTransform({ PIXEL_TO_METERS(startPos.x), PIXEL_TO_METERS(startPos.y) }, 0.0f);
+		pBody->body->SetTransform({ PIXEL_TO_METERS(startPos.x), PIXEL_TO_METERS(startPos.y) }, 0.0f);
 	}
 	
 	// L10: DONE: Implement gamepad support
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		b2Vec2 vel = playerBody->body->GetLinearVelocity();
+		b2Vec2 vel = pBody->body->GetLinearVelocity();
 		vel.x = -3.0f;
 		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
@@ -209,12 +147,12 @@ bool Player::Update(float dt)
 				}
 			}
 		}
-		playerBody->body->SetLinearVelocity(vel);
+		pBody->body->SetLinearVelocity(vel);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		b2Vec2 vel = playerBody->body->GetLinearVelocity();
+		b2Vec2 vel = pBody->body->GetLinearVelocity();
 		vel.x = 3.0f;
 		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
@@ -240,21 +178,21 @@ bool Player::Update(float dt)
 				}
 			}
 		}
-		playerBody->body->SetLinearVelocity(vel);
+		pBody->body->SetLinearVelocity(vel);
 	}
 
-	if (playerBody->body->GetLinearVelocity().y == 0) jump = 2;
+	if (pBody->body->GetLinearVelocity().y == 0) jump = 2;
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && playerBody->body->GetLinearVelocity().y >= 0 && jump != 0)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && pBody->body->GetLinearVelocity().y >= 0 && jump != 0)
 	{
 		jump--;
-		playerBody->body->SetLinearVelocity({ playerBody->body->GetLinearVelocity().x, -5.0f });
+		pBody->body->SetLinearVelocity({ pBody->body->GetLinearVelocity().x, -5.0f });
 	}
 
 	if (onGround == false)
 	{
-		if (playerBody->body->GetLinearVelocity().y < -1.0f && playerBody->body->GetLinearVelocity().x < -0.1f ||
-			playerBody->body->GetLinearVelocity().y > 0.1f && playerBody->body->GetLinearVelocity().x < 0.1f)
+		if (pBody->body->GetLinearVelocity().y < -1.0f && pBody->body->GetLinearVelocity().x < -0.1f ||
+			pBody->body->GetLinearVelocity().y > 0.1f && pBody->body->GetLinearVelocity().x < 0.1f)
 		{
 			if (currentAnimation != &jumpL)
 			{
@@ -262,8 +200,8 @@ bool Player::Update(float dt)
 				currentAnimation = &jumpL;
 			}
 		}
-		if (playerBody->body->GetLinearVelocity().y < -1.0f && playerBody->body->GetLinearVelocity().x > 0.1f ||
-			playerBody->body->GetLinearVelocity().y > 0.1f && playerBody->body->GetLinearVelocity().x > -0.1f)
+		if (pBody->body->GetLinearVelocity().y < -1.0f && pBody->body->GetLinearVelocity().x > 0.1f ||
+			pBody->body->GetLinearVelocity().y > 0.1f && pBody->body->GetLinearVelocity().x > -0.1f)
 		{
 			if (currentAnimation != &jumpR)
 			{
@@ -288,8 +226,6 @@ bool Player::Update(float dt)
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) { controlsVisible = !controlsVisible; tutorialVisible = !tutorialVisible; }
-
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		GodMode =!GodMode;
@@ -305,7 +241,7 @@ bool Player::Update(float dt)
 	{
 		if (playerHit == true)
 		{
-			playerBody->body->SetTransform({ PIXEL_TO_METERS(checkPointPos.x), PIXEL_TO_METERS(checkPointPos.y) }, 0.0f);
+			pBody->body->SetTransform({ PIXEL_TO_METERS(checkPointPos.x), PIXEL_TO_METERS(checkPointPos.y) }, 0.0f);
 			lives--;
 			playerHit = false;
 		}
@@ -316,12 +252,12 @@ bool Player::Update(float dt)
 			{
 				if (checkPointReached == false)
 				{
-					playerBody->body->SetTransform({ PIXEL_TO_METERS(startPos.x), PIXEL_TO_METERS(startPos.y) }, 0.0f);
+					pBody->body->SetTransform({ PIXEL_TO_METERS(startPos.x), PIXEL_TO_METERS(startPos.y) }, 0.0f);
 					LOG("lives count: %i", lives);
 				}
 				else
 				{
-					playerBody->body->SetTransform({ PIXEL_TO_METERS(checkPointPos.x), PIXEL_TO_METERS(checkPointPos.y) }, 0.0f);
+					pBody->body->SetTransform({ PIXEL_TO_METERS(checkPointPos.x), PIXEL_TO_METERS(checkPointPos.y) }, 0.0f);
 					LOG("lives count: %i", lives);
 				}
 			}
@@ -335,150 +271,129 @@ bool Player::Update(float dt)
 		checkPoint = false;
 		checkPointReached = true;
 	}
-
-	if (chestFound == true)
-	{
-		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		{
-			chestOpen = true;
-			LOG("chest opened yaaaay!");
-		}
-	}
 	currentAnimation->Update();
 
 	return ret;
 }
 
-bool Player::PostUpdate()
-{
-	bool ret = true;
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	tutRect = JumpTut.GetCurrentFrame();
-	chestRect = openTut.GetCurrentFrame();
-	ladderRect = ladderTut.GetCurrentFrame();
-	playerBody->GetPosition(position.x, position.y);
-	app->render->DrawTexture(texture, position.x-2, position.y-4, &rect);
-	return ret;
-}
 
-void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
-{
-	// Ladders doesn't work for now
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::LADDER)
-	{
-		LOG("it works fst part");
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT  && playerBody->body->GetLinearVelocity().y < -0.25f)
-		{
-			playerBody->body->SetLinearVelocity({ 0,-5.0f });
-			LOG("it works scnd part");
-		}
-		
-	}
-
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::STONEWIN)
-	{
-		if (chestOpen == true) 
-		{
-			LOG("you won!");
-			win = true;
-		}
-	}
-
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CONTROLS)
-	{
-		LOG("these are the controls");
-		controlsVisible = true;
-	}
-	else controlsVisible = false;
-
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::TUORIALS)
-	{
-		LOG("tutorial!");
-		tutorialVisible = true;
-	}
-	else tutorialVisible = false;
-
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHEST)
-	{
-		LOG("open chest!");
-		if(keyFound == true) chestFound = true;
-		else chestFound = false;
-	}
-
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHECKPOINT)
-	{
-		LOG("Checkpoint reached!");
-		checkPoint = true;
-	}
-
-	//ENEMY LOGIC
-
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::DOG)
-	{
-		if (onGround == true)
-		{
-			LOG("THE DOG BIT YOU!");
-			if(GodMode == false && app->enemy->dogDead == false) playerHit = true;
-		}
-		else
-		{
-			LOG("YOU KILLED THE DOG!");
-			if(app->enemy->dogDead == false) 
-			{
-				app->audio->PlayFx(app->enemy->dogSound);
-				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
-			}
-			app->enemy->dogDead = true;
-		}
-	}
-
-	// CAT LOGIC 
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CAT)
-	{
-		if (onGround == true)
-		{
-			LOG("THE CAT SCRATCHED YOU!");
-			if (GodMode == false && app->enemy->catDead == false) playerHit = true;
-		}
-		else
-		{
-			LOG("YOU KILLED THE CAT!");
-			if(app->enemy->catDead == false) 
-			{
-				app->audio->PlayFx(app->enemy->catSound);
-				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
-			}
-			app->enemy->catDead = true;
-		}
-	}
-
-	// CAT LOGIC 
-	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::BIRD)
-	{
-		if (onGround == true)
-		{
-			LOG("BIRD KILLED YOU!");
-			if (GodMode == false && app->enemy->birdDead == false) playerHit = true;
-		}
-		else
-		{
-			LOG("YOU KILLED THE BIRD!");
-			if (app->enemy->birdDead == false)
-			{ 
-				app->audio->PlayFx(app->enemy->birdSound);
-				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true); 
-			}
-			app->enemy->birdDead = true;
-		}
-	}
-
-}
+//void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+//{
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::LADDER)
+//	{
+//		LOG("it works fst part");
+//		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT  && playerBody->body->GetLinearVelocity().y < -0.25f)
+//		{
+//			playerBody->body->SetLinearVelocity({ 0,-5.0f });
+//			LOG("it works scnd part");
+//		}
+//		
+//	}
+//
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::STONEWIN)
+//	{
+//		if (chestOpen == true) 
+//		{
+//			LOG("you won!");
+//			win = true;
+//		}
+//	}
+//
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CONTROLS)
+//	{
+//		LOG("these are the controls");
+//		controlsVisible = true;
+//	}
+//	else controlsVisible = false;
+//
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::TUORIALS)
+//	{
+//		LOG("tutorial!");
+//		tutorialVisible = true;
+//	}
+//	else tutorialVisible = false;
+//
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHEST)
+//	{
+//		LOG("open chest!");
+//		if(keyFound == true) chestFound = true;
+//		else chestFound = false;
+//	}
+//
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CHECKPOINT)
+//	{
+//		LOG("Checkpoint reached!");
+//		checkPoint = true;
+//	}
+//
+//	//ENEMY LOGIC
+//
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::DOG)
+//	{
+//		if (onGround == true)
+//		{
+//			LOG("THE DOG BIT YOU!");
+//			if(GodMode == false && app->enemy->dogDead == false) playerHit = true;
+//		}
+//		else
+//		{
+//			LOG("YOU KILLED THE DOG!");
+//			if(app->enemy->dogDead == false) 
+//			{
+//				app->audio->PlayFx(app->enemy->dogSound);
+//				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+//			}
+//			app->enemy->dogDead = true;
+//		}
+//	}
+//
+//	// CAT LOGIC 
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::CAT)
+//	{
+//		if (onGround == true)
+//		{
+//			LOG("THE CAT SCRATCHED YOU!");
+//			if (GodMode == false && app->enemy->catDead == false) playerHit = true;
+//		}
+//		else
+//		{
+//			LOG("YOU KILLED THE CAT!");
+//			if(app->enemy->catDead == false) 
+//			{
+//				app->audio->PlayFx(app->enemy->catSound);
+//				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true);
+//			}
+//			app->enemy->catDead = true;
+//		}
+//	}
+//
+//	// CAT LOGIC 
+//	if (bodyA->colType == CollisionType::PLAYER && bodyB->colType == CollisionType::BIRD)
+//	{
+//		if (onGround == true)
+//		{
+//			LOG("BIRD KILLED YOU!");
+//			if (GodMode == false && app->enemy->birdDead == false) playerHit = true;
+//		}
+//		else
+//		{
+//			LOG("YOU KILLED THE BIRD!");
+//			if (app->enemy->birdDead == false)
+//			{ 
+//				app->audio->PlayFx(app->enemy->birdSound);
+//				playerBody->body->ApplyLinearImpulse({ -0.5f, -2.5f }, { 0,0 }, true); 
+//			}
+//			app->enemy->birdDead = true;
+//		}
+//	}
+//
+//}
 
 bool Player::LoadState(pugi::xml_node& data)
 {
 	position.x = data.child("position").attribute("x").as_int();
 	position.y = data.child("position").attribute("y").as_int();
-	playerBody->body->SetTransform({ PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y) }, 0.0f);
+	pBody->body->SetTransform({ PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y) }, 0.0f);
 	return true;
 }
 
@@ -494,6 +409,6 @@ bool Player::CleanUp()
 	LOG("Destroying Player");
 	bool ret = true;
 	app->tex->UnLoad(texture);
-	app->physics->world->DestroyBody(playerBody->body);
+	app->physics->world->DestroyBody(pBody->body);
 	return ret;
 }

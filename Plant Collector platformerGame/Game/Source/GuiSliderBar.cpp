@@ -1,4 +1,4 @@
-#include "GuiSlideBar.h"
+#include "GuiSliderBar.h"
 #include "Render.h"
 #include "App.h"
 #include "Audio.h"
@@ -44,7 +44,7 @@ bool GuiSlideBar::Update(float dt)
 	//	else state = GuiControlState::NORMAL;
 	//}
 
-	/*return false;*/
+	return false;
 }
 
 bool GuiSlideBar::Draw(Render* render)
@@ -84,5 +84,5 @@ bool GuiSlideBar::Draw(Render* render)
 	//	break;
 	//}
 
-	//return false;
+	return false;
 }

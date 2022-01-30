@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
+#include "EntityManager.h"
 #include "Particles.h"
 #include "FadeToBlack.h"
 #include "Enemy.h"
@@ -64,12 +65,17 @@ bool Level1::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Level1::Start()
 {
+	app->entityManager->Enable();
+
+	Player* player = (Player*)app->entityManager->CreateEntity(PLAYER, iPoint{ 120, 1060 });
+	app->entityManager->SetPlayer(player);
+
 	app->map->Enable();
 	// L03: DONE: Load map
 	app->map->Load("test.tmx");
 	
 	// Load music
-	app->audio->PlayMusic(app->audio->soundtrack.GetString());
+	//app->audio->PlayMusic(app->audio->soundtrack.GetString());
 	checkPointSound = app->audio->LoadFx("Assets/audio/fx/checkPointSound.wav");
 
 	// Load the backgrounds
@@ -94,38 +100,41 @@ bool Level1::Start()
 	currentChestAnimation = &chestClosed;
 	currentFlagAnim = &flag0;
 
-	app->player->Enable();
 	app->particles->Enable();
-	app->enemy->Enable();
+	app->entityManager->CreateEntity(DOG, iPoint{ 400,1061 });
+	app->entityManager->CreateEntity(CAT, iPoint{ 600,1061 });
+	app->entityManager->CreateEntity(BIRD, iPoint{ 870,805 });
+
+	//app->enemy->Enable();
 	app->map->Colliders();
 	app->lives->Enable();
 
 	//Adding coins
-	app->particles->CreateParticles(COIN, 672, 960);
-	app->particles->CreateParticles(COIN, 608, 1024);
-	app->particles->CreateParticles(COIN, 320, 1024);
-	app->particles->CreateParticles(COIN, 832, 896);
-	app->particles->CreateParticles(COIN, 1152, 1248);
-	app->particles->CreateParticles(COIN, 352, 768);
-	app->particles->CreateParticles(COIN, 512, 768);
-	app->particles->CreateParticles(COIN, 672, 704);
-	app->particles->CreateParticles(COIN, 832, 672);
-	app->particles->CreateParticles(COIN, 992, 1376);
-	app->particles->CreateParticles(COIN, 1120, 1376);
-	app->particles->CreateParticles(COIN, 1280, 1376);
-	app->particles->CreateParticles(COIN, 1408, 1312);
-	app->particles->CreateParticles(COIN, 1568, 1312);
-	app->particles->CreateParticles(COIN, 1728, 1312);
-	app->particles->CreateParticles(COIN, 1792, 1280);
-	app->particles->CreateParticles(COIN, 1856, 1280);
-	app->particles->CreateParticles(COIN, 1920, 1248);
-	app->particles->CreateParticles(COIN, 1984, 1248);
+	app->particles->CreateParticles(COINP, 672, 960);
+	app->particles->CreateParticles(COINP, 608, 1024);
+	app->particles->CreateParticles(COINP, 320, 1024);
+	app->particles->CreateParticles(COINP, 832, 896);
+	app->particles->CreateParticles(COINP, 1152, 1248);
+	app->particles->CreateParticles(COINP, 352, 768);
+	app->particles->CreateParticles(COINP, 512, 768);
+	app->particles->CreateParticles(COINP, 672, 704);
+	app->particles->CreateParticles(COINP, 832, 672);
+	app->particles->CreateParticles(COINP, 992, 1376);
+	app->particles->CreateParticles(COINP, 1120, 1376);
+	app->particles->CreateParticles(COINP, 1280, 1376);
+	app->particles->CreateParticles(COINP, 1408, 1312);
+	app->particles->CreateParticles(COINP, 1568, 1312);
+	app->particles->CreateParticles(COINP, 1728, 1312);
+	app->particles->CreateParticles(COINP, 1792, 1280);
+	app->particles->CreateParticles(COINP, 1856, 1280);
+	app->particles->CreateParticles(COINP, 1920, 1248);
+	app->particles->CreateParticles(COINP, 1984, 1248);
 
 	//Adding hearts
 	app->particles->CreateParticles(HEART, 1248, 928);
 
 	// Hidden Key
-	app->particles->CreateParticles(KEY, 2112, 1248);
+	app->particles->CreateParticles(KEYP, 2112, 1248);
 
 	// Reset
 	dontPlayAudio = false;
@@ -183,12 +192,7 @@ bool Level1::Update(float dt)
 	app->map->Draw();
 	app->map->DrawColliders();
 
-	if (app->player->controlsVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->controlsTex, 124, 930, NULL);
-	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 462, 930, &app->player->tutRect);
-	if ((app->player->chestFound     == true || app->map->debugColliders == true) && app->player->chestOpen == false) app->render->DrawTexture(app->player->tutorialsTex, 2039, 1207, &app->player->chestRect);
-	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 1073, 1144, &app->player->ladderRect);
-	if (app->player->tutorialVisible == true || app->map->debugColliders == true) app->render->DrawTexture(app->player->tutorialsTex, 2008, 958, &app->player->ladderRect);
-	
+	//if ((app->entityManager->player->chestFound == true || app->map->debugColliders == true) && app->entityManager->player->chestOpen == false) app->render->DrawTexture(app->entityManager->player->tutorialsTex, 2039, 1207, &app->entityManager->player->chestRect);
 
 	// update animation
 	currentChestAnimation->Update();
@@ -205,7 +209,7 @@ bool Level1::PostUpdate()
 	bool ret = true;
 
 	ChestRect = currentChestAnimation->GetCurrentFrame();
-	if (app->player->chestOpen == true)
+	if (app->entityManager->player->chestOpen == true)
 	{
 		currentChestAnimation = &chestOpened;
 		app->render->DrawTexture(treasureChest, 2048, 1248, &ChestRect);
@@ -216,7 +220,7 @@ bool Level1::PostUpdate()
 	}
 
 	flagRect = currentFlagAnim->GetCurrentFrame();
-	if (app->player->checkPointReached == true)
+	if (app->entityManager->player->checkPointReached == true)
 	{
 		currentFlagAnim = &flag1;
 		app->render->DrawTexture(flag, 1728, 1040, &flagRect);
@@ -237,12 +241,12 @@ bool Level1::PostUpdate()
 		app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
 	}
 
-	if (app->player->lives == 0 || app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (app->entityManager->player->lives == 0 || app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		app->fade->Fade_To_Black(this, (Module*)app->gameOver);
 	}
 
-	if (app->player->win == true || app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	if (app->entityManager->player->win == true || app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
 		app->fade->Fade_To_Black(this, (Module*)app->winScreen);
 	}
@@ -254,9 +258,9 @@ bool Level1::PostUpdate()
 bool Level1::CleanUp()
 {
 	LOG("Freeing scene");
-
-	app->player->Disable();
-	app->enemy->Disable();
+	app->entityManager->CleanUp();
+	app->entityManager->Disable();
+	//app->enemy->Disable();
 	app->particles->Disable();
 	app->map->Disable();
 	app->map->Unload();
