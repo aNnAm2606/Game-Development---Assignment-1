@@ -47,6 +47,40 @@ within their radius.
 If player jumps on top of any enemy, the enemy dies.
 If enemy hits the player, player loses a life and returns to the start.
 
+GUI and Entity systems:
+
+Entity System implemented: Player, Enemies, Coins and Hearts) from a base Entity class and an EntityManager
+class manages them (Initializes, includes in a list, Updates, Draws, etc…)
+
+GUI: Title Screen Main Menu: Includes the following GuiButtons:
+○ [PLAY]
+○ [CONTINUE]
+○ [SETTINGS]
+■ Adjust music volume, with a GuiSlider.
+■ Adjust fx volume, with a GuiSlider.
+■ Toggle fullscreen mode, with a GuiCheckBox.
+■ Toggle VSync, with a GuiCheckBox.
+○ [CREDITS]
+○ [EXIT]
+○ Buttons are responsive and include:
+■ Visible state change on mouse-hover (FOCUSED)
+■ Visible state change on mouse-pressed (PRESSED)
+■ Generate an OnMouseClick event to be processed
+■ Audio feedback on mouse-hover and mouse-click.
+
+GUI: Gameplay Screen HUD: In-game GUI included the following elements:
+○ Player lives
+○ Coins
+○ Timer:
+
+● GUI: Gameplay Screen Pause Menu: Pressing ESCAPE triggers an in-game Pause Menu
+with the following options GuiButtons:
+○ [RESUME]
+○ [SETTINGS]
+○ [BACK to TITLE]
+○ [EXIT]
+
+
 Debug Features:
 
 F1 for starting the game.
