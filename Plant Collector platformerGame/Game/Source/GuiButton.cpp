@@ -54,7 +54,7 @@ bool GuiButton::Update(float dt)
 	return false;
 }
 
-bool GuiButton::Draw(Render* render)
+bool GuiButton::Draw(Render* render, uint32 id)
 {
 
 	// Draw the right button depending on state
@@ -68,36 +68,117 @@ bool GuiButton::Draw(Render* render)
 
 	case GuiControlState::NORMAL:
 	{
-		//orange start button coordinates
-		button.x = 110;
-		button.y = 190;
-		button.w = 111;
-		button.h = 52;
+		switch (id)
+		{
+		case 1:
+		{
+			//orange start button coordinates
+			button.x = 110;
+			button.y = 190;
+			button.w = 111;
+			button.h = 52;
 
-		render->DrawTexture(texture, bounds.x, bounds.y, &button);
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+		case 2:
+		{
+			//orange continue button coordinates
+			button.x = 110;
+			button.y = 250;
+			button.w = 111;
+			button.h = 52;
 
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+		case 3:
+		{
+			//orange start button coordinates
+			button.x = 7;
+			button.y = 190;
+			button.w = 44;
+			button.h = 44;
+
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+		}
 	} break;
 
 	//L14: TODO 4: Draw the button according the GuiControl State
 	case GuiControlState::FOCUSED:
 	{
-		//white start button coordinates
-		button.x = 245;
-		button.y = 190;
-		button.w = 111;
-		button.h = 52;
+		switch (id)
+		{
+		case 1:
+		{
+			//white start button coordinates
+			button.x = 245;
+			button.y = 190;
+			button.w = 111;
+			button.h = 52;
 
-		render->DrawTexture(texture, bounds.x, bounds.y, &button);
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+		case 2:
+		{
+			//white start button coordinates
+			button.x = 245;
+			button.y = 250;
+			button.w = 111;
+			button.h = 52;
+
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+		case 3:
+		{
+			//orange start button coordinates
+			button.x = 7;
+			button.y = 190;
+			button.w = 44;
+			button.h = 44;
+
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+
+		}
+
 	} break;
 	case GuiControlState::PRESSED:
 	{
-		//pressed start button coordinates
-		button.x = 375;
-		button.y = 190;
-		button.w = 111;
-		button.h = 52;
+		switch (id)
+		{
+		case 1:
+		{
+			//pressed start button coordinates
+			button.x = 375;
+			button.y = 190;
+			button.w = 111;
+			button.h = 52;
 
-		render->DrawTexture(texture, bounds.x, bounds.y, &button);
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+		case 2:
+		{
+			//pressed continue button coordinates
+			button.x = 375;
+			button.y = 250;
+			button.w = 111;
+			button.h = 52;
+
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+		case 3:
+		{
+			//orange start button coordinates
+			button.x = 51;
+			button.y = 190;
+			button.w = 44;
+			button.h = 44;
+
+			render->DrawTexture(texture, bounds.x, bounds.y, &button);
+		}break;
+
+		}
+
 	} break;
 
 	/******/

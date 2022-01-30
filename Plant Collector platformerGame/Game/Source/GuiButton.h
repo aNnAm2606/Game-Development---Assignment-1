@@ -15,7 +15,7 @@ public:
 	GuiButton(uint32 id, SDL_Rect bounds, const char* text);
 	virtual ~GuiButton();
 	bool Update(float dt);
-	bool Draw(Render* render);
+	bool Draw(Render* render, uint32 id);
 
 	int mouseX, mouseY;
 	unsigned int click;

@@ -94,7 +94,7 @@ bool GuiManager::Draw() {
 
 	while (control != nullptr)
 	{
-		control->data->Draw(app->render);
+		control->data->Draw(app->render,control->data->id);
 		control = control->next;
 	}
 

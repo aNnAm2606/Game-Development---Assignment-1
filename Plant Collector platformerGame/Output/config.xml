@@ -78,6 +78,7 @@
     <IntroScreen>Assets/textures/bgStart.png</IntroScreen>
     <spaceToStart>Assets/textures/space.png</spaceToStart>
     <spritesFolder>Assets/textures/mushyPlayer.png</spritesFolder>
+    <settingsPannel>Assets/textures/settingsPannel.png</settingsPannel>
   </sceneIntro>
 
   <gameOver>

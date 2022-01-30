@@ -39,6 +39,7 @@ bool SceneIntro::Awake(pugi::xml_node& config)
 	StartButton.Create(config.child("spaceToStart").child_value());
 	title.Create(config.child("title").child_value());
 	playerSprites.Create(config.child("spritesFolder").child_value());
+	settingsPannel.Create(config.child("settingsPannel").child_value());
 
 	return ret;
 }
@@ -51,7 +52,8 @@ bool SceneIntro::Start()
 	bool ret = true;
 	bg1 = app->tex->Load(screenImage.GetString());
 	bg2 = app->tex->Load(title.GetString());
-	bg3 = app->tex->Load(StartButton.GetString());
+	settingsTexture = app->tex->Load(settingsPannel.GetString());
+
 	character = app->tex->Load(playerSprites.GetString());
 
 	// stating animation
@@ -67,7 +69,9 @@ bool SceneIntro::Start()
 	uint x;
 	uint y;
 	app->win->GetWindowSize(x, y);
-	btn1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Test1", { ((int)x / 2)-55, (int)y / 2, 111, 52 }, this);
+	startButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "start", { ((int)x / 2)-55, (int)y / 2, 111, 52 }, this);
+	continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "continue", { ((int)x / 2)-55, (int)y-200, 111, 52 }, this);
+	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "settings", { 30, 20, 44, 44 }, this);
 
 	return ret;
 }
@@ -145,6 +149,10 @@ bool SceneIntro::PostUpdate()
 	//Draw GUI
 	app->guiManager->Draw();
 
+	if (showPannel == true)
+	{
+		app->render->DrawTexture(settingsTexture, 150, 80, NULL);
+	}
 
 	return true;
 }
@@ -157,15 +165,22 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	case GuiControlType::BUTTON:
 	{
 		//Checks the GUI element ID
-		if (control->id == 1)
+		if (showPannel == false)
 		{
-			LOG("Click on button 1");
-			app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
+			if (control->id == 1)
+			{
+				LOG("Click on start button");
+				app->fade->Fade_To_Black(this, (Module*)app->level1, 180);
+			}
+			if (control->id == 2)
+			{
+				LOG("Click on continue button");
+			}
 		}
-
-		if (control->id == 2)
+		if (control->id == 3)
 		{
-			LOG("Click on button 2");
+			LOG("Click on settings button");
+			showPannel = !showPannel;
 		}
 
 	}

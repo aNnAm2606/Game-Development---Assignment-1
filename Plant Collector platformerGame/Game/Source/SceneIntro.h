@@ -46,12 +46,13 @@ public:
 	SDL_Texture* bg2;
 	SDL_Texture* bg3;
 	SDL_Texture* character;
-	SDL_Texture* bg5;
+	SDL_Texture* settingsTexture;
 
 	SString screenImage;
 	SString StartButton;
 	SString title;
 	SString playerSprites;
+	SString settingsPannel;
 
 	Animation walk;
 	Animation* currentAnimation = nullptr;
@@ -62,8 +63,13 @@ public:
 	bool level2;
 	int frames;
 
-	GuiButton* btn1;
-	GuiButton* btn2;
+	GuiButton* startButton;
+	GuiButton* continueButton;
+	GuiButton* settingsButton;
+	GuiButton* checkboxButton;
+
+	bool showPannel = false;
+
 };
 
 #endif	// __SCENEINTRO_H__
