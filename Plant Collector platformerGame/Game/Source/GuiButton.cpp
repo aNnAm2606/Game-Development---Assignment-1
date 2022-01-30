@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Audio.h"
 #include "Log.h"
+#include "Textures.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -11,6 +12,8 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 
 	canClick = true;
 	drawBasic = false;
+
+	texture= app->tex->Load("Assets/textures/buttons.png");
 }
 
 GuiButton::~GuiButton()
@@ -65,18 +68,36 @@ bool GuiButton::Draw(Render* render)
 
 	case GuiControlState::NORMAL:
 	{
-		render->DrawRectangle(bounds, 255, 0, 0, 255);
+		//orange start button coordinates
+		button.x = 110;
+		button.y = 190;
+		button.w = 111;
+		button.h = 52;
+
+		render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
 	} break;
 
 	//L14: TODO 4: Draw the button according the GuiControl State
 	case GuiControlState::FOCUSED:
 	{
-		render->DrawRectangle(bounds, 255, 255, 255, 160);
+		//white start button coordinates
+		button.x = 245;
+		button.y = 190;
+		button.w = 111;
+		button.h = 52;
+
+		render->DrawTexture(texture, bounds.x, bounds.y, &button);
 	} break;
 	case GuiControlState::PRESSED:
 	{
-		render->DrawRectangle(bounds, 255, 255, 255, 255);
+		//pressed start button coordinates
+		button.x = 375;
+		button.y = 190;
+		button.w = 111;
+		button.h = 52;
+
+		render->DrawTexture(texture, bounds.x, bounds.y, &button);
 	} break;
 
 	/******/

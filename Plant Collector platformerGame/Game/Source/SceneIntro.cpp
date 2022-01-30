@@ -67,9 +67,7 @@ bool SceneIntro::Start()
 	uint x;
 	uint y;
 	app->win->GetWindowSize(x, y);
-	btn1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Test1", { ((int)x / 2)-100, (int)y / 2, 90, 40 }, this);
-	btn2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Test2", { ((int)x / 2)+100, (int)y / 2, 90, 40 }, this);
-
+	btn1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Test1", { ((int)x / 2)-55, (int)y / 2, 111, 52 }, this);
 
 	return ret;
 }
@@ -135,10 +133,11 @@ bool SceneIntro::PostUpdate()
 	app->render->DrawTexture(bg1, 0, 0, NULL);
 	app->render->DrawTexture(bg2, 0, 0, NULL);
 
-	if ((frames / 60) % 2 == 0)
-	{
-		app->render->DrawTexture(bg3, 0, 0, NULL);
-	}
+	// commented the press space to start and replaced by GUI button
+	//if ((frames / 60) % 2 == 0)
+	//{
+	//	app->render->DrawTexture(bg3, 0, 0, NULL);
+	//}
 
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(character, cPos.x, cPos.y, &rect);
