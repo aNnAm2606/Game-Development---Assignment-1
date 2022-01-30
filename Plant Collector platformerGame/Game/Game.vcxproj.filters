@@ -36,6 +36,7 @@
     <ClCompile Include="Source\Cat.cpp" />
     <ClCompile Include="Source\Bird.cpp" />
     <ClCompile Include="Source\GuiSliderBar.cpp" />
+    <ClCompile Include="Source\GuiToggle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Source\Cat.h" />
     <ClInclude Include="Source\Bird.h" />
     <ClInclude Include="Source\GuiSliderBar.h" />
+    <ClInclude Include="Source\GuiToggle.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

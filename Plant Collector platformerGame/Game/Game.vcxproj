@@ -99,6 +99,7 @@
     <ClCompile Include="Source\GuiManager.cpp" />
     <ClCompile Include="Source\Cat.cpp" />
     <ClCompile Include="Source\GuiSliderBar.cpp" />
+    <ClCompile Include="Source\GuiToggle.cpp" />
     <ClCompile Include="Source\Lives.cpp" />
     <ClCompile Include="Source\Logo.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Source\GuiManager.h" />
     <ClInclude Include="Source\Cat.h" />
     <ClInclude Include="Source\GuiSliderBar.h" />
+    <ClInclude Include="Source\GuiToggle.h" />
     <ClInclude Include="Source\Lives.h" />
     <ClInclude Include="Source\Logo.h" />
     <ClInclude Include="Source\Map.h" />
