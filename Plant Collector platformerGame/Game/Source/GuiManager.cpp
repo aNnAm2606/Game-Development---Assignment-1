@@ -4,6 +4,7 @@
 #include "Log.h"
 
 #include "GuiButton.h"
+//#include "GuiSlideBar.h"
 #include "Audio.h"
 
 GuiManager::GuiManager(bool startEnabled) : Module(startEnabled)
